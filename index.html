@@ -94,8 +94,18 @@ body.m header h1{font-size:15px;overflow:hidden;text-overflow:ellipsis}
 .pm img{max-width:100%;max-height:100%;object-fit:contain;display:block}
 .pm::after{content:"⤢";position:absolute;right:10px;bottom:10px;width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;display:grid;place-items:center;font-size:16px}
 .dots{margin:-26px 0 10px}
+
+#toast{z-index:40}
+#fs{display:none;position:fixed;inset:0;z-index:25;background:var(--bg);flex-direction:column;height:100vh;height:100dvh}
+.fsb{display:flex;align-items:center;gap:12px;padding:calc(env(safe-area-inset-top,0px) + 12px) 16px 12px;background:var(--gr);color:#fff}
+.fsb button{width:40px;height:40px;border:0;border-radius:12px;background:rgba(255,255,255,.2);color:#fff;display:grid;place-items:center;padding:0}.fsb b{font-size:19px}
+.fsc{flex:1;overflow-y:auto;padding:14px 14px calc(env(safe-area-inset-bottom,0px) + 24px);max-width:480px;width:100%;margin:0 auto}
+.cw{position:relative}.ar{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border:0;border-radius:50%;background:rgba(0,0,0,.45);color:#fff;font-size:24px;line-height:1;padding:0 0 3px;z-index:2}.ar.l{left:8px}.ar.r{right:8px}
+.car{touch-action:pan-x pan-y;-webkit-overflow-scrolling:touch}
+.gal div{position:relative}.cnt{position:absolute;right:6px;bottom:6px;background:rgba(0,0,0,.6);color:#fff;border-radius:10px;padding:2px 7px;font-size:11px;display:flex;gap:4px;align-items:center}
+.pth{flex-wrap:wrap}
 </style></head><body>
-<div id="toast"></div><div id="lb" onclick="if(event.target.id=='lb')lbc()"></div><div id="ov" onclick="dr(0)"></div><aside id="dr"></aside>
+<div id="toast"></div><div id="fs"></div><div id="lb" onclick="if(event.target.id=='lb')lbc()"></div><div id="ov" onclick="dr(0)"></div><aside id="dr"></aside>
 <div id="app">
 <header><button class="hb" onclick="dr(1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="4" x2="20" y1="7" y2="7"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="14" y1="17" y2="17"/></svg></button><h1>✂ Beauty salon Razzi</h1><span id="st">💾</span><div class="seg" id="seg"></div></header>
 <main id="main"></main>
@@ -175,7 +185,11 @@ function slots(k,dur){const s=SC(),d=dt(k),w=s.W[wd(d)];if(s.X[k]==='off'||!w||(
  for(let t=tm(w.f);t+dur<=tm(w.t);t+=30){if(isT&&t<nm)continue;if(!bs.some(([a,e])=>t<e&&t+dur>a))r.push(fm(t))}return r}
 const dur=m=>m>=60?m/60+' ч':m+' мин';
 /* ===== ИНТЕРФЕЙС ===== */
-let role='c',tab='home',after=null,pre=null,CART={},RV={s:5,img:''},L=[],CH=[],stp='svc',D={},LG={};
+let role=ld('rz_role','c'),tab=ld('rz_tab','home'),after=null,pre=null,CART={},RV={s:5,img:''},L=[],CH=[],stp='svc',D={},LG={};
+mAuth=(()=>{const s=ld('rz_ma',null);return s&&s.fp===(CF().ah||'d')?1:0})();
+if(role=='m'&&!mAuth)role='c';
+if(role=='m'?!/^(ord|sch|cli|inb|set)$/.test(tab):!/^(home|svc|gal|shop|rev|about|contact|me)$/.test(tab)||(tab=='me'&&!curU()))tab=role=='m'?'ord':'home';
+const msave=()=>sv('rz_ma',{fp:CF().ah||'d'});
 const nc=()=>col('B').filter(b=>b.nw).length+col('O').filter(o=>o.nw).length,ni=()=>col('M').filter(m=>m.nw).length+col('R').filter(r=>r.nw).length;
 function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',5000)}
 const DR=[['home','home','Главная'],['svc','scissors','Услуги'],['shop','bag','Магазин'],['gal','image','Галерея работ'],['rev','star','Отзывы'],['me','gift','Бонусы и профиль'],['about','info','О приложении'],['contact','phone','Связаться с мастером']];
@@ -186,13 +200,15 @@ function nav(){document.body.className=role=='m'?'m':'';$('#seg').innerHTML=`<bu
  $('#nav').innerHTML=(role=='m'&&!mAuth?[]:TB[role]).map(([k,i,l])=>{const n=k=='ord'?nc():k=='inb'?ni():0;return `<button class="${tab==k?'on':''}" onclick="go('${k}')"><span>${ico(i,22)}</span>${l}${n?`<b class="bd">${n}</b>`:''}</button>`}).join('');
  $('#inp').style.display=tab=='bot'?'flex':'none'}
 function go(k){if(k=='set'&&tab=='set')sub='';if(role=='c'&&(k=='bot')&&!curU()){after=k;k='login';LG={}}
- if(k=='bot'&&(!L.length||pre)){botStart(pre);pre=null}tab=k;nav();R();$('#main').scrollTop=0}
-function setRole(r){role=r;if(r=='m'){tab=mAuth?'ord':'mlogin'}else if(tab.match(/^(ord|sch|cli|inb|set|mlogin)$/))tab='home';nav();R()}
-function R(){({home:rHome,svc:rSvc,gal:rGal,shop:rShop,rev:rRev,me:rMe,about:rAbout,contact:rCon,bot:rBot,login:rLogin,mlogin:rML,ord:rOrd,sch:rSch,cli:rCli,inb:rInb,set:rSet})[tab]();if(tab=='set')genR()}
+ if(k=='bot'&&(!L.length||pre)){botStart(pre);pre=null}tab=k;if(k!='login'&&k!='mlogin'&&k!='bot')sv('rz_tab',k);nav();R();$('#main').scrollTop=0}
+function setRole(r){role=r;if(r=='m'){tab=mAuth?'ord':'mlogin'}else if(tab.match(/^(ord|sch|cli|inb|set|mlogin)$/))tab='home';sv('rz_role',role);if(tab!='mlogin')sv('rz_tab',tab);nav();R()}
+function R(){if(tab!='set'){sub='';$('#fs').style.display='none'}({home:rHome,svc:rSvc,gal:rGal,shop:rShop,rev:rRev,me:rMe,about:rAbout,contact:rCon,bot:rBot,login:rLogin,mlogin:rML,ord:rOrd,sch:rSch,cli:rCli,inb:rInb,set:rSet})[tab]();if(tab=='set')genR()}
 const stars=n=>'★'.repeat(n)+'☆'.repeat(5-n),pubs=()=>col('R').filter(r=>r.pub);
 const svcCard=s=>`<button class="card svc" onclick="pre='${s.id}';go('bot')"><i class="si">${ico(SI[s.id],26)}</i><span><b>${s.n}</b><small>${s.d} · ${dur(s.m)}</small></span><span class="pr">${s.p}</span></button>`;
-const gall=()=>col('GL').slice().sort((a,b)=>b.u-a.u).map(x=>x.im).concat(G);
-const gtile=(u,i)=>`<div style="background:url(${u}) center/cover" onclick="lbo(gall(),${i})"></div>`;
+const gim=x=>Array.isArray(x.im)?x.im:(x.im?[x.im]:[]);
+const gall=()=>col('GL').slice().sort((a,b)=>b.u-a.u).map(x=>({ph:gim(x)})).filter(w=>w.ph.length).concat(G.map(u=>({ph:[u]})));
+const gtile=(w,i)=>`<div style="background:url(${w.ph[0]}) center/cover" onclick="lbw(${i})">${w.ph.length>1?`<span class="cnt">${ico('image',12)} ${w.ph.length}</span>`:''}</div>`;
+const lbw=i=>lbo(gall()[i].ph,0);
 function rHome(){const pb=pubs().slice().reverse(),av=pb.length?(pb.reduce((a,r)=>a+r.stars,0)/pb.length).toFixed(1):'',g=gall();
  $('#main').innerHTML=`<div class="hero"><h2>Красота с характером</h2><p>Парикмахер-универсал: стрижки, сложные окрашивания, макияж и брови. Запись 24/7 через бота.</p><button class="btn" onclick="go('bot')">Записаться онлайн</button></div>
  <h3>Мои работы</h3><div class="gal">${g.slice(0,9).map(gtile).join('')}</div><p><a href="#" onclick="go('gal');return false">Вся галерея →</a> · <a href="https://www.tiktok.com/@razzi.hair" target="_blank" rel="noopener">TikTok @razzi.hair</a></p>
@@ -210,12 +226,12 @@ function rLogin(){const c=CF(),u=LG.u;if(LG.m){$('#main').innerHTML=`<div class=
 const cp=t=>{try{navigator.clipboard.writeText(t);toast('Текст скопирован. Вставьте его в чат WhatsApp.')}catch(e){}};
 function reqMsg(u){const t=Date.now();if(reqMsg.t&&t-reqMsg.t<60000)return;reqMsg.t=t;put('M',{id:'m'+t,uid:u.id,name:u.name,ph:u.phone,text:'🔐 Просит код для входа в приложение',nw:1,req:1})}
 function reqCode(){reqMsg(LG.u);cp('Здравствуйте! Прошу код для входа в Beauty salon Razzi. Телефон: +'+LG.u.phone)}
-async function mpass(){const pw=$('#mpw').value,c=CF(),w=dg(c.wa).replace(/^8(?=\d{10}$)/,'7');const ok=c.ah?await sha(pw)===c.ah:dg(pw)===w.slice(-7);if(!ok)return toast('Неверный пароль');LG={};mAuth=1;setRole('m')}
-function lgo(){const n=$('#ln').value.trim(),d=dg($('#lp').value).replace(/^[78](?=\d{10}$)/,''),p='7'+d;if(d.length==10&&p===dg(CF().wa).replace(/^8(?=\d{10}$)/,'7')){LG={m:1};return rLogin()}if(!n||d.length!=10)return toast('Укажите имя и 10 цифр номера после +7');
+async function mpass(){const pw=$('#mpw').value,c=CF(),w=dg(c.wa).replace(/^8(?=\d{10}$)/,'7');const ok=c.ah?await sha(pw)===c.ah:dg(pw)===w.slice(-7);if(!ok)return toast('Неверный пароль');LG={};mAuth=1;msave();setRole('m')}
+function lgo(){const n=$('#ln').value.trim(),d=dg($('#lp').value).replace(/^[78](?=\d{10}$)/,''),p='7'+d;if(d.length==10&&p===dg(CF().wa).replace(/^8(?=\d{10}$)/,'7')){if(mAuth){setRole('m');return}LG={m:1};return rLogin()}if(!n||d.length!=10)return toast('Укажите имя и 10 цифр номера после +7');
  let u=col('U').find(x=>x.phone==p);if(!u){u={id:'u'+Date.now(),phone:p,name:n,sec:rnd(),created:Date.now()};put('U',u);toast('🔔 Регистрация: '+n)}reqMsg(u);LG={u,n,p};rLogin()}
 async function lcode(){const v=$('#lc').value.trim(),s=LG.u.sec;let ok=0;for(const o of[0])if(await totp(s,o)===v)ok=1;if(!ok)return toast('Неверный или просроченный код');
- me={uid:LG.u.id,exp:Date.now()+30*864e5};sv('rz_me',me);LG={};toast('Добро пожаловать!');go(after||'me');after=null}
-function out(){me=null;sv('rz_me',null);dr(0);L=[];go('home')}
+ me={uid:LG.u.id,exp:Date.now()+3650*864e5};sv('rz_me',me);LG={};toast('Добро пожаловать!');go(after||'me');after=null}
+function out(){me=null;sv('rz_me',null);sv('rz_tab','home');dr(0);L=[];go('home')}
 /* --- Профиль и бонусы --- */
 function rMe(){const u=curU();if(!u){after='me';LG={};tab='login';return nav(),rLogin()}const v=vis(u.id),c=CF(),pc=Math.min(100,v/c.after*100);
  $('#main').innerHTML=`<div class="hero"><h2>${esc(u.name)}</h2><p>📱 ${esc(u.phone)}</p></div><div class="card"><b>🎁 Бонусная программа</b><div class="bar"><i style="width:${pc}%"></i></div>Визитов: ${v} из ${c.after}. ${v>=c.after?`<b>Ваша скидка ${c.pct}% активна!</b>`:`Ещё ${c.after-v} до скидки ${c.pct}%.`}</div>
@@ -226,9 +242,11 @@ const price=p=>{const u=curU(),d=Math.min(60,(+p.d||0)+(u?loy(u.id):0));return[p
 function rShop(){const n=Object.values(CART).reduce((a,b)=>a+b,0),tot=col('P').reduce((a,p)=>a+(CART[p.id]||0)*price(p)[0],0);
  $('#main').innerHTML=`<h3 style="margin-top:0">Магазин салона</h3>${n?`<div class="card row new"><span>🛒 ${n} шт · <b>${money(tot)}</b></span><button class="btn" onclick="order()">Заказать</button></div>`:''}<p class="mu">Самовывоз в салоне. Оплата при получении.</p>`+
  col('P').map(p=>{const[f,d]=price(p);return `<div class="card pc">${pcar(p)}<div class="pi"><b>${esc(p.n)}</b><div>${d?`<s class="mu">${money(p.p)}</s> `:''}<b style="color:var(--p)">${money(f)}</b>${d?` <span class="tag">−${d}%</span>`:''}</div><button class="btn s" onclick="CART['${p.id}']=(CART['${p.id}']||0)+1;rShop()">В корзину${CART[p.id]?' · '+CART[p.id]:''}</button></div></div>`}).join('')}
-const pcar=p=>{const im=p.im||[];return im.length?`<div class="car" onscroll="dsc(this)">${im.map((u,i)=>`<div class="pm" onclick="lb('${p.id}',${i})"><img src="${u}" alt=""></div>`).join('')}</div>${im.length>1?`<div class="dots">${im.map((_,i)=>`<i class="${i?'':'on'}"></i>`).join('')}</div>`:''}`:`<div class="ph">${ico('bag',40)}</div>`};
+const pcar=p=>{const im=p.im||[];return im.length?`<div class="cw"><div class="car" onscroll="dsc(this)">${im.map((u,i)=>`<div class="pm" onclick="lb('${p.id}',${i})"><img src="${u}" alt=""></div>`).join('')}</div>${im.length>1?`<div class="dots">${im.map((_,i)=>`<i class="${i?'':'on'}"></i>`).join('')}</div><button class="ar l" onclick="cs(this,-1)">‹</button><button class="ar r" onclick="cs(this,1)">›</button>`:''}</div>`:`<div class="ph">${ico('bag',40)}</div>`};
+const cs=(b,d)=>{const c=b.parentElement.querySelector('.car');c.scrollBy({left:d*c.clientWidth,behavior:'smooth'})};
+const lbs=d=>{const c=$('#lbc');c.scrollBy({left:d*c.clientWidth,behavior:'smooth'})};
 const dsc=e=>{const i=Math.round(e.scrollLeft/e.clientWidth);[...e.nextElementSibling.children].forEach((d,j)=>d.className=j==i?'on':'')};
-function lbo(list,i){$('#lb').innerHTML=`<div class="car lbx" id="lbc" data-n="${list.length}" onscroll="lbn(this)">${list.map(u=>`<div class="sl" onclick="this.classList.toggle('z')"><img src="${u}"></div>`).join('')}</div><button class="lbk" onclick="lbc()">${ico('x',24)}</button><div class="lbt" id="lbt">${i+1} / ${list.length}</div><div class="lbh">Нажмите на фото, чтобы приблизить</div>`;$('#lb').style.display='block';const c=$('#lbc');c.scrollLeft=i*c.clientWidth}
+function lbo(list,i){$('#lb').innerHTML=`<div class="car lbx" id="lbc" data-n="${list.length}" onscroll="lbn(this)">${list.map(u=>`<div class="sl" onclick="this.classList.toggle('z')"><img src="${u}"></div>`).join('')}</div><button class="lbk" onclick="lbc()">${ico('x',24)}</button><div class="lbt" id="lbt">${i+1} / ${list.length}</div><div class="lbh">Нажмите на фото, чтобы приблизить</div>${list.length>1?`<button class="ar l" onclick="lbs(-1)">‹</button><button class="ar r" onclick="lbs(1)">›</button>`:''}`;$('#lb').style.display='block';const c=$('#lbc');c.scrollLeft=i*c.clientWidth}
 const lbn=c=>{$('#lbt').textContent=(Math.round(c.scrollLeft/c.clientWidth)+1)+' / '+c.dataset.n};
 const lb=(id,i)=>lbo(getI('P',id).im,i);
 const lbc=()=>{$('#lb').style.display='none'};
@@ -270,7 +288,7 @@ function rML(){$('#main').innerHTML=`<div class="card"><h3 style="margin-top:0">
 async function chk(l,pw){const c=CF(),nm=x=>dg(x).replace(/^8(?=\d{10}$)/,'7');
  if(c.ah)return String(l).trim().toLowerCase()===String(c.an).toLowerCase()&&await sha(pw)===c.ah;
  const w=nm(c.wa);return w.length>=10&&nm(l)===w&&dg(pw)===w.slice(-7)}
-async function mlog(){if(!(await chk($('#ml').value,$('#mp').value)))return toast('Неверный логин или пароль');mAuth=1;setRole('m')}
+async function mlog(){if(!(await chk($('#ml').value,$('#mp').value)))return toast('Неверный логин или пароль');mAuth=1;msave();setRole('m')}
 function rOrd(){const td=dk(new Date()),a=col('B').filter(b=>b.st!='x').sort((x,y)=>(x.date+x.time).localeCompare(y.date+y.time)),o=col('O').sort((x,y)=>y.id.localeCompare(x.id));
  $('#main').innerHTML=`<div class="card row"><span>🔔 Новых: <b>${nc()}</b> · Сегодня: <b>${a.filter(b=>b.date==td).length}</b></span><button class="btn s" onclick="col('B').concat(col('O')).forEach(x=>{if(x.nw){x.nw=0;put(x.tot!=null?'O':'B',x)}});nav();R()">Прочитано</button></div>`+
  (o.length?'<h3>Заказы товаров</h3>'+o.map(x=>`<div class="card ${x.nw?'new':''}"><b>${esc(x.name)}</b> · <a href="tel:+${esc(x.ph)}">+${esc(x.ph)}</a><br>${x.it.map(i=>esc(i.n)+' ×'+i.q).join(', ')}<br><b>${money(x.tot)}</b> <button class="btn s" onclick="rm('O','${x.id}');R()">Выдан</button></div>`).join(''):'')+
@@ -288,20 +306,21 @@ function rInb(){$('#main').innerHTML=`<div class="card row"><span>Новых: <b
  '<h3>Отзывы</h3>'+(col('R').slice().reverse().map(r=>`<div class="card ${r.nw?'new':''}">${rvCard(r).replace('class="card"','')}<div>${r.ok?'✅ Клиент разрешил публикацию':'⛔ Публикация не разрешена'}</div><div style="margin-top:6px">${r.pub?`<button class="btn s" onclick="rp('${r.id}',0)">Скрыть</button>`:r.ok?`<button class="btn" onclick="rp('${r.id}',1)">Опубликовать</button>`:''}</div></div>`).join('')||'<p class="mu">Отзывов нет.</p>')}
 function rp(id,v){const r=getI('R',id);r.pub=v;r.nw=0;put('R',r);nav();rInb()}
 let sub='';
-const ssub=k=>{sub=k;rSet();$('#main').scrollTop=0};
-const sback=()=>`<button class="btn s" style="margin-bottom:10px;display:inline-flex;align-items:center;gap:4px" onclick="ssub('')">${ico('back',16)} Настройки</button>`;
-function rSet(){const c=CF();let o;
- if(sub=='gen')o=`${sback()}<h3 style="margin-top:0">Генератор 2FA</h3><p class="mu" style="margin-top:0">Код клиента действует 3 минуты и меняется сам. Отправьте его клиенту в WhatsApp.</p><div class="card"><div id="gen"></div></div>`;
- else if(sub=='prod')o=`${sback()}<h3 style="margin-top:0">Товары</h3>${prodAdmin()}<div class="card"><b>Добавить товар</b><input class="f" id="an" placeholder="Название"><input class="f" id="ap" type="number" placeholder="Цена, ₸"><button class="btn" onclick="ap()">Добавить</button></div>`;
- else if(sub=='gal'){const ph=col('GL').slice().sort((a,b)=>b.u-a.u);o=`${sback()}<h3 style="margin-top:0">Галерея работ</h3><p class="mu" style="margin-top:0">Фото показываются на главном экране. Ваши фото идут первыми.</p><label class="btn" style="display:inline-flex;align-items:center;gap:8px">${ico('camera',20)} Добавить фото<input type="file" accept="image/*" multiple hidden onchange="gadd(this)"></label><div class="gal" style="margin-top:12px">${ph.map(x=>`<div style="background:url(${x.im}) center/cover;position:relative"><button class="gx" onclick="if(confirm('Удалить фото?'))gdel('${x.id}')">×</button></div>`).join('')}</div>${ph.length?'':'<p class="mu">Своих фото пока нет. Сейчас показаны фото из ваших видео.</p>'}`}
- else if(sub=='adm')o=`${sback()}<h3 style="margin-top:0">Настройки мастера</h3><div class="card"><label>WhatsApp (цифры с кодом страны, без +)</label><input class="f" id="sw" value="${esc(c.wa)}" placeholder="77001234567"><label>Адрес салона</label><input class="f" id="sa" value="${esc(c.addr)}"><label>Бонус: визитов до скидки</label><input class="f" id="sn" type="number" value="${c.after}"><label>Размер скидки, %</label><input class="f" id="sp" type="number" value="${c.pct}"><button class="btn" onclick="setCF({wa:dg($('#sw').value),addr:$('#sa').value,after:+$('#sn').value||5,pct:+$('#sp').value||0});toast('Сохранено')">Сохранить</button></div>
- <h3>Админ мастера</h3><div class="card"><label>Имя админа (логин)</label><input class="f" id="adn" value="${esc(c.an||'')}" placeholder="Новое имя" autocapitalize="off"><label>Текущий пароль</label><input class="f" id="ado" type="password"><label>Новый пароль (минимум 6 символов)</label><input class="f" id="adp" type="password"><button class="btn" onclick="sadm()">Сохранить имя и пароль</button></div>
- <h3>Облако</h3><div class="card">${CLOUD.url?'Подключено ☁️':'Не подключено 💾 (данные только на этом устройстве)'}<br><button class="btn s" onclick="sync();toast('Синхронизация…')">Синхронизировать</button> <button class="btn s" onclick="chkCloud()">Проверить облако</button></div>`;
- else o=`<h3 style="margin-top:0">Настройки</h3>`+[['gen','key','Генератор 2FA','Коды входа для клиентов'],['prod','bag','Товары','Фото, цены и скидки'],['gal','image','Галерея работ','Фото для главного экрана'],['adm','user','Настройки мастера','Контакты, бонусы, имя и пароль админа, облако']].map(([k,i,t,d])=>`<button class="card svc" onclick="ssub('${k}')"><i class="si">${ico(i,24)}</i><span><b>${t}</b><small>${d}</small></span><span class="pr" style="color:var(--mu)">${ico('chev',20)}</span></button>`).join('')+`<button class="btn s" onclick="mlo()">Выйти из кабинета</button>`;
- $('#main').innerHTML=o;if(sub=='gen')genR()}
-async function gadd(inp){const n=inp.files.length;toast('Загрузка фото…');for(const f of[...inp.files])put('GL',{id:'g'+Date.now()+Math.random().toString(36).slice(2,6),im:await img(f,960,.72)});toast('Добавлено фото: '+n);rSet()}
+const ssub=k=>{sub=k;rSet()};
+function rSet(){const c=CF(),f=$('#fs'),keep=f._s===sub&&$('#fsc')?$('#fsc').scrollTop:0;let o,ttl='Настройки';
+ if(sub=='gen'){ttl='Генератор 2FA';o=`<p class="mu" style="margin-top:0">Код клиента действует 3 минуты и меняется сам. Отправьте его клиенту в WhatsApp.</p><div class="card"><div id="gen"></div></div>`}
+ else if(sub=='prod'){ttl='Товары';o=`${prodAdmin()}<div class="card"><b>Добавить товар</b><input class="f" id="an" placeholder="Название"><input class="f" id="ap" type="number" placeholder="Цена, ₸"><button class="btn" onclick="ap()">Добавить</button></div>`}
+ else if(sub=='gal'){ttl='Галерея работ';const ws=col('GL').slice().sort((a,b)=>b.u-a.u);o=`<p class="mu" style="margin-top:0">Одна работа — до 6 фото с разных ракурсов. Ваши работы идут первыми на главном экране.</p><label class="btn" style="display:inline-flex;align-items:center;gap:8px;margin-bottom:10px">${ico('camera',20)} Добавить работу<input type="file" accept="image/*" multiple hidden onchange="gnew(this)"></label>${ws.map((x,k)=>{const im=gim(x);return `<div class="card"><div class="row"><b>Работа ${ws.length-k}</b><button class="btn s" onclick="if(confirm('Удалить работу?'))gdel('${x.id}')">Удалить</button></div><div class="pth">${im.map((u,i)=>`<div style="background:var(--bg) url(${u}) center/contain no-repeat" onclick="lbo(gim(getI('GL','${x.id}')),${i})"><button onclick="event.stopPropagation();gpdel('${x.id}',${i})">×</button></div>`).join('')}${im.length<6?`<label class="add">${ico('camera',22)}<small>${im.length}/6</small><input type="file" accept="image/*" multiple hidden onchange="gmore('${x.id}',this)"></label>`:''}</div></div>`}).join('')}${ws.length?'':'<p class="mu">Своих работ пока нет. Сейчас показаны фото из ваших видео.</p>'}`}
+ else if(sub=='adm'){ttl='Настройки мастера';o=`<div class="card"><label>WhatsApp (цифры с кодом страны, без +)</label><input class="f" id="sw" value="${esc(c.wa)}" placeholder="77001234567"><label>Адрес салона</label><input class="f" id="sa" value="${esc(c.addr)}"><label>Бонус: визитов до скидки</label><input class="f" id="sn" type="number" value="${c.after}"><label>Размер скидки, %</label><input class="f" id="sp" type="number" value="${c.pct}"><button class="btn" onclick="setCF({wa:dg($('#sw').value),addr:$('#sa').value,after:+$('#sn').value||5,pct:+$('#sp').value||0});toast('Сохранено')">Сохранить</button></div>
+ <h3>Админ мастера</h3><div class="card"><label>Имя админа</label><input class="f" id="adn" value="${esc(c.an||'')}" placeholder="Новое имя" autocapitalize="off"><label>Текущий пароль</label><input class="f" id="ado" type="password"><label>Новый пароль (минимум 6 символов)</label><input class="f" id="adp" type="password"><button class="btn" onclick="sadm()">Сохранить имя и пароль</button></div>
+ <h3>Облако</h3><div class="card">${CLOUD.url?'Подключено ☁️':'Не подключено 💾 (данные только на этом устройстве)'}<br><button class="btn s" onclick="sync();toast('Синхронизация…')">Синхронизировать</button> <button class="btn s" onclick="chkCloud()">Проверить облако</button></div>`}
+ else o=[['gen','key','Генератор 2FA','Коды входа для клиентов'],['prod','bag','Товары','Фото, цены и скидки'],['gal','image','Галерея работ','Фото для главного экрана'],['adm','user','Настройки мастера','Контакты, бонусы, имя и пароль админа, облако']].map(([k,i,t,d])=>`<button class="card svc" onclick="ssub('${k}')"><i class="si">${ico(i,24)}</i><span><b>${t}</b><small>${d}</small></span><span class="pr" style="color:var(--mu)">${ico('chev',20)}</span></button>`).join('')+`<button class="btn s" onclick="mlo()">Выйти из кабинета</button>`;
+ f._s=sub;f.style.display='flex';f.innerHTML=`<div class="fsb"><button onclick="${sub?"ssub('')":"go('ord')"}">${ico(sub?'back':'x',22)}</button><b>${ttl}</b></div><div class="fsc" id="fsc">${o}</div>`;$('#fsc').scrollTop=keep;if(sub=='gen')genR()}
 const gdel=id=>{rm('GL',id);rSet()};
-function prodAdmin(){return col('P').map(p=>{const im=p.im||[];return `<div class="card"><div class="row"><b>${esc(p.n)}</b><button class="btn s" onclick="pe('${p.id}')">Изменить</button></div><div class="mu">${money(p.p)} · скидка ${p.d||0}%</div><div class="pth">${im.map((u,i)=>`<div style="background:var(--bg) url(${u}) center/contain no-repeat"><button onclick="pdel('${p.id}',${i})">×</button></div>`).join('')}${im.length<3?`<label class="add">${ico('camera',22)}<small>${im.length}/3</small><input type="file" accept="image/*" multiple hidden onchange="padd('${p.id}',this)"></label>`:''}</div><div style="margin-top:8px"><button class="btn s" onclick="pd('${p.id}')">Скидка %</button> <button class="btn s" onclick="if(confirm('Удалить товар?')){rm('P','${p.id}');rSet()}">Удалить</button></div></div>`}).join('')}
+async function gnew(inp){const fs=[...inp.files].slice(0,6);if(!fs.length)return;toast('Загрузка…');const im=[];for(const f of fs)im.push(await img(f,900,.7));put('GL',{id:'g'+Date.now()+Math.random().toString(36).slice(2,6),im});toast('Работа добавлена: '+im.length+' фото');rSet()}
+async function gmore(id,inp){const x=getI('GL',id),im=gim(x).slice();for(const f of[...inp.files].slice(0,6-im.length))im.push(await img(f,900,.7));x.im=im;put('GL',x);rSet()}
+function gpdel(id,i){const x=getI('GL',id),im=gim(x).slice();im.splice(i,1);if(!im.length)return gdel(id);x.im=im;put('GL',x);rSet()}
+function prodAdmin(){return col('P').map(p=>{const im=p.im||[];return `<div class="card"><div class="row"><b>${esc(p.n)}</b><button class="btn s" onclick="pe('${p.id}')">Изменить</button></div><div class="mu">${money(p.p)} · скидка ${p.d||0}%</div><div class="pth">${im.map((u,i)=>`<div style="background:var(--bg) url(${u}) center/contain no-repeat" onclick="lb('${p.id}',${i})"><button onclick="event.stopPropagation();pdel('${p.id}',${i})">×</button></div>`).join('')}${im.length<3?`<label class="add">${ico('camera',22)}<small>${im.length}/3</small><input type="file" accept="image/*" multiple hidden onchange="padd('${p.id}',this)"></label>`:''}</div><div style="margin-top:8px"><button class="btn s" onclick="pd('${p.id}')">Скидка %</button> <button class="btn s" onclick="if(confirm('Удалить товар?')){rm('P','${p.id}');rSet()}">Удалить</button></div></div>`}).join('')}
 async function padd(id,inp){const p=getI('P',id);p.im=p.im||[];for(const f of[...inp.files].slice(0,3-p.im.length))p.im.push(await img(f,640,.68));put('P',p);rSet()}
 function pdel(id,i){const p=getI('P',id);p.im.splice(i,1);put('P',p);rSet()}
 function pe(id){const p=getI('P',id),n=prompt('Название',p.n);if(n===null)return;const c=prompt('Цена, ₸',p.p);if(c===null)return;p.n=n.trim()||p.n;p.p=+c||p.p;put('P',p);rSet()}
@@ -310,8 +329,8 @@ function ap(){const n=$('#an').value.trim(),p=+$('#ap').value;if(!n||!p)return t
 async function genR(){const g=$('#gen');if(!g)return;const u=col('U'),left=180-(Math.floor(Date.now()/1000)%180),cs=await Promise.all(u.map(x=>totp(x.sec)));if(!$('#gen'))return;
  g.innerHTML=u.length?u.map((x,i)=>`<div class="row" style="padding:8px 0;border-bottom:1px solid var(--bd)"><span><b>${esc(x.name)}</b><br><small class="mu">+${esc(x.phone)}</small></span><span style="text-align:right"><b style="font-size:26px;letter-spacing:4px;color:var(--p)">${cs[i]}</b><br><small class="mu">${Math.floor(left/60)}:${p2(left%60)}</small></span></div>`).join('')+`<div class="bar"><i style="width:${left/180*100}%"></i></div>`:'<p class="mu">Клиентов пока нет.</p>'}
 async function sadm(){const n=$('#adn').value.trim(),o=$('#ado').value,w=$('#adp').value,c=CF();if(!n||w.length<6)return toast('Имя обязательно. Пароль: минимум 6 символов');
- if(!(await chk(c.an||c.wa,o)))return toast('Текущий пароль неверный');setCF({an:n,ah:await sha(w)});$('#ado').value=$('#adp').value='';toast('Имя и пароль админа сохранены')}
-const mlo=()=>{mAuth=0;setRole('c')};
+ if(!(await chk(c.an||c.wa,o)))return toast('Текущий пароль неверный');setCF({an:n,ah:await sha(w)});msave();$('#ado').value=$('#adp').value='';toast('Имя и пароль админа сохранены')}
+const mlo=()=>{mAuth=0;sv('rz_ma',null);sv('rz_role','c');sv('rz_tab','home');setRole('c')};
 setInterval(()=>{if(tab=='set'&&mAuth)genR()},1000);
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 nav();R();sync();rt();setInterval(sync,10000);addEventListener('online',()=>{sync();rt()});
