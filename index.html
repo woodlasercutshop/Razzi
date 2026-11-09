@@ -79,8 +79,8 @@ nav{padding:4px 4px 2px}nav button{font-size:11px;letter-spacing:.2px}nav button
 #lb{display:none;position:fixed;inset:0;background:#000;z-index:30}.lbx{height:100%}.lbx>div{aspect-ratio:auto;height:100%}.lbk{position:absolute;top:calc(env(safe-area-inset-top,0px) + 12px);right:12px;border:0;background:rgba(255,255,255,.18);color:#fff;border-radius:50%;width:42px;height:42px;display:grid;place-items:center}
 
 header h1{font-size:26px;white-space:nowrap;text-align:left}
-body:not(.m) #st,body:not(.m) .seg{display:none}
-body.m header h1{font-size:15px;overflow:hidden;text-overflow:ellipsis}
+body:not(.mst) #st,body:not(.mst) .seg{display:none}
+body.mst header h1{font-size:15px;overflow:hidden;text-overflow:ellipsis}
 .gal div{cursor:pointer}.gx{position:absolute;top:3px;right:3px;width:24px;height:24px;border:0;border-radius:50%;background:rgba(0,0,0,.65);color:#fff;font-size:16px;line-height:1;padding:0}
 .rvs{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;scrollbar-width:none}.rvs::-webkit-scrollbar{display:none}
 .rv{flex:0 0 84%;scroll-snap-align:start;background:var(--cd);border:1px solid var(--bd);border-radius:16px;padding:12px;box-shadow:0 4px 12px rgba(123,63,242,.1)}.rv p{margin:6px 0;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}.rvi{height:120px;border-radius:12px}
@@ -104,10 +104,17 @@ body.m header h1{font-size:15px;overflow:hidden;text-overflow:ellipsis}
 .car{touch-action:pan-x pan-y;-webkit-overflow-scrolling:touch}
 .gal div{position:relative}.cnt{position:absolute;right:6px;bottom:6px;background:rgba(0,0,0,.6);color:#fff;border-radius:10px;padding:2px 7px;font-size:11px;display:flex;gap:4px;align-items:center}
 .pth{flex-wrap:wrap}
+
+header h1{font-size:24px}body.mst header h1{font-size:15px}
+.lgb{display:flex;align-items:center;gap:5px;border:0;border-radius:14px;background:rgba(255,255,255,.2);color:#fff;font-size:13px;font-weight:700;padding:8px 10px}body.m .lgb{display:none}
+#lgp{display:none;position:fixed;z-index:35;right:12px;top:calc(env(safe-area-inset-top,0px) + 56px);background:var(--cd);border:1px solid var(--bd);border-radius:16px;padding:8px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.lgs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}#lgp .lgs{margin:0;flex-direction:column}
+.lgs button{display:inline-block!important;width:auto!important;border:1px solid var(--bd)!important;background:var(--cd)!important;color:var(--tx)!important;border-radius:16px!important;padding:7px 14px!important;font-size:14px!important}
+.lgs button.on{background:var(--gr)!important;color:#fff!important;border-color:transparent!important}
 </style></head><body>
-<div id="toast"></div><div id="fs"></div><div id="lb" onclick="if(event.target.id=='lb')lbc()"></div><div id="ov" onclick="dr(0)"></div><aside id="dr"></aside>
+<div id="toast"></div><div id="lgp"></div><div id="fs"></div><div id="lb" onclick="if(event.target.id=='lb')lbc()"></div><div id="ov" onclick="dr(0)"></div><aside id="dr"></aside>
 <div id="app">
-<header><button class="hb" onclick="dr(1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="4" x2="20" y1="7" y2="7"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="14" y1="17" y2="17"/></svg></button><h1>✂ Beauty salon Razzi</h1><span id="st">💾</span><div class="seg" id="seg"></div></header>
+<header><button class="hb" onclick="dr(1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="4" x2="20" y1="7" y2="7"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="14" y1="17" y2="17"/></svg></button><h1>✂ Beauty salon Razzi</h1><button class="lgb" id="lgb" onclick="lgm()"></button><span id="st">💾</span><div class="seg" id="seg"></div></header>
 <main id="main"></main>
 <div class="inp" id="inp" style="display:none"><input id="tx" placeholder="Напишите вопрос или услугу…"><button class="btn" onclick="send()">➤</button></div>
 <nav id="nav"></nav>
@@ -119,13 +126,191 @@ const ld=(k,f)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):f}ca
 const sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const dg=s=>String(s).replace(/\D/g,''),money=n=>Math.round(n).toLocaleString('ru-RU')+' ₸';
+/* ===== ЯЗЫКИ: қазақша / русский / English ===== */
+let LANG=ld('rz_lang',null)||(n=>/^kk/i.test(n)?'kk':/^en/i.test(n)?'en':'ru')(navigator.language||'ru');
+const LOC={ru:'ru-RU',kk:'kk-KZ',en:'en-GB'};
+const EX={
+'Удалить фото':['Фотоны жою','Delete photo'],'Удалить отзыв':['Пікірді жою','Delete review'],'Удалить фото?':['Фотоны жою керек пе?','Delete this photo?'],'Удалить отзыв?':['Пікірді жою керек пе?','Delete this review?'],
+'Фото из ваших видео':['Бейнелеріңіздегі фото','Photos from your videos'],
+'Скрыть фото из галереи?':['Фотоны галереядан жасыру керек пе?','Hide this photo from the gallery?'],
+'Удалить отзыв':['Пікірді жою','Delete review'],'Удалить фото':['Фотоны жою','Delete photo'],
+'Удалить отзыв?':['Пікірді жою керек пе?','Delete this review?'],'Удалить фото?':['Фотоны жою керек пе?','Delete this photo?'],
+'Мои отзывы':['Менің пікірлерім','My reviews'],'опубликован':['жарияланған','published'],'на проверке':['тексеруде','under review'],
+'🔔 Новое: заказ':['🔔 Жаңа: тапсырыс','🔔 New: order'],
+'Память устройства заполнена. Подключите облако, чтобы фото не терялись.':['Құрылғы жады толы. Фото жоғалмауы үшін бұлтты қосыңыз.','Device storage is full. Connect the cloud so photos are not lost.'],
+'Алматы':['Алматы','Almaty'],'📍 Алматы':['📍 Алматы','📍 Almaty'],
+'Клиент':['Клиент','Client'],'Мастер':['Шебер','Master'],'Мастер 🔔':['Шебер 🔔','Master 🔔'],
+'Главная':['Басты бет','Home'],'Запись':['Жазылу','Booking'],'Магазин':['Дүкен','Shop'],'Профиль':['Профиль','Profile'],
+'Заказы':['Тапсырыстар','Orders'],'График':['Кесте','Schedule'],'Клиенты':['Клиенттер','Clients'],'Входящие':['Кіріс','Inbox'],
+'Настройки':['Баптаулар','Settings'],'Меню':['Мәзір','Menu'],'Услуги':['Қызметтер','Services'],'Отзывы':['Пікірлер','Reviews'],
+'Войти':['Кіру','Sign in'],'Назад':['Артқа','Back'],'Продолжить':['Жалғастыру','Continue'],'Пароль':['Құпиясөз','Password'],
+'Сохранить':['Сақтау','Save'],'Удалить':['Жою','Delete'],'Отменить':['Бас тарту','Cancel'],'Подтвердить':['Растау','Confirm'],
+'Отправить':['Жіберу','Send'],'Добавить':['Қосу','Add'],'Изменить':['Өзгерту','Edit'],'Скрыть':['Жасыру','Hide'],
+'Опубликовать':['Жариялау','Publish'],'Прочитано':['Оқылды','Mark as read'],'Выйти':['Шығу','Log out'],'Выдан':['Берілді','Handed over'],
+'был':['келді','visited'],'ждёт':['күтуде','pending'],'новая':['жаңа','new'],'отмена':['бас тартылды','cancelled'],
+'Пн':['Дс','Mon'],'Вт':['Сс','Tue'],'Ср':['Ср','Wed'],'Чт':['Бс','Thu'],'Пт':['Жм','Fri'],'Сб':['Сб','Sat'],'Вс':['Жс','Sun'],
+'выходной':['демалыс','day off'],'Неделя':['Апта','Week'],'Облако':['Бұлт','Cloud'],'Бонус':['Бонус','Bonus'],
+'Заказать':['Тапсырыс беру','Order'],'Сообщения':['Хабарламалар','Messages'],'Записи':['Жазылулар','Bookings'],
+'Товары':['Тауарлар','Products'],'Алматы':['Алматы','Almaty'],'Пароль':['Құпиясөз','Password']
+};
+const SUB={
+'Бонусы и профиль':['Бонустар және профиль','Bonuses and profile'],'О приложении':['Қосымша туралы','About the app'],
+'Связаться с мастером':['Шебермен байланысу','Contact the master'],'Галерея работ':['Жұмыстар галереясы','Gallery of works'],
+'Красота с характером':['Мінезі бар сұлулық','Beauty with character'],
+'Парикмахер-универсал: стрижки, сложные окрашивания, макияж и брови. Запись 24/7 через бота.':['Әмбебап шаштараз: шаш қию, күрделі бояу, макияж және қас түзету. Бот арқылы тәулік бойы жазылу.','Versatile hairstylist: haircuts, complex coloring, makeup and brow shaping. Book 24/7 with our bot.'],
+'Записаться онлайн':['Онлайн жазылу','Book online'],'Мои работы':['Менің жұмыстарым','My work'],
+'Вся галерея →':['Бүкіл галерея →','Full gallery →'],'Отзывы клиентов':['Клиент пікірлері','Client reviews'],
+'Отзывов пока нет. Станьте первым!':['Әзірге пікір жоқ. Алғашқы болыңыз!','No reviews yet. Be the first!'],
+'Все отзывы и написать отзыв':['Барлық пікірлер және пікір жазу','All reviews and write a review'],
+'Нажмите на фото, чтобы открыть его на весь экран.':['Фотоны толық экранға ашу үшін басыңыз.','Tap a photo to open it full screen.'],
+'Нажмите на фото, чтобы приблизить':['Үлкейту үшін фотоны басыңыз','Tap the photo to zoom in'],
+'Сложное окрашивание':['Күрделі бояу','Complex coloring'],'Профессиональный макияж':['Кәсіби макияж','Professional makeup'],
+'Коррекция бровей':['Қас түзету','Eyebrow shaping'],'Образ под ключ':['Дайын бейне','Full look'],
+'Стрижка, укладка и макияж за один визит.':['Бір келуде шаш қию, үлгілеу және макияж.','Haircut, styling and makeup in one visit.'],
+'Женская, мужская, детская. Подбор формы под лицо.':['Әйелдер, ерлер, балалар. Бет пішініне сай таңдау.','Women’s, men’s, kids’. Cut chosen to suit your face shape.'],
+'Airtouch, балаяж, блонд, шатуш, тонирование.':['Airtouch, балаяж, блонд, шатуш, тондау.','Airtouch, balayage, blonde, shatush, toning.'],
+'Дневной, вечерний, свадебный.':['Күндізгі, кешкі, үйлену тойы.','Day, evening, bridal.'],
+'Форма, окрашивание, ламинирование.':['Пішін, бояу, ламинирлеу.','Shape, tinting, lamination.'],
+'Локоны, объём, праздничная укладка.':['Бұйра, көлем, мерекелік үлгі.','Curls, volume, festive styling.'],
+'Стрижка':['Шаш қию','Haircut'],'Укладка':['Шаш үлгілеу','Styling'],
+'Шампунь для окрашенных волос':['Боялған шашқа арналған шампунь','Shampoo for colored hair'],
+'Маска-восстановление':['Қалпына келтіретін маска','Repair mask'],'Сыворотка для кончиков':['Шаш ұштарына арналған сарысу','Hair-end serum'],
+'Термозащита для укладки':['Үлгілеуге арналған термоқорғаныс','Heat protection for styling'],
+'Гель для бровей':['Қасқа арналған гель','Brow gel'],'Расчёска для волос':['Шаш тарағы','Hair brush'],
+'В корзину':['Себетке салу','Add to cart'],'Магазин салона':['Салон дүкені','Salon shop'],
+'Самовывоз в салоне. Оплата при получении.':['Салоннан алып кету. Алған кезде төлеу.','Pick-up at the salon. Pay on receipt.'],
+'Заказ отправлен мастеру':['Тапсырыс шеберге жіберілді','Order sent to the master'],
+'Свободное время:':['Бос уақыт:','Available time:'],'Выберите дату:':['Күнді таңдаңыз:','Choose a date:'],
+'Проверьте запись:':['Жазылуды тексеріңіз:','Check your booking:'],'✅ Подтвердить':['✅ Растау','✅ Confirm'],
+'↩️ Заново':['↩️ Қайтадан','↩️ Start over'],'➕ Ещё запись':['➕ Тағы жазылу','➕ Another booking'],
+'Это время занято. Выберите другое.':['Бұл уақыт бос емес. Басқасын таңдаңыз.','This time is taken. Choose another.'],
+'Свободных дат нет. Мастер скоро обновит график.':['Бос күн жоқ. Шебер жақында кестені жаңартады.','No free dates. The master will update the schedule soon.'],
+'Мастер получил уведомление. Если время изменится, мастер позвонит вам.':['Шебер хабарлама алды. Уақыт өзгерсе, шебер сізге қоңырау шалады.','The master has been notified. If the time changes, the master will call you.'],
+'Я могу записать вас на услугу, назвать цены, график и бонусы. Выберите кнопку или напишите вопрос.':['Мен сізді қызметке жаза аламын, бағаларды, кестені және бонустарды айтамын. Батырманы таңдаңыз немесе сұрағыңызды жазыңыз.','I can book a service, tell you prices, the schedule and bonuses. Choose a button or type your question.'],
+'Для отмены или переноса напишите мастеру: меню → Связаться с мастером.':['Бас тарту немесе көшіру үшін шеберге жазыңыз: мәзір → Шебермен байланысу.','To cancel or reschedule, message the master: menu → Contact the master.'],
+'Адрес уточните у мастера в разделе «Связаться».':['Мекенжайды шеберден «Байланысу» бөлімінде нақтылаңыз.','Ask the master for the address in the “Contact” section.'],
+'Товары салона со скидками — во вкладке «Магазин».':['Салон тауарлары жеңілдікпен — «Дүкен» қойындысында.','Salon products at a discount are in the “Shop” tab.'],
+'Напишите вопрос или услугу…':['Сұрағыңызды немесе қызметті жазыңыз…','Type a question or service…'],
+'Вход / регистрация':['Кіру / тіркелу','Sign in / register'],'Ваше имя':['Атыңыз','Your name'],
+'Номер нужен мастеру, чтобы уточнять время записи по звонку или в WhatsApp.':['Шебер жазылу уақытын қоңырау немесе WhatsApp арқылы нақтылау үшін нөмір қажет.','The master needs your number to confirm the booking time by call or WhatsApp.'],
+'Подтверждение':['Растау','Verification'],
+'1. Запросите 4-значный код у мастера в WhatsApp.':['1. Шеберден WhatsApp арқылы 4 таңбалы код сұраңыз.','1. Request a 4-digit code from the master on WhatsApp.'],
+'2. Введите код. Он действует 3 минуты.':['2. Кодты енгізіңіз. Ол 3 минут жарамды.','2. Enter the code. It is valid for 3 minutes.'],
+'💬 Запросить код в WhatsApp':['💬 WhatsApp-та код сұрау','💬 Request code on WhatsApp'],
+'Не открылось? ':['Ашылмады ма? ','Didn’t open? '],'Открыть вручную':['Қолмен ашу','Open manually'],
+'Мастер ещё не указал номер WhatsApp. Позвоните мастеру.':['Шебер WhatsApp нөмірін әлі көрсетпеді. Шеберге қоңырау шалыңыз.','The master hasn’t set a WhatsApp number yet. Please call the master.'],
+'Неверный или просроченный код':['Код қате немесе мерзімі өткен','Invalid or expired code'],
+'Добро пожаловать!':['Қош келдіңіз!','Welcome!'],
+'Укажите имя и 10 цифр номера после +7':['Атыңызды және +7-ден кейін 10 саннан тұратын нөмірді көрсетіңіз','Enter your name and the 10 digits after +7'],
+'🔐 Просит код для входа в приложение':['🔐 Қосымшаға кіру үшін код сұрайды','🔐 Requests a login code'],
+'Здравствуйте! Прошу код для входа в Beauty salon Razzi. Телефон: +':['Сәлеметсіз бе! Beauty salon Razzi қосымшасына кіру үшін код сұраймын. Телефон: +','Hello! Please send me the login code for Beauty salon Razzi. Phone: +'],
+'Мои записи':['Менің жазылуларым','My bookings'],'Записей пока нет.':['Жазылу әзірге жоқ.','No bookings yet.'],
+'🎁 Бонусная программа':['🎁 Бонус бағдарламасы','🎁 Bonus program'],'Визитов: ':['Келу саны: ','Visits: '],'визитов: ':['келу: ','visits: '],
+'Опубликованных отзывов пока нет.':['Жарияланған пікір әзірге жоқ.','No published reviews yet.'],
+'Оставить отзыв':['Пікір қалдыру','Leave a review'],'Как всё прошло?':['Қалай өтті?','How did it go?'],
+'📷 Фото причёски':['📷 Шаш үлгісінің фотосы','📷 Hairstyle photo'],
+'Разрешаю опубликовать отзыв и фото в приложении':['Пікір мен фотоның қосымшада жариялануына рұқсат беремін','I allow publishing my review and photo in the app'],
+'Напишите отзыв':['Пікір жазыңыз','Please write a review'],
+'Спасибо! Отзыв отправлен мастеру':['Рахмет! Пікір шеберге жіберілді','Thank you! Your review was sent to the master'],
+'«Beauty salon Razzi» — приложение салона мастера Разии. Стрижки, сложные окрашивания, профессиональный макияж и коррекция бровей.':['«Beauty salon Razzi» — шебер Разияның салон қосымшасы. Шаш қию, күрделі бояу, кәсіби макияж және қас түзету.','“Beauty salon Razzi” is the app of master Razia’s salon. Haircuts, complex coloring, professional makeup and eyebrow shaping.'],
+'✅ Онлайн-запись через бота, даже без интернета':['✅ Бот арқылы онлайн жазылу, интернетсіз де','✅ Online booking via bot, even offline'],
+'✅ Вход по коду из WhatsApp':['✅ WhatsApp коды арқылы кіру','✅ Sign-in with a WhatsApp code'],
+'✅ Бонусы за 5 визитов':['✅ 5 келу үшін бонустар','✅ Bonuses for 5 visits'],
+'✅ Магазин товаров салона со скидками':['✅ Жеңілдікті салон тауарлары дүкені','✅ Salon product shop with discounts'],
+'✅ Отзывы с фото':['✅ Фотомен пікірлер','✅ Reviews with photos'],
+'✅ Облачная синхронизация клиента и мастера':['✅ Клиент пен шебердің бұлттық синхрондауы','✅ Cloud sync between client and master'],
+'Версия 2.0 · TikTok @razzi.hair':['Нұсқа 2.0 · TikTok @razzi.hair','Version 2.0 · TikTok @razzi.hair'],
+'📞 Позвонить':['📞 Қоңырау шалу','📞 Call'],'Мастер ещё не указал номер.':['Шебер нөмірді әлі көрсетпеді.','The master hasn’t set a number yet.'],
+'Написать сообщение':['Хабарлама жазу','Write a message'],'Ваш вопрос мастеру':['Шеберге сұрағыңыз','Your question for the master'],
+'Имя и телефон':['Атыңыз бен телефоныңыз','Name and phone'],'Сообщение отправлено':['Хабарлама жіберілді','Message sent'],
+'Кабинет мастера':['Шебер кабинеті','Master cabinet'],'Вход мастера':['Шебер кіруі','Master login'],
+'Введите пароль.':['Құпиясөзді енгізіңіз.','Enter the password.'],'Неверный пароль':['Құпиясөз қате','Wrong password'],
+'Логин (имя админа или номер WhatsApp)':['Логин (әкімші аты немесе WhatsApp нөмірі)','Login (admin name or WhatsApp number)'],
+'Неверный логин или пароль':['Логин немесе құпиясөз қате','Wrong login or password'],
+'🔔 Новых: ':['🔔 Жаңа: ','🔔 New: '],' · Сегодня: ':[' · Бүгін: ',' · Today: '],'Новых: ':['Жаңа: ','New: '],
+'Заказы товаров':['Тауар тапсырыстары','Product orders'],'✔ Пришёл':['✔ Келді','✔ Came'],
+'Месяц (28 дней)':['Ай (28 күн)','Month (28 days)'],
+'Нажмите день: выходной или рабочий. Рамка: есть записи.':['Күнді басыңыз: демалыс немесе жұмыс күні. Жиек: жазылулар бар.','Tap a day to switch day off / working. Outlined: has bookings.'],
+'Клиенты (':['Клиенттер (','Clients ('],
+'Код входа: нажмите «Код» и отправьте клиенту в WhatsApp. Код действует 3 минуты.':['Кіру коды: «Код» түймесін басып, клиентке WhatsApp арқылы жіберіңіз. Код 3 минут жарамды.','Login code: tap “Code” and send it to the client on WhatsApp. The code is valid for 3 minutes.'],
+'🔑 Код для ':['🔑 Клиент коды · ','🔑 Code for '],'🔑 Код':['🔑 Код','🔑 Code'],'Удалить клиента?':['Клиентті жою керек пе?','Delete this client?'],
+'Сообщений нет.':['Хабарлама жоқ.','No messages.'],'Отзывов нет.':['Пікір жоқ.','No reviews.'],
+'⛔ Публикация не разрешена':['⛔ Жариялауға рұқсат жоқ','⛔ Publishing not allowed'],'✅ Клиент разрешил публикацию':['✅ Клиент жариялауға рұқсат берді','✅ Client allowed publishing'],
+'🔔 Новое: ':['🔔 Жаңа: ','🔔 New: '],'🔔 Новая запись: ':['🔔 Жаңа жазылу: ','🔔 New booking: '],'🔔 Регистрация: ':['🔔 Тіркелу: ','🔔 Registration: '],
+'Генератор 2FA':['2FA генераторы','2FA generator'],'Коды входа для клиентов':['Клиенттерге арналған кіру кодтары','Login codes for clients'],
+'Фото, цены и скидки':['Фото, баға және жеңілдіктер','Photos, prices and discounts'],'Фото для главного экрана':['Басты экранға арналған фото','Photos for the home screen'],
+'Настройки мастера':['Шебер баптаулары','Master settings'],
+'Контакты, бонусы, имя и пароль админа, облако':['Байланыс, бонустар, әкімші аты мен құпиясөзі, бұлт','Contacts, bonuses, admin name and password, cloud'],
+'Выйти из кабинета':['Кабинеттен шығу','Exit the cabinet'],
+'Код клиента действует 3 минуты и меняется сам. Отправьте его клиенту в WhatsApp.':['Клиент коды 3 минут жарамды және өзі ауысады. Оны клиентке WhatsApp арқылы жіберіңіз.','The client code is valid for 3 minutes and changes automatically. Send it to the client on WhatsApp.'],
+'Клиентов пока нет.':['Клиент әзірге жоқ.','No clients yet.'],'Скидка %':['Жеңілдік %','Discount %'],
+'Удалить товар?':['Тауарды жою керек пе?','Delete this product?'],'Добавить товар':['Тауар қосу','Add product'],
+'Название и цена':['Атауы және бағасы','Name and price'],'Скидка на товар, %':['Тауарға жеңілдік, %','Product discount, %'],
+'Цена, ₸':['Бағасы, ₸','Price, ₸'],'Название':['Атауы','Name'],
+'Одна работа — до 6 фото с разных ракурсов. Ваши работы идут первыми на главном экране.':['Бір жұмыс — әртүрлі қырынан түскен 6 фотоға дейін. Сіздің жұмыстарыңыз басты экранда бірінші тұрады.','One work — up to 6 photos from different angles. Your works appear first on the home screen.'],
+'Добавить работу':['Жұмыс қосу','Add a work'],'Удалить работу?':['Жұмысты жою керек пе?','Delete this work?'],
+'Своих работ пока нет. Сейчас показаны фото из ваших видео.':['Өз жұмыстарыңыз әзірге жоқ. Қазір бейнелеріңізден алынған фотолар көрсетілген.','No works of your own yet. Photos from your videos are shown for now.'],
+'Загрузка…':['Жүктелуде…','Uploading…'],
+'WhatsApp (цифры с кодом страны, без +)':['WhatsApp (ел кодымен сандар, + белгісіз)','WhatsApp (digits with country code, no +)'],
+'Адрес салона':['Салон мекенжайы','Salon address'],'Бонус: визитов до скидки':['Бонус: жеңілдікке дейінгі келу саны','Bonus: visits until discount'],
+'Размер скидки, %':['Жеңілдік мөлшері, %','Discount size, %'],'Сохранено':['Сақталды','Saved'],
+'Админ мастера':['Шебер әкімшісі','Master admin'],'Имя админа':['Әкімші аты','Admin name'],'Новое имя':['Жаңа аты','New name'],
+'Текущий пароль неверный':['Ағымдағы құпиясөз қате','Current password is wrong'],'Текущий пароль':['Ағымдағы құпиясөз','Current password'],
+'Новый пароль (минимум 6 символов)':['Жаңа құпиясөз (кемінде 6 таңба)','New password (at least 6 characters)'],
+'Сохранить имя и пароль':['Атын және құпиясөзді сақтау','Save name and password'],
+'Имя обязательно. Пароль: минимум 6 символов':['Аты міндетті. Құпиясөз: кемінде 6 таңба','Name is required. Password: at least 6 characters'],
+'Имя и пароль админа сохранены':['Әкімші аты мен құпиясөзі сақталды','Admin name and password saved'],
+'Подключено ☁️':['Қосылған ☁️','Connected ☁️'],'Не подключено 💾 (данные только на этом устройстве)':['Қосылмаған 💾 (деректер тек осы құрылғыда)','Not connected 💾 (data stays on this device only)'],
+'Синхронизировать':['Синхрондау','Sync now'],'Проверить облако':['Бұлтты тексеру','Check cloud'],'Синхронизация…':['Синхрондау…','Syncing…'],
+'Облако не подключено: файл config.js пуст.':['Бұлт қосылмаған: config.js файлы бос.','Cloud is not connected: config.js is empty.'],
+'Нет связи с ':['Байланыс жоқ: ','No connection to '],'⚠️ Облако: ':['⚠️ Бұлт: ','⚠️ Cloud: '],'Чтение: ':['Оқу: ','Read: '],'Запись: ':['Жазу: ','Write: '],
+'Текст скопирован. Вставьте его в чат WhatsApp.':['Мәтін көшірілді. Оны WhatsApp чатына қойыңыз.','Text copied. Paste it into the WhatsApp chat.'],
+' · скидка ':[' · жеңілдік ',' · discount ']
+};
+const RX=[
+[/Восстановить скрытые \((\d+)\)/g,(i,n)=>i?`Restore hidden (${n})`:`Жасырылғандарды қалпына келтіру (${n})`],
+[/Ещё (\d+) до скидки (\d+)%/g,(i,n,p)=>i?`${n} more until ${p}% discount`:`${p}% жеңілдікке дейін тағы ${n}`],
+[/Ваша скидка (\d+)% активна!/g,(i,p)=>i?`Your ${p}% discount is active!`:`Сіздің ${p}% жеңілдігіңіз белсенді!`],
+[/Ваша скидка: (\d+)%/g,(i,p)=>i?`Your discount: ${p}%`:`Сіздің жеңілдігіңіз: ${p}%`],
+[/От (\d+) визитов(?: —)? скидка (\d+)% на услуги и товары\./g,(i,n,p)=>i?`From ${n} visits: ${p}% off services and products.`:`${n} келуден бастап қызметтер мен тауарларға ${p}% жеңілдік.`],
+[/Работа добавлена: (\d+) фото/g,(i,n)=>i?`Work added: ${n} photos`:`Жұмыс қосылды: ${n} фото`],
+[/Загрузка фото…/g,()=>0],
+[/Работа (\d+)/g,(i,n)=>i?`Work ${n}`:`Жұмыс ${n}`],
+[/(\d+) из (\d+)/g,(i,a,b)=>i?`${a} of ${b}`:`${a} / ${b}`],
+[/ в (\d{1,2}:\d{2})/g,(i,t)=>i?` at ${t}`:` ${t}-де`],
+[/(\d+) шт/g,(i,n)=>i?`${n} pcs`:`${n} дана`],
+[/от ([\d\s\u00a0\u202f]+) ₸/g,(i,n)=>i?`from ${n} ₸`:`${n} ₸-ден`],
+[/Готово, (.+?)! /g,(i,n)=>i?`Done, ${n}! `:`Дайын, ${n}! `],
+[/Здравствуйте(, [^!]+)?! Я бот мастера Разии\. На какую услугу записать\?/g,(i,n)=>i?`Hello${n||''}! I’m the master’s bot. Which service would you like to book?`:`Сәлеметсіз бе${n||''}! Мен шебердің ботымын. Қай қызметке жазайын?`],
+[/(^|\n)(Пн|Вт|Ср|Чт|Пт|Сб|Вс): (выходной)?/g,(i,s,d,w)=>s+EX[d][i]+': '+(w?(i?'day off':'демалыс'):'')]
+];
+RX.splice(5,1);
+const SRE=new RegExp(Object.keys(SUB).sort((a,b)=>b.length-a.length).map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|'),'g');
+function tr(s){if(LANG==='ru'||typeof s!=='string'||!/[А-Яа-яЁё]/.test(s))return s;const i=LANG==='kk'?0:1,t=s.trim();
+ if(EX[t])return s.replace(t,EX[t][i]);
+ let o=s;for(const[re,f]of RX)o=o.replace(re,(...a)=>{const g=a.slice(1,a.findIndex(x=>typeof x==='number'));return f(i,...g)});
+ return o.replace(SRE,m=>SUB[m][i])}
+const _al=window.alert.bind(window),_cf=window.confirm.bind(window),_pr=window.prompt.bind(window);
+window.alert=m=>_al(tr(m));window.confirm=m=>_cf(tr(m));window.prompt=(m,d)=>_pr(tr(m),d);
+const trDone=new WeakMap();
+function trNode(n){const v=n.nodeValue;if(trDone.get(n)===v||!/[А-Яа-яЁё]/.test(v))return;const r=tr(v);trDone.set(n,r);if(r!==v)n.nodeValue=r}
+function trAttr(e){if(e.hasAttribute&&e.hasAttribute('placeholder')){if(!e.dataset.ph)e.dataset.ph=e.getAttribute('placeholder');e.setAttribute('placeholder',tr(e.dataset.ph))}}
+function trTree(n){if(n.nodeType===3)return trNode(n);if(n.nodeType!==1||/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.tagName))return;trAttr(n);
+ const w=document.createTreeWalker(n,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_TEXT);let x;while(x=w.nextNode()){x.nodeType===3?trNode(x):trAttr(x)}}
+new MutationObserver(ms=>{if(LANG==='ru')return;for(const m of ms){if(m.type==='characterData')trNode(m.target);else m.addedNodes.forEach(trTree)}}).observe(document.body,{childList:true,subtree:true,characterData:true});
+const LN={kk:'Қазақша',ru:'Русский',en:'English'};
+const lgChips=()=>`<div class="lgs">${Object.keys(LN).map(k=>`<button class="${LANG==k?'on':''}" onclick="setLang('${k}')">${LN[k]}</button>`).join('')}</div>`;
+function applyLang(){document.documentElement.lang=LANG;const b=$('#lgb');if(b)b.innerHTML=ico('globe',16)+'<span>'+({kk:'KZ',ru:'RU',en:'EN'})[LANG]+'</span>';const t=$('#tx');if(t){if(!t.dataset.ph)t.dataset.ph=t.getAttribute('placeholder');t.setAttribute('placeholder',tr(t.dataset.ph))}}
+function lgm(){const p=$('#lgp');if(p.style.display==='block'){p.style.display='none';return}p.innerHTML=lgChips();p.style.display='block'}
+function setLang(l){LANG=l;sv('rz_lang',l);$('#lgp').style.display='none';L=[];CH=[];lbc();dr(0);applyLang();nav();R();if(tab=='bot')botStart()}
 /* ===== ОБЛАКО: впишите данные Supabase (бесплатный тариф), см. SETUP.md ===== */
 const CLOUD=Object.assign({url:'',key:''},window.CLOUD_CFG||{});
 CLOUD.url=String(CLOUD.url||'').trim().replace(/\/rest\/v1.*$/i,'').replace(/\/+$/,'');CLOUD.key=String(CLOUD.key||'').trim();
 /* ===== ДАННЫЕ: офлайн-хранилище + очередь синхронизации ===== */
 let DB=ld('rz_db',{}),Q=ld('rz_q',[]),last=ld('rz_last',0),busy=0,mAuth=0,me=ld('rz_me',null);
 const col=n=>(DB[n]||[]).filter(x=>!x.del),getI=(n,id)=>(DB[n]||[]).find(x=>x.id==id&&!x.del);
-function put(n,it){it.u=Date.now();DB[n]=DB[n]||[];const i=DB[n].findIndex(x=>x.id==it.id);if(i<0)DB[n].push(it);else DB[n][i]=it;sv('rz_db',DB);const k=n+'/'+it.id;if(!Q.includes(k)){Q.push(k);sv('rz_q',Q)}sync()}
+function saveDB(){try{localStorage.setItem('rz_db',JSON.stringify(DB))}catch(e){try{const c={};for(const k in DB)c[k]=DB[k].map(it=>(it.im&&it.im.length)?{...it,im:Array.isArray(it.im)?[]:'',u:0}:it);localStorage.setItem('rz_db',JSON.stringify(c));if(!saveDB.w){saveDB.w=1;setTimeout(()=>toast('Память устройства заполнена. Подключите облако, чтобы фото не терялись.'),300)}}catch(x){}}}
+function put(n,it){it.u=Date.now();DB[n]=DB[n]||[];const i=DB[n].findIndex(x=>x.id==it.id);if(i<0)DB[n].push(it);else DB[n][i]=it;saveDB();const k=n+'/'+it.id;if(!Q.includes(k)){Q.push(k);sv('rz_q',Q)}sync()}
 const rm=(n,id)=>{const it=(DB[n]||[]).find(x=>x.id==id);if(it){it.del=1;put(n,it)}};
 const stat=t=>{$('#st').textContent=t};
 let lastErr='';
@@ -133,14 +318,14 @@ const hdr=()=>{const H={apikey:CLOUD.key,'Content-Type':'application/json'};if(/
 const fail=async(r,w)=>{lastErr=w+' '+r.status+' '+(await r.text()).slice(0,120);throw new Error(lastErr)};
 async function sync(){if(!CLOUD.url){stat('💾');return}if(busy){sync.p=1;return}if(!navigator.onLine){stat('📴');return}busy=1;
  try{const H=hdr(),B0=CLOUD.url+'/rest/v1/rz';
-  if(Q.length){const sent=Q.slice(),rows=sent.map(k=>{const[n,id]=k.split('/');const it=(DB[n]||[]).find(x=>x.id==id);return it&&{id:k,coll:n,data:it,u:it.u}}).filter(Boolean);
-   const r=await fetch(B0+'?on_conflict=id',{method:'POST',headers:{...H,Prefer:'resolution=merge-duplicates'},body:JSON.stringify(rows)});if(!r.ok)await fail(r,'запись');Q=Q.filter(k=>!sent.includes(k));sv('rz_q',Q)}
-  let r=await fetch(B0+'?select=id,u&limit=10000',{headers:H});if(!r.ok)await fail(r,'чтение');
+  if(Q.length){const sent=Q.slice(),rows=sent.map(k=>{const[n,id]=k.split('/');const it=(DB[n]||[]).find(x=>x.id==id);return it&&it.u&&{id:k,coll:n,data:it,u:it.u}}).filter(Boolean);
+   const r=await fetch(B0+'?on_conflict=id',{method:'POST',headers:{...H,Prefer:'resolution=merge-duplicates'},body:JSON.stringify(rows)});if(!r.ok)await fail(r,'write');Q=Q.filter(k=>!sent.includes(k));sv('rz_q',Q)}
+  let r=await fetch(B0+'?select=id,u&limit=10000',{headers:H});if(!r.ok)await fail(r,'read');
   const need=(await r.json()).filter(w=>{const[n,id]=w.id.split('/');const it=(DB[n]||[]).find(x=>x.id==id);return !it||it.u<w.u});let ch=0;
-  for(let i=0;i<need.length;i+=20){r=await fetch(B0+'?select=*&id=in.('+encodeURIComponent(need.slice(i,i+20).map(w=>'"'+w.id+'"').join(','))+')',{headers:H});if(!r.ok)await fail(r,'чтение');
+  for(let i=0;i<need.length;i+=20){r=await fetch(B0+'?select=*&id=in.('+encodeURIComponent(need.slice(i,i+20).map(w=>'"'+w.id+'"').join(','))+')',{headers:H});if(!r.ok)await fail(r,'read');
    (await r.json()).forEach(w=>{const n=w.coll,d=w.data;DB[n]=DB[n]||[];const j=DB[n].findIndex(x=>x.id==d.id);
     if(j<0||DB[n][j].u<d.u){if(j<0)DB[n].push(d);else DB[n][j]=d;ch=1;if(j<0&&d.nw&&mAuth)toast('🔔 Новое: '+(d.text||d.svc||'заказ'))}})}
-  if(ch){sv('rz_db',DB);if(!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){nav();R()}}
+  if(ch){saveDB();if(!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){nav();R()}}
   lastErr='';stat('☁️');if(Q.length)setTimeout(sync,300)}catch(e){stat(navigator.onLine?'⚠️':'📴');if(mAuth&&lastErr&&sync.e!==lastErr){sync.e=lastErr;toast('⚠️ Облако: '+lastErr)}}busy=0;if(sync.p){sync.p=0;setTimeout(sync,100)}}
 let ws,wst;
 function rt(){if(!CLOUD.url||(ws&&ws.readyState<2))return;try{ws=new WebSocket(CLOUD.url.replace(/^http/,'ws')+'/realtime/v1/websocket?apikey='+encodeURIComponent(CLOUD.key)+'&vsn=1.0.0');
@@ -156,7 +341,7 @@ const DN=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
 const CF=()=>getI('C','main')||{id:'main',wa:'77757718437',addr:'Алматы',after:5,pct:10,pin:''};
 const setCF=o=>put('C',{...CF(),...o});
 const SC=()=>getI('S','main')||{id:'main',W:DN.map((_,i)=>({on:i<6?1:0,f:'10:00',t:'19:00'})),X:{}};
-const curU=()=>me&&me.exp>Date.now()?getI('U',me.uid):null;
+const curU=()=>me&&me.exp>Date.now()?(getI('U',me.uid)||me.u||null):null;
 const vis=uid=>col('B').filter(b=>b.uid==uid&&b.st=='done').length;
 const loy=uid=>vis(uid)>=CF().after?+CF().pct:0;
 const sha=async s=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode('rz'+s)))].map(b=>p2(b.toString(16))).join('');
@@ -164,7 +349,7 @@ async function totp(sec,off=0){const k=await crypto.subtle.importKey('raw',new T
  const b=new ArrayBuffer(8);new DataView(b).setUint32(4,Math.floor(Date.now()/180000)+off);const h=new Uint8Array(await crypto.subtle.sign('HMAC',k,b)),o=h[19]&15;
  return String((((h[o]&127)<<24)|(h[o+1]<<16)|(h[o+2]<<8)|h[o+3])%10000).padStart(4,'0')}
 const rnd=()=>[...crypto.getRandomValues(new Uint8Array(16))].map(b=>p2(b.toString(16))).join('');
-const IP={"lock":"<rect width=\"18\" height=\"11\" x=\"3\" y=\"11\" rx=\"2\" ry=\"2\"/><path d=\"M7 11V7a5 5 0 0 1 10 0v4\"/>","key":"<circle cx=\"7.5\" cy=\"15.5\" r=\"5.5\"/><path d=\"m21 2-9.6 9.6\"/><path d=\"m15.5 7.5 3 3L22 7l-3-3\"/>","chev":"<path d=\"m9 18 6-6-6-6\"/>","back":"<path d=\"m15 18-6-6 6-6\"/>","home": "<path d=\"M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8\"/><path d=\"M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"/>", "cal": "<path d=\"M8 2v4\"/><path d=\"M16 2v4\"/><rect width=\"18\" height=\"18\" x=\"3\" y=\"4\" rx=\"2\"/><path d=\"M3 10h18\"/><path d=\"m9 16 2 2 4-4\"/>", "cal2": "<path d=\"M8 2v4\"/><path d=\"M16 2v4\"/><rect width=\"18\" height=\"18\" x=\"3\" y=\"4\" rx=\"2\"/><path d=\"M3 10h18\"/><path d=\"M8 14h.01\"/><path d=\"M12 14h.01\"/><path d=\"M16 14h.01\"/><path d=\"M8 18h.01\"/><path d=\"M12 18h.01\"/>", "bag": "<path d=\"M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z\"/><path d=\"M3 6h18\"/><path d=\"M16 10a4 4 0 0 1-8 0\"/>", "user": "<path d=\"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2\"/><circle cx=\"12\" cy=\"7\" r=\"4\"/>", "users": "<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/><path d=\"M22 21v-2a4 4 0 0 0-3-3.87\"/><path d=\"M16 3.13a4 4 0 0 1 0 7.75\"/>", "list": "<rect width=\"8\" height=\"4\" x=\"8\" y=\"2\" rx=\"1\" ry=\"1\"/><path d=\"M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2\"/><path d=\"M12 11h4\"/><path d=\"M12 16h4\"/><path d=\"M8 11h.01\"/><path d=\"M8 16h.01\"/>", "mail": "<rect width=\"20\" height=\"16\" x=\"2\" y=\"4\" rx=\"2\"/><path d=\"m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7\"/>", "sl": "<line x1=\"21\" x2=\"14\" y1=\"4\" y2=\"4\"/><line x1=\"10\" x2=\"3\" y1=\"4\" y2=\"4\"/><line x1=\"21\" x2=\"12\" y1=\"12\" y2=\"12\"/><line x1=\"8\" x2=\"3\" y1=\"12\" y2=\"12\"/><line x1=\"21\" x2=\"16\" y1=\"20\" y2=\"20\"/><line x1=\"12\" x2=\"3\" y1=\"20\" y2=\"20\"/><line x1=\"14\" x2=\"14\" y1=\"2\" y2=\"6\"/><line x1=\"8\" x2=\"8\" y1=\"10\" y2=\"14\"/><line x1=\"16\" x2=\"16\" y1=\"18\" y2=\"22\"/>", "scissors": "<circle cx=\"6\" cy=\"6\" r=\"3\"/><path d=\"M8.12 8.12 12 12\"/><path d=\"M20 4 8.12 15.88\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><path d=\"M14.8 14.8 20 20\"/>", "palette": "<circle cx=\"13.5\" cy=\"6.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"17.5\" cy=\"10.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"8.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"6.5\" cy=\"12.5\" r=\".5\" fill=\"currentColor\"/><path d=\"M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z\"/>", "brush": "<path d=\"m9.06 11.9 8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08\"/><path d=\"M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z\"/>", "brow": "<path d=\"M3 8.5c3.5-3.4 14.5-3.4 18 0\"/><path d=\"M2.062 15.35a1 1 0 0 1 0-.7 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .7 10.75 10.75 0 0 1-19.876 0\"/><circle cx=\"12\" cy=\"15\" r=\"2.5\"/>", "wind": "<path d=\"M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2\"/><path d=\"M9.6 4.6A2 2 0 1 1 11 8H2\"/><path d=\"M12.6 19.4A2 2 0 1 0 14 16H2\"/>", "crown": "<path d=\"M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z\"/><path d=\"M5 21h14\"/>", "image": "<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\" ry=\"2\"/><circle cx=\"9\" cy=\"9\" r=\"2\"/><path d=\"m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21\"/>", "star": "<path d=\"M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z\"/>", "gift": "<rect x=\"3\" y=\"8\" width=\"18\" height=\"4\" rx=\"1\"/><path d=\"M12 8v13\"/><path d=\"M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7\"/><path d=\"M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5\"/>", "info": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 16v-4\"/><path d=\"M12 8h.01\"/>", "phone": "<path d=\"M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384\"/>", "logout": "<path d=\"m16 17 5-5-5-5\"/><path d=\"M21 12H9\"/><path d=\"M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4\"/>", "camera": "<path d=\"M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z\"/><circle cx=\"12\" cy=\"13\" r=\"3\"/>", "x": "<path d=\"M18 6 6 18\"/><path d=\"m6 6 12 12\"/>", "menu": "<line x1=\"4\" x2=\"20\" y1=\"12\" y2=\"12\"/><line x1=\"4\" x2=\"20\" y1=\"6\" y2=\"6\"/><line x1=\"4\" x2=\"20\" y1=\"18\" y2=\"18\"/>"};
+const IP={"full":"<path d=\"M8 3H5a2 2 0 0 0-2 2v3\"/><path d=\"M21 8V5a2 2 0 0 0-2-2h-3\"/><path d=\"M3 16v3a2 2 0 0 0 2 2h3\"/><path d=\"M16 21h3a2 2 0 0 0 2-2v-3\"/>","globe":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20\"/><path d=\"M2 12h20\"/>","lock":"<rect width=\"18\" height=\"11\" x=\"3\" y=\"11\" rx=\"2\" ry=\"2\"/><path d=\"M7 11V7a5 5 0 0 1 10 0v4\"/>","key":"<circle cx=\"7.5\" cy=\"15.5\" r=\"5.5\"/><path d=\"m21 2-9.6 9.6\"/><path d=\"m15.5 7.5 3 3L22 7l-3-3\"/>","chev":"<path d=\"m9 18 6-6-6-6\"/>","back":"<path d=\"m15 18-6-6 6-6\"/>","home": "<path d=\"M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8\"/><path d=\"M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"/>", "cal": "<path d=\"M8 2v4\"/><path d=\"M16 2v4\"/><rect width=\"18\" height=\"18\" x=\"3\" y=\"4\" rx=\"2\"/><path d=\"M3 10h18\"/><path d=\"m9 16 2 2 4-4\"/>", "cal2": "<path d=\"M8 2v4\"/><path d=\"M16 2v4\"/><rect width=\"18\" height=\"18\" x=\"3\" y=\"4\" rx=\"2\"/><path d=\"M3 10h18\"/><path d=\"M8 14h.01\"/><path d=\"M12 14h.01\"/><path d=\"M16 14h.01\"/><path d=\"M8 18h.01\"/><path d=\"M12 18h.01\"/>", "bag": "<path d=\"M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z\"/><path d=\"M3 6h18\"/><path d=\"M16 10a4 4 0 0 1-8 0\"/>", "user": "<path d=\"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2\"/><circle cx=\"12\" cy=\"7\" r=\"4\"/>", "users": "<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/><path d=\"M22 21v-2a4 4 0 0 0-3-3.87\"/><path d=\"M16 3.13a4 4 0 0 1 0 7.75\"/>", "list": "<rect width=\"8\" height=\"4\" x=\"8\" y=\"2\" rx=\"1\" ry=\"1\"/><path d=\"M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2\"/><path d=\"M12 11h4\"/><path d=\"M12 16h4\"/><path d=\"M8 11h.01\"/><path d=\"M8 16h.01\"/>", "mail": "<rect width=\"20\" height=\"16\" x=\"2\" y=\"4\" rx=\"2\"/><path d=\"m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7\"/>", "sl": "<line x1=\"21\" x2=\"14\" y1=\"4\" y2=\"4\"/><line x1=\"10\" x2=\"3\" y1=\"4\" y2=\"4\"/><line x1=\"21\" x2=\"12\" y1=\"12\" y2=\"12\"/><line x1=\"8\" x2=\"3\" y1=\"12\" y2=\"12\"/><line x1=\"21\" x2=\"16\" y1=\"20\" y2=\"20\"/><line x1=\"12\" x2=\"3\" y1=\"20\" y2=\"20\"/><line x1=\"14\" x2=\"14\" y1=\"2\" y2=\"6\"/><line x1=\"8\" x2=\"8\" y1=\"10\" y2=\"14\"/><line x1=\"16\" x2=\"16\" y1=\"18\" y2=\"22\"/>", "scissors": "<circle cx=\"6\" cy=\"6\" r=\"3\"/><path d=\"M8.12 8.12 12 12\"/><path d=\"M20 4 8.12 15.88\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><path d=\"M14.8 14.8 20 20\"/>", "palette": "<circle cx=\"13.5\" cy=\"6.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"17.5\" cy=\"10.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"8.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"6.5\" cy=\"12.5\" r=\".5\" fill=\"currentColor\"/><path d=\"M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z\"/>", "brush": "<path d=\"m9.06 11.9 8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08\"/><path d=\"M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z\"/>", "brow": "<path d=\"M3 8.5c3.5-3.4 14.5-3.4 18 0\"/><path d=\"M2.062 15.35a1 1 0 0 1 0-.7 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .7 10.75 10.75 0 0 1-19.876 0\"/><circle cx=\"12\" cy=\"15\" r=\"2.5\"/>", "wind": "<path d=\"M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2\"/><path d=\"M9.6 4.6A2 2 0 1 1 11 8H2\"/><path d=\"M12.6 19.4A2 2 0 1 0 14 16H2\"/>", "crown": "<path d=\"M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z\"/><path d=\"M5 21h14\"/>", "image": "<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\" ry=\"2\"/><circle cx=\"9\" cy=\"9\" r=\"2\"/><path d=\"m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21\"/>", "star": "<path d=\"M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z\"/>", "gift": "<rect x=\"3\" y=\"8\" width=\"18\" height=\"4\" rx=\"1\"/><path d=\"M12 8v13\"/><path d=\"M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7\"/><path d=\"M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5\"/>", "info": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 16v-4\"/><path d=\"M12 8h.01\"/>", "phone": "<path d=\"M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384\"/>", "logout": "<path d=\"m16 17 5-5-5-5\"/><path d=\"M21 12H9\"/><path d=\"M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4\"/>", "camera": "<path d=\"M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z\"/><circle cx=\"12\" cy=\"13\" r=\"3\"/>", "x": "<path d=\"M18 6 6 18\"/><path d=\"m6 6 12 12\"/>", "menu": "<line x1=\"4\" x2=\"20\" y1=\"12\" y2=\"12\"/><line x1=\"4\" x2=\"20\" y1=\"6\" y2=\"6\"/><line x1=\"4\" x2=\"20\" y1=\"18\" y2=\"18\"/>"};
 const ico=(n,s=24)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${IP[n]}</svg>`;
 const SI={cut:'scissors',col:'palette',mu:'brush',br:'brow',st:'wind',lk:'crown'};
 const S=[
@@ -179,36 +364,40 @@ P0.forEach(([id,n,e,p])=>{if(!getI('P',id)&&!(DB.P||[]).some(x=>x.id==id)){DB.P=
 /* ===== ВРЕМЯ И СЛОТЫ ===== */
 const tm=s=>{const[a,b]=s.split(':');return +a*60+ +b},fm=n=>p2(Math.floor(n/60))+':'+p2(n%60);
 const dk=d=>d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()),dt=k=>new Date(k+'T00:00'),wd=d=>(d.getDay()+6)%7;
-const fD=k=>dt(k).toLocaleDateString('ru-RU',{weekday:'short',day:'numeric',month:'short'});
+const WKK=['жс','дс','сс','ср','бс','жм','сб'],MKK=['қаң','ақп','нау','сәу','мам','мау','шіл','там','қыр','қаз','қар','жел'];
+const fD=k=>{const d=dt(k);return LANG=='kk'?WKK[d.getDay()]+', '+d.getDate()+' '+MKK[d.getMonth()]:d.toLocaleDateString(LOC[LANG],{weekday:'short',day:'numeric',month:'short'})};
 function slots(k,dur){const s=SC(),d=dt(k),w=s.W[wd(d)];if(s.X[k]==='off'||!w||(!w.on&&s.X[k]!=='on'))return[];
  const now=new Date(),isT=dk(now)===k,nm=now.getHours()*60+now.getMinutes()+30,bs=col('B').filter(b=>b.date===k&&b.st!='x').map(b=>[tm(b.time),tm(b.time)+b.dur]),r=[];
  for(let t=tm(w.f);t+dur<=tm(w.t);t+=30){if(isT&&t<nm)continue;if(!bs.some(([a,e])=>t<e&&t+dur>a))r.push(fm(t))}return r}
-const dur=m=>m>=60?m/60+' ч':m+' мин';
+const dur=m=>{const u={ru:['ч','мин'],kk:['сағ','мин'],en:['h','min']}[LANG];return m>=60?m/60+' '+u[0]:m+' '+u[1]};
 /* ===== ИНТЕРФЕЙС ===== */
 let role=ld('rz_role','c'),tab=ld('rz_tab','home'),after=null,pre=null,CART={},RV={s:5,img:''},L=[],CH=[],stp='svc',D={},LG={};
-mAuth=(()=>{const s=ld('rz_ma',null);return s&&s.fp===(CF().ah||'d')?1:0})();
+mAuth=ld('rz_ma',null)?1:0;
 if(role=='m'&&!mAuth)role='c';
 if(role=='m'?!/^(ord|sch|cli|inb|set)$/.test(tab):!/^(home|svc|gal|shop|rev|about|contact|me)$/.test(tab)||(tab=='me'&&!curU()))tab=role=='m'?'ord':'home';
-const msave=()=>sv('rz_ma',{fp:CF().ah||'d'});
+const msave=()=>sv('rz_ma',{t:Date.now()});
 const nc=()=>col('B').filter(b=>b.nw).length+col('O').filter(o=>o.nw).length,ni=()=>col('M').filter(m=>m.nw).length+col('R').filter(r=>r.nw).length;
 function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',5000)}
 const DR=[['home','home','Главная'],['svc','scissors','Услуги'],['shop','bag','Магазин'],['gal','image','Галерея работ'],['rev','star','Отзывы'],['me','gift','Бонусы и профиль'],['about','info','О приложении'],['contact','phone','Связаться с мастером']];
 const TB={c:[['home','home','Главная'],['bot','cal','Запись'],['shop','bag','Магазин'],['me','user','Профиль']],m:[['ord','list','Заказы'],['sch','cal2','График'],['cli','users','Клиенты'],['inb','mail','Входящие'],['set','sl','Настройки']]};
 function dr(o){$('#dr').classList.toggle('on',!!o);$('#ov').style.display=o?'block':'none';
- if(o)$('#dr').innerHTML='<h3>Меню</h3>'+DR.map(([k,i,l])=>`<button onclick="dr(0);setRole('c');go('${k}')">${ico(i,20)}<span>${l}</span></button>`).join('')+(curU()?`<button onclick="out()">${ico('logout',20)}<span>Выйти</span></button>`:'')}
-function nav(){document.body.className=role=='m'?'m':'';$('#seg').innerHTML=`<button class="${role=='c'?'on':''}" onclick="setRole('c')">Клиент</button><button class="${role=='m'?'on':''}" onclick="setRole('m')">Мастер${nc()+ni()?' 🔔':''}</button>`;
+ if(o)$('#dr').innerHTML='<h3>Меню</h3>'+lgChips()+DR.map(([k,i,l])=>`<button onclick="dr(0);setRole('c');go('${k}')">${ico(i,20)}<span>${l}</span></button>`).join('')+(curU()?`<button onclick="out()">${ico('logout',20)}<span>Выйти</span></button>`:'')}
+function nav(){document.body.className=role=='m'?'mst':'';$('#seg').innerHTML=`<button class="${role=='c'?'on':''}" onclick="setRole('c')">Клиент</button><button class="${role=='m'?'on':''}" onclick="setRole('m')">Мастер${nc()+ni()?' 🔔':''}</button>`;
  $('#nav').innerHTML=(role=='m'&&!mAuth?[]:TB[role]).map(([k,i,l])=>{const n=k=='ord'?nc():k=='inb'?ni():0;return `<button class="${tab==k?'on':''}" onclick="go('${k}')"><span>${ico(i,22)}</span>${l}${n?`<b class="bd">${n}</b>`:''}</button>`}).join('');
  $('#inp').style.display=tab=='bot'?'flex':'none'}
-function go(k){if(k=='set'&&tab=='set')sub='';if(role=='c'&&(k=='bot')&&!curU()){after=k;k='login';LG={}}
+const fsReq=()=>{const e=document.documentElement;try{if(e.requestFullscreen&&!document.fullscreenElement)e.requestFullscreen().catch(()=>{})}catch(x){}};
+const fsT=()=>{try{document.fullscreenElement?document.exitFullscreen():fsReq()}catch(x){}};
+function go(k){if(k=='set')fsReq();else if(document.fullscreenElement){try{document.exitFullscreen()}catch(x){}}if(k=='set'&&tab=='set')sub='';if(role=='c'&&(k=='bot')&&!curU()){after=k;k='login';LG={}}
  if(k=='bot'&&(!L.length||pre)){botStart(pre);pre=null}tab=k;if(k!='login'&&k!='mlogin'&&k!='bot')sv('rz_tab',k);nav();R();$('#main').scrollTop=0}
 function setRole(r){role=r;if(r=='m'){tab=mAuth?'ord':'mlogin'}else if(tab.match(/^(ord|sch|cli|inb|set|mlogin)$/))tab='home';sv('rz_role',role);if(tab!='mlogin')sv('rz_tab',tab);nav();R()}
 function R(){if(tab!='set'){sub='';$('#fs').style.display='none'}({home:rHome,svc:rSvc,gal:rGal,shop:rShop,rev:rRev,me:rMe,about:rAbout,contact:rCon,bot:rBot,login:rLogin,mlogin:rML,ord:rOrd,sch:rSch,cli:rCli,inb:rInb,set:rSet})[tab]();if(tab=='set')genR()}
 const stars=n=>'★'.repeat(n)+'☆'.repeat(5-n),pubs=()=>col('R').filter(r=>r.pub);
 const svcCard=s=>`<button class="card svc" onclick="pre='${s.id}';go('bot')"><i class="si">${ico(SI[s.id],26)}</i><span><b>${s.n}</b><small>${s.d} · ${dur(s.m)}</small></span><span class="pr">${s.p}</span></button>`;
 const gim=x=>Array.isArray(x.im)?x.im:(x.im?[x.im]:[]);
-const gall=()=>col('GL').slice().sort((a,b)=>b.u-a.u).map(x=>({ph:gim(x)})).filter(w=>w.ph.length).concat(G.map(u=>({ph:[u]})));
-const gtile=(w,i)=>`<div style="background:url(${w.ph[0]}) center/cover" onclick="lbw(${i})">${w.ph.length>1?`<span class="cnt">${ico('image',12)} ${w.ph.length}</span>`:''}</div>`;
+const gall=()=>col('GL').slice().sort((a,b)=>b.u-a.u).map(x=>({ph:gim(x),gid:x.id})).filter(w=>w.ph.length).concat(G.map((u,i)=>({ph:[u],id:'b'+i})).filter(w=>!col('GH').some(x=>x.id==w.id)));
+const gtile=(w,i)=>`<div style="background:url(${w.ph[0]}) center/cover" onclick="lbw(${i})">${mAuth&&tab=='gal'?`<button class="gx" onclick="event.stopPropagation();gdelw(${i})">×</button>`:''}${w.ph.length>1?`<span class="cnt">${ico('image',12)} ${w.ph.length}</span>`:''}</div>`;
 const lbw=i=>lbo(gall()[i].ph,0);
+function gdelw(i){const w=gall()[i];if(!w||!confirm(w.gid?'Удалить работу?':'Удалить фото?'))return;if(w.gid)rm('GL',w.gid);else put('GH',{id:w.id});R()}
 function rHome(){const pb=pubs().slice().reverse(),av=pb.length?(pb.reduce((a,r)=>a+r.stars,0)/pb.length).toFixed(1):'',g=gall();
  $('#main').innerHTML=`<div class="hero"><h2>Красота с характером</h2><p>Парикмахер-универсал: стрижки, сложные окрашивания, макияж и брови. Запись 24/7 через бота.</p><button class="btn" onclick="go('bot')">Записаться онлайн</button></div>
  <h3>Мои работы</h3><div class="gal">${g.slice(0,9).map(gtile).join('')}</div><p><a href="#" onclick="go('gal');return false">Вся галерея →</a> · <a href="https://www.tiktok.com/@razzi.hair" target="_blank" rel="noopener">TikTok @razzi.hair</a></p>
@@ -217,20 +406,20 @@ function rHome(){const pb=pubs().slice().reverse(),av=pb.length?(pb.reduce((a,r)
  <button class="btn s" style="margin-top:8px" onclick="go('rev')">Все отзывы и написать отзыв</button>
  <h3>Бонус</h3><div class="card">🎁 От ${CF().after} визитов — скидка ${CF().pct}% на услуги и товары.</div>`}
 const rSvc=()=>{$('#main').innerHTML='<h3 style="margin-top:0">Услуги</h3>'+S.map(svcCard).join('')};
-const rGal=()=>{const g=gall();$('#main').innerHTML=`<h3 style="margin-top:0">Галерея работ</h3><p class="mu" style="margin-top:0">Нажмите на фото, чтобы открыть его на весь экран.</p><div class="gal">${g.map(gtile).join('')}</div>${pubs().filter(r=>r.img).map(r=>`<div class="card"><img src="${r.img}" style="width:100%;border-radius:12px" onclick="lbo(['${r.img}'],0)"><div>${esc(r.name)} ${stars(r.stars)}</div></div>`).join('')}`};
+const rGal=()=>{const g=gall();$('#main').innerHTML=`<h3 style="margin-top:0">Галерея работ</h3><p class="mu" style="margin-top:0">Нажмите на фото, чтобы открыть его на весь экран.</p><div class="gal">${g.map(gtile).join('')}</div>${pubs().filter(r=>r.img).map(r=>`<div class="card"><img src="${r.img}" style="width:100%;border-radius:12px" onclick="lbo(['${r.img}'],0)"><div>${esc(r.name)} ${stars(r.stars)}</div>${mAuth?`<button class="btn s" style="margin-top:6px" onclick="rpd('${r.id}')">Удалить фото</button>`:''}</div>`).join('')}`};
 const rvCard=r=>`<div class="card"><b>${esc(r.name)}</b> <span style="color:var(--g)">${stars(r.stars)}</span><br>${esc(r.text)}${r.img?`<img src="${r.img}" style="width:100%;border-radius:12px;margin-top:6px">`:''}</div>`;
 /* --- Вход клиента: регистрация + код 4 цифры (как в Google Authenticator) --- */
 function rLogin(){const c=CF(),u=LG.u;if(LG.m){$('#main').innerHTML=`<div class="card"><h3 style="margin-top:0">Вход мастера</h3><p>Введите пароль.</p><input class="f" id="mpw" type="password" placeholder="Пароль" autocomplete="current-password" onkeydown="if(event.key=='Enter')mpass()"><button class="btn" onclick="mpass()">Войти</button> <button class="btn s" onclick="LG={};rLogin()">Назад</button></div>`;setTimeout(()=>{const e=$('#mpw');e&&e.focus()},50);return}
  $('#main').innerHTML=!u?`<div class="card"><h3 style="margin-top:0">Вход / регистрация</h3><input class="f" id="ln" placeholder="Ваше имя" value="${esc(LG.n||'')}"><div class="pf"><span>+7</span><input id="lp" type="tel" inputmode="numeric" maxlength="18" placeholder="700 000 00 00" value="${esc((LG.p||'').replace(/^7/,''))}"></div><button class="btn" onclick="lgo()">Продолжить</button><p class="mu">Номер нужен мастеру, чтобы уточнять время записи по звонку или в WhatsApp.</p></div>`
- :`<div class="card"><h3 style="margin-top:0">Подтверждение</h3><p>1. Запросите 4-значный код у мастера в WhatsApp.</p>${c.wa?`<a class="btn" style="display:inline-block;text-decoration:none" href="whatsapp://send?phone=${c.wa}&text=${encodeURIComponent('Здравствуйте! Прошу код для входа в Beauty salon Razzi. Телефон: +'+u.phone)}" onclick="reqCode()">💬 Запросить код в WhatsApp</a><p class="mu" style="font-size:12px">Не открылось? <a target="_blank" rel="noopener" href="https://wa.me/${c.wa}?text=${encodeURIComponent('Здравствуйте! Прошу код для входа в Beauty salon Razzi. Телефон: +'+u.phone)}">Открыть вручную</a></p>`:'<p class="mu">Мастер ещё не указал номер WhatsApp. Позвоните мастеру.</p>'}<p>2. Введите код. Он действует 3 минуты.</p><input class="f" id="lc" inputmode="numeric" maxlength="4" placeholder="••••"><button class="btn" onclick="lcode()">Войти</button> <button class="btn s" onclick="LG={};rLogin()">Назад</button></div>`}
+ :`<div class="card"><h3 style="margin-top:0">Подтверждение</h3><p>1. Запросите 4-значный код у мастера в WhatsApp.</p>${c.wa?`<a class="btn" style="display:inline-block;text-decoration:none" href="whatsapp://send?phone=${c.wa}&text=${encodeURIComponent(tr('Здравствуйте! Прошу код для входа в Beauty salon Razzi. Телефон: +')+u.phone)}" onclick="reqCode()">💬 Запросить код в WhatsApp</a><p class="mu" style="font-size:12px">Не открылось? <a target="_blank" rel="noopener" href="https://wa.me/${c.wa}?text=${encodeURIComponent(tr('Здравствуйте! Прошу код для входа в Beauty salon Razzi. Телефон: +')+u.phone)}">Открыть вручную</a></p>`:'<p class="mu">Мастер ещё не указал номер WhatsApp. Позвоните мастеру.</p>'}<p>2. Введите код. Он действует 3 минуты.</p><input class="f" id="lc" inputmode="numeric" maxlength="4" placeholder="••••"><button class="btn" onclick="lcode()">Войти</button> <button class="btn s" onclick="LG={};rLogin()">Назад</button></div>`}
 const cp=t=>{try{navigator.clipboard.writeText(t);toast('Текст скопирован. Вставьте его в чат WhatsApp.')}catch(e){}};
 function reqMsg(u){const t=Date.now();if(reqMsg.t&&t-reqMsg.t<60000)return;reqMsg.t=t;put('M',{id:'m'+t,uid:u.id,name:u.name,ph:u.phone,text:'🔐 Просит код для входа в приложение',nw:1,req:1})}
-function reqCode(){reqMsg(LG.u);cp('Здравствуйте! Прошу код для входа в Beauty salon Razzi. Телефон: +'+LG.u.phone)}
+function reqCode(){reqMsg(LG.u);cp(tr('Здравствуйте! Прошу код для входа в Beauty salon Razzi. Телефон: +')+LG.u.phone)}
 async function mpass(){const pw=$('#mpw').value,c=CF(),w=dg(c.wa).replace(/^8(?=\d{10}$)/,'7');const ok=c.ah?await sha(pw)===c.ah:dg(pw)===w.slice(-7);if(!ok)return toast('Неверный пароль');LG={};mAuth=1;msave();setRole('m')}
 function lgo(){const n=$('#ln').value.trim(),d=dg($('#lp').value).replace(/^[78](?=\d{10}$)/,''),p='7'+d;if(d.length==10&&p===dg(CF().wa).replace(/^8(?=\d{10}$)/,'7')){if(mAuth){setRole('m');return}LG={m:1};return rLogin()}if(!n||d.length!=10)return toast('Укажите имя и 10 цифр номера после +7');
  let u=col('U').find(x=>x.phone==p);if(!u){u={id:'u'+Date.now(),phone:p,name:n,sec:rnd(),created:Date.now()};put('U',u);toast('🔔 Регистрация: '+n)}reqMsg(u);LG={u,n,p};rLogin()}
 async function lcode(){const v=$('#lc').value.trim(),s=LG.u.sec;let ok=0;for(const o of[0])if(await totp(s,o)===v)ok=1;if(!ok)return toast('Неверный или просроченный код');
- me={uid:LG.u.id,exp:Date.now()+3650*864e5};sv('rz_me',me);LG={};toast('Добро пожаловать!');go(after||'me');after=null}
+ me={uid:LG.u.id,exp:Date.now()+3650*864e5,u:{id:LG.u.id,name:LG.u.name,phone:LG.u.phone,sec:LG.u.sec}};sv('rz_me',me);LG={};toast('Добро пожаловать!');go(after||'me');after=null}
 function out(){me=null;sv('rz_me',null);sv('rz_tab','home');dr(0);L=[];go('home')}
 /* --- Профиль и бонусы --- */
 function rMe(){const u=curU();if(!u){after='me';LG={};tab='login';return nav(),rLogin()}const v=vis(u.id),c=CF(),pc=Math.min(100,v/c.after*100);
@@ -253,7 +442,8 @@ const lbc=()=>{$('#lb').style.display='none'};
 function order(){const u=curU();if(!u){after='shop';LG={};tab='login';nav();return rLogin()}
  const it=col('P').filter(p=>CART[p.id]).map(p=>({n:p.n,q:CART[p.id],p:price(p)[0]}));put('O',{id:'o'+Date.now(),uid:u.id,name:u.name,ph:u.phone,it,tot:it.reduce((a,x)=>a+x.q*x.p,0),nw:1});CART={};toast('Заказ отправлен мастеру');rShop()}
 /* --- Отзывы --- */
-function rRev(){$('#main').innerHTML=`<h3 style="margin-top:0">Отзывы</h3>${pubs().slice().reverse().map(rvCard).join('')||'<p class="mu">Опубликованных отзывов пока нет.</p>'}<div class="card"><b>Оставить отзыв</b><div class="st">${[1,2,3,4,5].map(i=>`<button class="${i<=RV.s?'on':''}" onclick="RV.s=${i};rRev()">★</button>`).join('')}</div><textarea class="f" id="rt" rows="3" placeholder="Как всё прошло?"></textarea><label class="btn s" style="display:inline-block">📷 Фото причёски<input type="file" accept="image/*" hidden onchange="rph(this)"></label>${RV.img?`<img src="${RV.img}" style="width:80px;border-radius:10px;vertical-align:middle">`:''}<label style="display:block;margin:8px 0"><input type="checkbox" id="rc"> Разрешаю опубликовать отзыв и фото в приложении</label><button class="btn" onclick="rvSend()">Отправить</button></div>`}
+const myRev=()=>{const u=curU();if(!u)return'';const m=col('R').filter(r=>r.uid==u.id).slice().reverse();return m.length?'<h3>Мои отзывы</h3>'+m.map(r=>`<div class="card"><div class="row"><b style="color:var(--g)">${stars(r.stars)}</b><span class="tag">${r.pub?'опубликован':'на проверке'}</span></div>${esc(r.text)}${r.img?`<img src="${r.img}" style="width:100%;border-radius:12px;margin-top:6px">`:''}<div style="margin-top:6px"><button class="btn s" onclick="rvdel('${r.id}')">Удалить</button></div></div>`).join(''):''};
+function rRev(){$('#main').innerHTML=`<h3 style="margin-top:0">Отзывы</h3>${pubs().slice().reverse().map(rvCard).join('')||'<p class="mu">Опубликованных отзывов пока нет.</p>'}${myRev()}<div class="card"><b>Оставить отзыв</b><div class="st">${[1,2,3,4,5].map(i=>`<button class="${i<=RV.s?'on':''}" onclick="RV.s=${i};rRev()">★</button>`).join('')}</div><textarea class="f" id="rt" rows="3" placeholder="Как всё прошло?"></textarea><label class="btn s" style="display:inline-block">📷 Фото причёски<input type="file" accept="image/*" hidden onchange="rph(this)"></label>${RV.img?`<img src="${RV.img}" style="width:80px;border-radius:10px;vertical-align:middle">`:''}<label style="display:block;margin:8px 0"><input type="checkbox" id="rc"> Разрешаю опубликовать отзыв и фото в приложении</label><button class="btn" onclick="rvSend()">Отправить</button></div>`}
 const img=(f,mx=720,q=.7)=>new Promise(r=>{const i=new Image,u=URL.createObjectURL(f);i.onload=()=>{const m=Math.min(1,mx/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=i.width*m;c.height=i.height*m;c.getContext('2d').drawImage(i,0,0,c.width,c.height);URL.revokeObjectURL(u);r(c.toDataURL('image/jpeg',q))};i.src=u});
 async function rph(i){if(i.files[0]){const t=$('#rt').value;RV.img=await img(i.files[0]);rRev();$('#rt').value=t}}
 function rvSend(){const u=curU();if(!u){after='rev';LG={};tab='login';nav();return rLogin()}const t=$('#rt').value.trim();if(!t)return toast('Напишите отзыв');
@@ -271,14 +461,14 @@ function pdate(k){D.d=k;say(fD(k),'u');stp='time';say('Свободное вре
 function ptime(t){D.t=t;say(t,'u');stp='ok';const u=curU(),l=loy(u.id);say(`Проверьте запись:\n${D.s.e} ${D.s.n}\n📅 ${fD(D.d)}, ${D.t}\n👤 ${u.name}, +${u.phone}${l?`\n🎁 Ваша скидка: ${l}%`:''}`);CH=[['✅ Подтвердить',book],['↩️ Заново',()=>botStart()]];rBot()}
 function book(){const u=curU();say('Подтвердить','u');if(!slots(D.d,D.s.m).includes(D.t)){say('Это время занято. Выберите другое.');CH=[['↩️ Заново',()=>botStart()]];return rBot()}
  put('B',{id:'b'+Date.now(),uid:u.id,date:D.d,time:D.t,svc:D.s.n,dur:D.s.m,name:u.name,ph:u.phone,nw:1,st:'new'});say(`Готово, ${u.name}! ${D.s.n}, ${fD(D.d)} в ${D.t}.\nМастер получил уведомление. Если время изменится, мастер позвонит вам.`);stp='done';CH=[['➕ Ещё запись',()=>botStart()]];toast('🔔 Новая запись: '+u.name);nav();rBot()}
-function faq(v){v=v.toLowerCase();const c=CF(),s=SC();
- for(const x of S)if(x.k&&new RegExp(x.k).test(v)){pick(x.id);return 1}
- if(/цен|прайс|сколько|стоим/.test(v))return S.map(x=>`${x.e} ${x.n}: ${x.p}`).join('\n');
- if(/бонус|скидк|акци/.test(v))return `🎁 От ${c.after} визитов скидка ${c.pct}% на услуги и товары.`;
- if(/адрес|где/.test(v))return c.addr?'📍 '+c.addr:'Адрес уточните у мастера в разделе «Связаться».';
- if(/врем|график|работа|открыт/.test(v))return s.W.map((w,i)=>`${DN[i]}: ${w.on?w.f+'–'+w.t:'выходной'}`).join('\n');
- if(/отмен|перенес/.test(v))return 'Для отмены или переноса напишите мастеру: меню → Связаться с мастером.';
- if(/товар|шампун|маск|купить/.test(v))return 'Товары салона со скидками — во вкладке «Магазин».';
+function faq(v){v=v.toLowerCase();const c=CF(),s=SC(),K={cut:'стриж|haircut|\\bcut\\b|шаш қи',col:'окраш|цвет|блонд|балаяж|colou?r|balayage|blond|бояу|тонир',mu:'макияж|визаж|make-?up',br:'бров|brow|қас',st:'укладк|styl|үлгіле',lk:'образ|full look|бейне'};
+ for(const x of S)if(new RegExp(K[x.id]).test(v)){pick(x.id);return 1}
+ if(/цен|прайс|сколько|стоим|price|cost|how much|баға|қанша/.test(v))return S.map(x=>`${x.e} ${x.n}: ${x.p}`).join('\n');
+ if(/бонус|скидк|акци|bonus|discount|жеңілдік/.test(v))return `🎁 От ${c.after} визитов скидка ${c.pct}% на услуги и товары.`;
+ if(/адрес|где|address|where|мекенжай|қайда/.test(v))return c.addr?'📍 '+c.addr:'Адрес уточните у мастера в разделе «Связаться».';
+ if(/врем|график|работа|открыт|hours|schedule|open|кесте|уақыт|жұмыс/.test(v))return s.W.map((w,i)=>`${DN[i]}: ${w.on?w.f+'–'+w.t:'выходной'}`).join('\n');
+ if(/отмен|перенес|cancel|resched|бас тарт/.test(v))return 'Для отмены или переноса напишите мастеру: меню → Связаться с мастером.';
+ if(/товар|шампун|маск|купить|shop|product|buy|дүкен|тауар/.test(v))return 'Товары салона со скидками — во вкладке «Магазин».';
  return 'Я могу записать вас на услугу, назвать цены, график и бонусы. Выберите кнопку или напишите вопрос.'}
 function send(){const i=$('#tx'),v=i.value.trim();if(!v)return;i.value='';say(v,'u');const r=faq(v);if(r===1)return;say(r);rBot()}
 function rBot(){const m=$('#main');m.innerHTML=`<div id="chat">${L.map(x=>`<div class="m ${x.w}">${esc(x.t)}</div>`).join('')}<div class="ch">${CH.map((c,i)=>`<button onclick="CH[${i}][1]()">${esc(c[0])}</button>`).join('')}</div></div>`;m.scrollTop=m.scrollHeight}
@@ -303,20 +493,25 @@ function tg(k){const s=SC(),b=s.W[wd(dt(k))].on;if(s.X[k]==='off')delete s.X[k];
 function rCli(){$('#main').innerHTML=`<h3 style="margin-top:0">Клиенты (${col('U').length})</h3><p class="mu">Код входа: нажмите «Код» и отправьте клиенту в WhatsApp. Код действует 3 минуты.</p>`+col('U').map(u=>`<div class="card"><div class="row"><b>${esc(u.name)}</b><span class="tag">визитов: ${vis(u.id)}</span></div><a href="tel:+${esc(u.phone)}">+${esc(u.phone)}</a> · <a target="_blank" rel="noopener" href="https://wa.me/${esc(u.phone)}">WhatsApp</a><div style="margin-top:6px"><button class="btn" onclick="kod('${u.id}')">🔑 Код</button> <button class="btn s" onclick="if(confirm('Удалить клиента?')){rm('U','${u.id}');rCli()}">Удалить</button></div></div>`).join('')}
 async function kod(id){const u=getI('U',id);toast(`🔑 Код для ${u.name}: ${await totp(u.sec)}`)}
 function rInb(){$('#main').innerHTML=`<div class="card row"><span>Новых: <b>${ni()}</b></span><button class="btn s" onclick="col('M').concat(col('R')).forEach(x=>{if(x.nw){x.nw=0;put(x.stars?'R':'M',x)}});nav();R()">Прочитано</button></div><h3>Сообщения</h3>`+(col('M').slice().reverse().map(m=>`<div class="card ${m.nw?'new':''}"><b>${esc(m.name)}</b> ${m.ph?`· <a href="https://wa.me/${esc(m.ph)}" target="_blank" rel="noopener">WhatsApp</a>`:''}<br>${esc(m.text)}<div style="margin-top:6px">${m.req?`<button class="btn" onclick="kod('${m.uid}')">🔑 Код</button> `:''}<button class="btn s" onclick="rm('M','${m.id}');rInb()">Удалить</button></div></div>`).join('')||'<p class="mu">Сообщений нет.</p>')+
- '<h3>Отзывы</h3>'+(col('R').slice().reverse().map(r=>`<div class="card ${r.nw?'new':''}">${rvCard(r).replace('class="card"','')}<div>${r.ok?'✅ Клиент разрешил публикацию':'⛔ Публикация не разрешена'}</div><div style="margin-top:6px">${r.pub?`<button class="btn s" onclick="rp('${r.id}',0)">Скрыть</button>`:r.ok?`<button class="btn" onclick="rp('${r.id}',1)">Опубликовать</button>`:''}</div></div>`).join('')||'<p class="mu">Отзывов нет.</p>')}
+ '<h3>Отзывы</h3>'+(col('R').slice().reverse().map(r=>`<div class="card ${r.nw?'new':''}">${rvCard(r).replace('class="card"','')}<div>${r.ok?'✅ Клиент разрешил публикацию':'⛔ Публикация не разрешена'}</div><div style="margin-top:6px">${r.pub?`<button class="btn s" onclick="rp('${r.id}',0)">Скрыть</button>`:r.ok?`<button class="btn" onclick="rp('${r.id}',1)">Опубликовать</button>`:''} ${r.img?`<button class="btn s" onclick="rpd('${r.id}')">Удалить фото</button> `:''}<button class="btn s" onclick="rvdel2('${r.id}')">Удалить отзыв</button></div></div>`).join('')||'<p class="mu">Отзывов нет.</p>')}
+function rpd(id){if(!confirm('Удалить фото?'))return;const r=getI('R',id);r.img='';put('R',r);R()}
+function rvdel2(id){if(confirm('Удалить отзыв?')){rm('R',id);rInb()}}
+function rvdel(id){if(confirm('Удалить отзыв?')){rm('R',id);rRev()}}
 function rp(id,v){const r=getI('R',id);r.pub=v;r.nw=0;put('R',r);nav();rInb()}
 let sub='';
 const ssub=k=>{sub=k;rSet()};
 function rSet(){const c=CF(),f=$('#fs'),keep=f._s===sub&&$('#fsc')?$('#fsc').scrollTop:0;let o,ttl='Настройки';
  if(sub=='gen'){ttl='Генератор 2FA';o=`<p class="mu" style="margin-top:0">Код клиента действует 3 минуты и меняется сам. Отправьте его клиенту в WhatsApp.</p><div class="card"><div id="gen"></div></div>`}
  else if(sub=='prod'){ttl='Товары';o=`${prodAdmin()}<div class="card"><b>Добавить товар</b><input class="f" id="an" placeholder="Название"><input class="f" id="ap" type="number" placeholder="Цена, ₸"><button class="btn" onclick="ap()">Добавить</button></div>`}
- else if(sub=='gal'){ttl='Галерея работ';const ws=col('GL').slice().sort((a,b)=>b.u-a.u);o=`<p class="mu" style="margin-top:0">Одна работа — до 6 фото с разных ракурсов. Ваши работы идут первыми на главном экране.</p><label class="btn" style="display:inline-flex;align-items:center;gap:8px;margin-bottom:10px">${ico('camera',20)} Добавить работу<input type="file" accept="image/*" multiple hidden onchange="gnew(this)"></label>${ws.map((x,k)=>{const im=gim(x);return `<div class="card"><div class="row"><b>Работа ${ws.length-k}</b><button class="btn s" onclick="if(confirm('Удалить работу?'))gdel('${x.id}')">Удалить</button></div><div class="pth">${im.map((u,i)=>`<div style="background:var(--bg) url(${u}) center/contain no-repeat" onclick="lbo(gim(getI('GL','${x.id}')),${i})"><button onclick="event.stopPropagation();gpdel('${x.id}',${i})">×</button></div>`).join('')}${im.length<6?`<label class="add">${ico('camera',22)}<small>${im.length}/6</small><input type="file" accept="image/*" multiple hidden onchange="gmore('${x.id}',this)"></label>`:''}</div></div>`}).join('')}${ws.length?'':'<p class="mu">Своих работ пока нет. Сейчас показаны фото из ваших видео.</p>'}`}
+ else if(sub=='gal'){ttl='Галерея работ';const ws=col('GL').slice().sort((a,b)=>b.u-a.u);o=`<p class="mu" style="margin-top:0">Одна работа — до 6 фото с разных ракурсов. Ваши работы идут первыми на главном экране.</p><label class="btn" style="display:inline-flex;align-items:center;gap:8px;margin-bottom:10px">${ico('camera',20)} Добавить работу<input type="file" accept="image/*" multiple hidden onchange="gnew(this)"></label>${ws.map((x,k)=>{const im=gim(x);return `<div class="card"><div class="row"><b>Работа ${ws.length-k}</b><button class="btn s" onclick="if(confirm('Удалить работу?'))gdel('${x.id}')">Удалить</button></div><div class="pth">${im.map((u,i)=>`<div style="background:var(--bg) url(${u}) center/contain no-repeat" onclick="lbo(gim(getI('GL','${x.id}')),${i})"><button onclick="event.stopPropagation();gpdel('${x.id}',${i})">×</button></div>`).join('')}${im.length<6?`<label class="add">${ico('camera',22)}<small>${im.length}/6</small><input type="file" accept="image/*" multiple hidden onchange="gmore('${x.id}',this)"></label>`:''}</div></div>`}).join('')}${ws.length?'':'<p class="mu">Своих работ пока нет. Сейчас показаны фото из ваших видео.</p>'}<h3>Фото из ваших видео</h3><div class="gal">${G.map((u,i)=>col('GH').some(x=>x.id=='b'+i)?'':`<div style="background:url(${u}) center/cover;position:relative"><button class="gx" onclick="if(confirm('Скрыть фото из галереи?'))ghide('b${i}')">×</button></div>`).join('')}</div>${col('GH').length?`<button class="btn s" style="margin-top:10px" onclick="gshow()">Восстановить скрытые (${col('GH').length})</button>`:''}`}
  else if(sub=='adm'){ttl='Настройки мастера';o=`<div class="card"><label>WhatsApp (цифры с кодом страны, без +)</label><input class="f" id="sw" value="${esc(c.wa)}" placeholder="77001234567"><label>Адрес салона</label><input class="f" id="sa" value="${esc(c.addr)}"><label>Бонус: визитов до скидки</label><input class="f" id="sn" type="number" value="${c.after}"><label>Размер скидки, %</label><input class="f" id="sp" type="number" value="${c.pct}"><button class="btn" onclick="setCF({wa:dg($('#sw').value),addr:$('#sa').value,after:+$('#sn').value||5,pct:+$('#sp').value||0});toast('Сохранено')">Сохранить</button></div>
  <h3>Админ мастера</h3><div class="card"><label>Имя админа</label><input class="f" id="adn" value="${esc(c.an||'')}" placeholder="Новое имя" autocapitalize="off"><label>Текущий пароль</label><input class="f" id="ado" type="password"><label>Новый пароль (минимум 6 символов)</label><input class="f" id="adp" type="password"><button class="btn" onclick="sadm()">Сохранить имя и пароль</button></div>
  <h3>Облако</h3><div class="card">${CLOUD.url?'Подключено ☁️':'Не подключено 💾 (данные только на этом устройстве)'}<br><button class="btn s" onclick="sync();toast('Синхронизация…')">Синхронизировать</button> <button class="btn s" onclick="chkCloud()">Проверить облако</button></div>`}
  else o=[['gen','key','Генератор 2FA','Коды входа для клиентов'],['prod','bag','Товары','Фото, цены и скидки'],['gal','image','Галерея работ','Фото для главного экрана'],['adm','user','Настройки мастера','Контакты, бонусы, имя и пароль админа, облако']].map(([k,i,t,d])=>`<button class="card svc" onclick="ssub('${k}')"><i class="si">${ico(i,24)}</i><span><b>${t}</b><small>${d}</small></span><span class="pr" style="color:var(--mu)">${ico('chev',20)}</span></button>`).join('')+`<button class="btn s" onclick="mlo()">Выйти из кабинета</button>`;
- f._s=sub;f.style.display='flex';f.innerHTML=`<div class="fsb"><button onclick="${sub?"ssub('')":"go('ord')"}">${ico(sub?'back':'x',22)}</button><b>${ttl}</b></div><div class="fsc" id="fsc">${o}</div>`;$('#fsc').scrollTop=keep;if(sub=='gen')genR()}
+ f._s=sub;f.style.display='flex';f.innerHTML=`<div class="fsb"><button onclick="${sub?"ssub('')":"go('ord')"}">${ico(sub?'back':'x',22)}</button><b>${ttl}</b><button style="margin-left:auto" onclick="fsT()">${ico('full',20)}</button></div><div class="fsc" id="fsc">${o}</div>`;$('#fsc').scrollTop=keep;if(sub=='gen')genR()}
 const gdel=id=>{rm('GL',id);rSet()};
+const ghide=id=>{put('GH',{id});rSet()};
+const gshow=()=>{col('GH').forEach(x=>rm('GH',x.id));rSet()};
 async function gnew(inp){const fs=[...inp.files].slice(0,6);if(!fs.length)return;toast('Загрузка…');const im=[];for(const f of fs)im.push(await img(f,900,.7));put('GL',{id:'g'+Date.now()+Math.random().toString(36).slice(2,6),im});toast('Работа добавлена: '+im.length+' фото');rSet()}
 async function gmore(id,inp){const x=getI('GL',id),im=gim(x).slice();for(const f of[...inp.files].slice(0,6-im.length))im.push(await img(f,900,.7));x.im=im;put('GL',x);rSet()}
 function gpdel(id,i){const x=getI('GL',id),im=gim(x).slice();im.splice(i,1);if(!im.length)return gdel(id);x.im=im;put('GL',x);rSet()}
@@ -332,7 +527,7 @@ async function sadm(){const n=$('#adn').value.trim(),o=$('#ado').value,w=$('#adp
  if(!(await chk(c.an||c.wa,o)))return toast('Текущий пароль неверный');setCF({an:n,ah:await sha(w)});msave();$('#ado').value=$('#adp').value='';toast('Имя и пароль админа сохранены')}
 const mlo=()=>{mAuth=0;sv('rz_ma',null);sv('rz_role','c');sv('rz_tab','home');setRole('c')};
 setInterval(()=>{if(tab=='set'&&mAuth)genR()},1000);
-if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+applyLang();if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 nav();R();sync();rt();setInterval(sync,10000);addEventListener('online',()=>{sync();rt()});
 
 </script></body></html>
