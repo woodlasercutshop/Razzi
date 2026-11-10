@@ -104,6 +104,7 @@ body.mst header h1{font-size:15px;overflow:hidden;text-overflow:ellipsis}
 .car{touch-action:pan-x pan-y;-webkit-overflow-scrolling:touch}
 .gal div{position:relative}.cnt{position:absolute;right:6px;bottom:6px;background:rgba(0,0,0,.6);color:#fff;border-radius:10px;padding:2px 7px;font-size:11px;display:flex;gap:4px;align-items:center}
 .pth{flex-wrap:wrap}
+.mst #seg,.mst #st{display:none}
 .mpq{font:italic 17px/1.55 Georgia,serif;margin-bottom:16px;background:linear-gradient(135deg,var(--cd),rgba(224,53,154,.08))}
 .mpf{margin:0 0 16px;background:var(--cd);border-radius:20px;overflow:hidden;box-shadow:0 6px 18px rgba(123,63,242,.15)}
 .mpf img{width:100%;display:block;max-height:440px;object-fit:cover}
@@ -291,6 +292,43 @@ const RX=[
 [/(^|\n)(Пн|Вт|Ср|Чт|Пт|Сб|Вс): (выходной)?/g,(i,s,d,w)=>s+EX[d][i]+': '+(w?(i?'day off':'демалыс'):'')]
 ];
 RX.splice(5,1);
+
+(function(){const E={
+'Разия':['Разия','Raziya'],
+'Парикмахер · стилист · визажист':['Шаштараз · стилист · визажист','Hairdresser · stylist · makeup artist'],
+'Я Разия. Делаю стрижки, сложные окрашивания, макияж и брови.':['Мен Разияммын. Шаш қиямын, күрделі бояу, макияж және қас түзетемін.','I’m Raziya. I do haircuts, complex colouring, makeup and brows.'],
+'Я люблю, когда клиент уходит с улыбкой и чувствует себя красивым.':['Клиент күліп, өзін сұлу сезініп кеткенін жақсы көремін.','I love it when a client leaves smiling and feeling beautiful.'],
+'Приходите. Мы вместе подберём ваш образ.':['Келіңіз. Бірге сіздің бейнеңізді таңдаймыз.','Come in. Together we will find your look.'],
+'Из моих рабочих дней':['Менің жұмыс күндерімнен','From my working days'],
+'Фото с работы скоро появятся.':['Жұмыстан түскен фотолар жақында пайда болады.','Photos from work will appear soon.'],
+'Записаться ко мне':['Маған жазылу','Book with me'],
+'О мастере':['Шебер туралы','About the master'],
+'Моя страница':['Менің бетім','My page'],
+'Текст о себе и фото с подписями':['Өзім туралы мәтін және жазбалы фотолар','About me and photos with captions'],
+'Услуги и цены':['Қызметтер мен бағалар','Services and prices'],
+'Редактор, цены и фото работ':['Өңдеуші, бағалар және жұмыс фотолары','Editor, prices and work photos'],
+'Это ваша личная страница. Клиент видит её в меню «О мастере».':['Бұл сіздің жеке бетіңіз. Клиент оны «Шебер туралы» мәзірінен көреді.','This is your personal page. Clients see it in the “About the master” menu.'],
+'Измените название, цену, время и описание. Добавьте до 5 фото работ. Клиент видит фото в разделе «Услуги».':['Атауын, бағасын, уақытын және сипаттамасын өзгертіңіз. 5 жұмыс фотосына дейін қосыңыз. Клиент фотоларды «Қызметтер» бөлімінде көреді.','Change the name, price, time and description. Add up to 5 work photos. Clients see the photos in the “Services” section.'],
+'Имя':['Аты','Name'],'Подзаголовок':['Тақырыпша','Subtitle'],'Текст о себе':['Өзім туралы мәтін','About me'],
+'Сохранить текст':['Мәтінді сақтау','Save text'],'Добавить фото':['Фото қосу','Add photo'],
+'Подпись к фото':['Фотоға жазба','Photo caption'],'Добавить услугу':['Қызмет қосу','Add service'],
+'Окрашивание':['Бояу','Colouring'],'Макияж':['Макияж','Makeup'],'Брови':['Қастар','Brows'],'Образ':['Бейне','Look'],
+'Время, мин (60)':['Уақыты, мин (60)','Time, min (60)'],'Цена, ₸':['Бағасы, ₸','Price, ₸'],
+'Цена, ₸ (пусто — «Цена по запросу»)':['Бағасы, ₸ (бос — «Баға сұраныс бойынша»)','Price, ₸ (empty — “Price on request”)'],
+'Цена «от»':['Баға «бастап»','Price “from”'],'Время, мин':['Уақыты, мин','Time, min'],'Описание':['Сипаттама','Description'],
+'Название':['Атауы','Name'],'Закрыть':['Жабу','Close'],'Изменить':['Өзгерту','Edit'],'Скрыть':['Жасыру','Hide'],'Показать':['Көрсету','Show'],'Удалить':['Жою','Delete'],
+'Удалить услугу?':['Қызметті жою керек пе?','Delete this service?'],'Цена по запросу':['Баға сұраныс бойынша','Price on request'],
+'Услуга добавлена':['Қызмет қосылды','Service added'],'Сохранено':['Сақталды','Saved'],'Введите название':['Атауын енгізіңіз','Enter a name'],
+'Подпись сохранена':['Жазба сақталды','Caption saved'],'Фото добавлено. Напишите подпись.':['Фото қосылды. Жазба жазыңыз.','Photo added. Write a caption.'],
+'Загрузка…':['Жүктелуде…','Loading…'],'Записаться ко мне':['Маған жазылу','Book with me'],
+'Здравствуйте! Хочу записаться в Beauty salon Razzi.':['Сәлеметсіз бе! Beauty salon Razzi-ге жазылғым келеді.','Hello! I would like to book at Beauty salon Razzi.'],
+'Здравствуйте! Это мастер Beauty salon Razzi.':['Сәлеметсіз бе! Бұл Beauty salon Razzi шебері.','Hello! This is the master from Beauty salon Razzi.'],
+'Ваш код входа в Beauty salon Razzi:':['Beauty salon Razzi қосымшасына кіру коды:','Your Beauty salon Razzi login code:'],
+'Код действует 3 минуты.':['Код 3 минут жарамды.','The code is valid for 3 minutes.']};
+for(const k in E)if(!(k in EX))EX[k]=E[k];
+Object.assign(SUB,{'скрыта от клиентов':['клиенттерден жасырылған','hidden from clients'],'Алматы':['Алматы','Almaty']});
+RX.push([/Фото с подписями \((\d+)\/12\)/g,(i,n)=>i?`Photos with captions (${n}/12)`:`Жазбалы фотолар (${n}/12)`]);
+})();
 const SRE=new RegExp(Object.keys(SUB).sort((a,b)=>b.length-a.length).map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|'),'g');
 function tr(s){if(LANG==='ru'||typeof s!=='string'||!/[А-Яа-яЁё]/.test(s))return s;const i=LANG==='kk'?0:1,t=s.trim();
  if(EX[t])return s.replace(t,EX[t][i]);
@@ -463,7 +501,7 @@ function rvSend(){const u=curU();if(!u){after='rev';LG={};tab='login';nav();retu
  put('R',{id:'r'+Date.now(),uid:u.id,name:u.name,stars:RV.s,text:t,img:RV.img,ok:$('#rc').checked?1:0,pub:0,nw:1});RV={s:5,img:''};toast('Спасибо! Отзыв отправлен мастеру');rRev()}
 /* --- О приложении, связь --- */
 const rAbout=()=>{$('#main').innerHTML=`<div class="hero"><h2>О приложении</h2><p>«Beauty salon Razzi» — приложение салона мастера Разии. Стрижки, сложные окрашивания, профессиональный макияж и коррекция бровей.</p></div><div class="card">✅ Онлайн-запись через бота, даже без интернета<br>✅ Вход по коду из WhatsApp<br>✅ Бонусы за 5 визитов<br>✅ Магазин товаров салона со скидками<br>✅ Отзывы с фото<br>✅ Облачная синхронизация клиента и мастера</div><p class="mu">Версия 2.0 · TikTok @razzi.hair</p>`};
-function rCon(){const c=CF(),u=curU();$('#main').innerHTML=`<h3 style="margin-top:0">Связаться с мастером</h3>${c.wa?`<a class="btn" style="display:inline-block;text-decoration:none" target="_blank" rel="noopener" href="https://wa.me/${c.wa}">💬 WhatsApp</a> <a class="btn s" style="display:inline-block;text-decoration:none" href="tel:+${c.wa}">📞 Позвонить</a>`:'<p class="mu">Мастер ещё не указал номер.</p>'}${c.addr?`<p>📍 ${esc(c.addr)}</p>`:''}<p><a href="https://www.tiktok.com/@razzi.hair" target="_blank" rel="noopener">TikTok @razzi.hair</a></p><div class="card"><b>Написать сообщение</b><textarea class="f" id="mt" rows="3" placeholder="Ваш вопрос мастеру"></textarea>${u?'':'<input class="f" id="mn" placeholder="Имя и телефон">'}<button class="btn" onclick="msg()">Отправить</button></div>`}
+function rCon(){const c=CF(),u=curU();$('#main').innerHTML=`<h3 style="margin-top:0">Связаться с мастером</h3>${c.wa?`<a class="btn" style="display:inline-block;text-decoration:none" target="_blank" rel="noopener" href="https://wa.me/${c.wa}?text=${encodeURIComponent(tr('Здравствуйте! Хочу записаться в Beauty salon Razzi.'))}">💬 WhatsApp</a> <a class="btn s" style="display:inline-block;text-decoration:none" href="tel:+${c.wa}">📞 Позвонить</a>`:'<p class="mu">Мастер ещё не указал номер.</p>'}${c.addr?`<p>📍 ${esc(c.addr)}</p>`:''}<p><a href="https://www.tiktok.com/@razzi.hair" target="_blank" rel="noopener">TikTok @razzi.hair</a></p><div class="card"><b>Написать сообщение</b><textarea class="f" id="mt" rows="3" placeholder="Ваш вопрос мастеру"></textarea>${u?'':'<input class="f" id="mn" placeholder="Имя и телефон">'}<button class="btn" onclick="msg()">Отправить</button></div>`}
 function msg(){const t=$('#mt').value.trim();if(!t)return;const u=curU(),w=$('#mn');put('M',{id:'m'+Date.now(),uid:u?u.id:'',name:u?u.name:(w?w.value:''),ph:u?u.phone:'',text:t,nw:1});toast('Сообщение отправлено');$('#mt').value=''}
 /* --- Бот (работает без интернета) --- */
 const say=(t,w='b')=>L.push({w,t});
@@ -503,9 +541,9 @@ function rSch(){const s=SC(),t=new Date(),c=['<div class="cal">'+DN.map(d=>`<but
  $('#main').innerHTML='<h3 style="margin-top:0">Неделя</h3>'+s.W.map((w,i)=>`<div class="card row"><b style="width:28px">${DN[i]}</b><button class="sw ${w.on?'on':''}" onclick="sw(${i})"></button><span><select onchange="swt(${i},'f',this.value)">${hrs(w.f,7,21)}</select> – <select onchange="swt(${i},'t',this.value)">${hrs(w.t,8,23)}</select></span></div>`).join('')+`<h3>Месяц (28 дней)</h3><p class="mu" style="margin:0 0 8px">Нажмите день: выходной или рабочий. Рамка: есть записи.</p>${c.join('')}</div>`}
 const sw=i=>{const s=SC();s.W[i].on^=1;put('S',s);rSch()},swt=(i,k,v)=>{const s=SC();s.W[i][k]=v;put('S',s)};
 function tg(k){const s=SC(),b=s.W[wd(dt(k))].on;if(s.X[k]==='off')delete s.X[k];else s.X[k]=b?'off':'on';put('S',s);rSch()}
-function rCli(){$('#main').innerHTML=`<h3 style="margin-top:0">Клиенты (${col('U').length})</h3><p class="mu">Код входа: нажмите «Код» и отправьте клиенту в WhatsApp. Код действует 3 минуты.</p>`+col('U').map(u=>`<div class="card"><div class="row"><b>${esc(u.name)}</b><span class="tag">визитов: ${vis(u.id)}</span></div><a href="tel:+${esc(u.phone)}">+${esc(u.phone)}</a> · <a target="_blank" rel="noopener" href="https://wa.me/${esc(u.phone)}">WhatsApp</a><div style="margin-top:6px"><button class="btn" onclick="kod('${u.id}')">🔑 Код</button> <button class="btn s" onclick="if(confirm('Удалить клиента?')){rm('U','${u.id}');rCli()}">Удалить</button></div></div>`).join('')}
-async function kod(id){const u=getI('U',id);toast(`🔑 Код для ${u.name}: ${await totp(u.sec)}`)}
-function rInb(){$('#main').innerHTML=`<div class="card row"><span>Новых: <b>${ni()}</b></span><button class="btn s" onclick="col('M').concat(col('R')).forEach(x=>{if(x.nw){x.nw=0;put(x.stars?'R':'M',x)}});nav();R()">Прочитано</button></div><h3>Сообщения</h3>`+(col('M').slice().reverse().map(m=>`<div class="card ${m.nw?'new':''}"><b>${esc(m.name)}</b> ${m.ph?`· <a href="https://wa.me/${esc(m.ph)}" target="_blank" rel="noopener">WhatsApp</a>`:''}<br>${esc(m.text)}<div style="margin-top:6px">${m.req?`<button class="btn" onclick="kod('${m.uid}')">🔑 Код</button> `:''}<button class="btn s" onclick="rm('M','${m.id}');rInb()">Удалить</button></div></div>`).join('')||'<p class="mu">Сообщений нет.</p>')+
+function rCli(){$('#main').innerHTML=`<h3 style="margin-top:0">Клиенты (${col('U').length})</h3><p class="mu">Код входа: нажмите «Код» и отправьте клиенту в WhatsApp. Код действует 3 минуты.</p>`+col('U').map(u=>`<div class="card"><div class="row"><b>${esc(u.name)}</b><span class="tag">визитов: ${vis(u.id)}</span></div><a href="tel:+${esc(u.phone)}">+${esc(u.phone)}</a> · <a target="_blank" rel="noopener" href="https://wa.me/${esc(u.phone)}?text=${encodeURIComponent(tr('Здравствуйте! Это мастер Beauty salon Razzi.'))}">WhatsApp</a><div style="margin-top:6px"><button class="btn" onclick="kod('${u.id}')">🔑 Код</button> <button class="btn s" onclick="if(confirm('Удалить клиента?')){rm('U','${u.id}');rCli()}">Удалить</button></div></div>`).join('')}
+async function kod(id){const u=getI('U',id),c=await totp(u.sec),m=tr('Ваш код входа в Beauty salon Razzi:')+' '+c+'\n'+tr('Код действует 3 минуты.');toast(`🔑 Код для ${u.name}: ${c}`);try{window.open('https://wa.me/'+dg(u.phone)+'?text='+encodeURIComponent(m),'_blank')}catch(e){}}
+function rInb(){$('#main').innerHTML=`<div class="card row"><span>Новых: <b>${ni()}</b></span><button class="btn s" onclick="col('M').concat(col('R')).forEach(x=>{if(x.nw){x.nw=0;put(x.stars?'R':'M',x)}});nav();R()">Прочитано</button></div><h3>Сообщения</h3>`+(col('M').slice().reverse().map(m=>`<div class="card ${m.nw?'new':''}"><b>${esc(m.name)}</b> ${m.ph?`· <a href="https://wa.me/${esc(m.ph)}?text=${encodeURIComponent(tr('Здравствуйте! Это мастер Beauty salon Razzi.'))}" target="_blank" rel="noopener">WhatsApp</a>`:''}<br>${esc(m.text)}<div style="margin-top:6px">${m.req?`<button class="btn" onclick="kod('${m.uid}')">🔑 Код</button> `:''}<button class="btn s" onclick="rm('M','${m.id}');rInb()">Удалить</button></div></div>`).join('')||'<p class="mu">Сообщений нет.</p>')+
  '<h3>Отзывы</h3>'+(col('R').slice().reverse().map(r=>`<div class="card ${r.nw?'new':''}">${rvCard(r).replace('class="card"','')}<div>${r.ok?'✅ Клиент разрешил публикацию':'⛔ Публикация не разрешена'}</div><div style="margin-top:6px">${r.pub?`<button class="btn s" onclick="rp('${r.id}',0)">Скрыть</button>`:r.ok?`<button class="btn" onclick="rp('${r.id}',1)">Опубликовать</button>`:''} ${r.img?`<button class="btn s" onclick="rpd('${r.id}')">Удалить фото</button> `:''}<button class="btn s" onclick="rvdel2('${r.id}')">Удалить отзыв</button></div></div>`).join('')||'<p class="mu">Отзывов нет.</p>')}
 function rpd(id){if(!confirm('Удалить фото?'))return;const r=getI('R',id);r.img='';put('R',r);R()}
 function rvdel2(id){if(confirm('Удалить отзыв?')){rm('R',id);rInb()}}
