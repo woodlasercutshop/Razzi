@@ -104,6 +104,24 @@ body.mst header h1{font-size:15px;overflow:hidden;text-overflow:ellipsis}
 .car{touch-action:pan-x pan-y;-webkit-overflow-scrolling:touch}
 .gal div{position:relative}.cnt{position:absolute;right:6px;bottom:6px;background:rgba(0,0,0,.6);color:#fff;border-radius:10px;padding:2px 7px;font-size:11px;display:flex;gap:4px;align-items:center}
 .pth{flex-wrap:wrap}
+.chat{max-height:48vh;min-height:150px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:10px;background:var(--bg);border:1px solid var(--bd);border-radius:16px;margin:10px 0}
+.bb{max-width:84%;padding:9px 12px;border-radius:16px;font-size:15px;line-height:1.4;overflow-wrap:anywhere;white-space:pre-wrap}
+.bb small{display:block;font-size:11px;opacity:.7;margin-top:3px;text-align:right}
+.bb.mine{align-self:flex-end;background:var(--gr);color:#fff;border-bottom-right-radius:4px}
+.bb.oth{align-self:flex-start;background:var(--cd);border:1px solid var(--bd);border-bottom-left-radius:4px}
+.bb img{max-width:100%;max-height:190px;border-radius:10px;display:block;margin-bottom:4px}
+.ob{align-self:center;width:94%;background:var(--cd);border:1px dashed var(--g);border-radius:14px;padding:10px 12px;font-size:14px;line-height:1.45}
+.os{display:inline-block;margin:6px 0;padding:2px 10px;border-radius:10px;background:rgba(201,161,90,.28);font-weight:700;font-size:13px}
+.cin{display:flex;gap:8px;align-items:flex-end}
+.cin textarea{flex:1;margin:0;min-height:44px;max-height:110px;resize:none}
+.cin .btn{padding:11px 16px;font-size:18px}
+.cph{display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--bd);border-radius:12px;background:var(--cd);font-size:20px;cursor:pointer;flex:none}
+.chr{display:flex;align-items:center;gap:12px;cursor:pointer}
+.av{width:42px;height:42px;border-radius:50%;background:var(--gr);color:#fff;display:grid;place-items:center;font-style:normal;font-weight:700;flex:none}
+.chm{flex:1;min-width:0}.chm small{display:block;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chr2{text-align:right;font-size:12px;color:var(--mu);display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+.ub{background:#d33;color:#fff;border-radius:10px;min-width:20px;padding:1px 6px;font-size:12px;text-align:center;font-weight:700}
+.unr header .hb{position:relative}.unr header .hb::after{content:'';position:absolute;top:3px;right:3px;width:11px;height:11px;border-radius:50%;background:#e33}
 .pr2{display:flex;gap:14px;padding:14px;align-items:stretch}
 .th2{flex:none;width:88px;height:88px;border-radius:14px;background:var(--bg) center/cover no-repeat;position:relative;display:grid;place-items:center;color:var(--p);cursor:zoom-in;border:1px solid var(--bd)}
 .th2 span{position:absolute;right:4px;bottom:4px;background:rgba(0,0,0,.65);color:#fff;border-radius:8px;font-size:12px;padding:1px 7px}
@@ -392,6 +410,26 @@ for(const k in E)if(!(k in EX))EX[k]=E[k];
 'Описание товара':['Тауар сипаттамасы','Product description']};
 for(const k in E)if(!(k in EX))EX[k]=E[k];
 })();
+
+(function(){const E={
+'Заказ':['Тапсырыс','Order'],
+'💬 Онлайн-чат с мастером':['💬 Шебермен онлайн-чат','💬 Online chat with the master'],
+'Спрашивайте об услугах, товарах и заказах. Ответ придёт сюда.':['Қызметтер, тауарлар және тапсырыстар туралы сұраңыз. Жауап осында келеді.','Ask about services, products and orders. The reply will appear here.'],
+'Напишите мастеру. Ответ придёт сюда.':['Шеберге жазыңыз. Жауап осында келеді.','Write to the master. The reply will appear here.'],
+'Сообщение мастеру':['Шеберге хабарлама','Message to the master'],'Ответ клиенту':['Клиентке жауап','Reply to the client'],
+'🛒 Прикрепить заказ':['🛒 Тапсырысты тіркеу','🛒 Attach an order'],'Магазин':['Дүкен','Shop'],
+'Корзина пуста. Добавьте товары в магазине.':['Себет бос. Дүкеннен тауар қосыңыз.','The cart is empty. Add products in the shop.'],
+'Войдите, чтобы писать мастеру и видеть свои заказы в одном чате.':['Шеберге жазу және тапсырыстарыңызды бір чатта көру үшін кіріңіз.','Sign in to write to the master and see your orders in one chat.'],
+'Чаты':['Чаттар','Chats'],'Сообщения без входа':['Кірмеген клиенттердің хабарламалары','Messages without sign-in'],
+'Чатов пока нет.':['Чаттар әзірге жоқ.','No chats yet.'],'‹ Назад':['‹ Артқа','‹ Back'],
+'Удалить переписку':['Жазбаны жою','Delete conversation'],'Удалить переписку?':['Жазбаны жою керек пе?','Delete the conversation?'],
+'Заказ в чате с мастером':['Тапсырыс шебермен чатта','Order is in the chat with the master'],
+'Отменить заказ':['Тапсырысты болдырмау','Cancel order'],'Отменить заказ?':['Тапсырысты болдырмау керек пе?','Cancel the order?'],
+'Новый':['Жаңа','New'],'Принят':['Қабылданды','Accepted'],'Готов к выдаче':['Беруге дайын','Ready for pick-up'],
+'Выдан':['Берілді','Handed over'],'Отменён':['Болдырылмады','Cancelled'],'Принять':['Қабылдау','Accept'],
+'💬 Чат':['💬 Чат','💬 Chat']};
+for(const k in E)if(!(k in EX))EX[k]=E[k];
+})();
 const SRE=new RegExp(Object.keys(SUB).sort((a,b)=>b.length-a.length).map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|'),'g');
 function tr(s){if(LANG==='ru'||typeof s!=='string'||!/[А-Яа-яЁё]/.test(s))return s;const i=LANG==='kk'?0:1,t=s.trim();
  if(EX[t])return s.replace(t,EX[t][i]);
@@ -400,7 +438,7 @@ function tr(s){if(LANG==='ru'||typeof s!=='string'||!/[А-Яа-яЁё]/.test(s))
 const _al=window.alert.bind(window),_cf=window.confirm.bind(window),_pr=window.prompt.bind(window);
 window.alert=m=>_al(tr(m));window.confirm=m=>_cf(tr(m));window.prompt=(m,d)=>_pr(tr(m),d);
 const trDone=new WeakMap();
-function trNode(n){const v=n.nodeValue;if(trDone.get(n)===v||!/[А-Яа-яЁё]/.test(v))return;const r=tr(v);trDone.set(n,r);if(r!==v)n.nodeValue=r}
+function trNode(n){const v=n.nodeValue;if(n.parentNode&&n.parentNode.closest&&n.parentNode.closest('.ut'))return;if(trDone.get(n)===v||!/[А-Яа-яЁё]/.test(v))return;const r=tr(v);trDone.set(n,r);if(r!==v)n.nodeValue=r}
 function trAttr(e){if(e.hasAttribute&&e.hasAttribute('placeholder')){if(!e.dataset.ph)e.dataset.ph=e.getAttribute('placeholder');e.setAttribute('placeholder',tr(e.dataset.ph))}}
 function trTree(n){if(n.nodeType===3)return trNode(n);if(n.nodeType!==1||/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.tagName))return;trAttr(n);
  const w=document.createTreeWalker(n,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_TEXT);let x;while(x=w.nextNode()){x.nodeType===3?trNode(x):trAttr(x)}}
@@ -432,7 +470,7 @@ async function sync(){if(!CLOUD.url){stat('💾');return}if(busy){sync.p=1;retur
   for(let i=0;i<need.length;i+=20){r=await fetch(B0+'?select=*&id=in.('+encodeURIComponent(need.slice(i,i+20).map(w=>'"'+w.id+'"').join(','))+')',{headers:H});if(!r.ok)await fail(r,'read');
    (await r.json()).forEach(w=>{const n=w.coll,d=w.data;DB[n]=DB[n]||[];const j=DB[n].findIndex(x=>x.id==d.id);
     if(j<0||DB[n][j].u<d.u){if(j<0)DB[n].push(d);else DB[n][j]=d;ch=1;if(j<0&&d.nw&&mAuth)toast('🔔 Новое: '+(d.text||d.svc||'заказ'))}})}
-  if(ch){saveDB();if(!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){nav();R()}}
+  if(ch){saveDB();if(!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){nav();R()}else if($('#chl')){nav();chatRefresh()}}
   lastErr='';stat('☁️');if(Q.length)setTimeout(sync,300)}catch(e){stat(navigator.onLine?'⚠️':'📴');if(mAuth&&lastErr&&sync.e!==lastErr){sync.e=lastErr;toast('⚠️ Облако: '+lastErr)}}busy=0;if(sync.p){sync.p=0;setTimeout(sync,100)}}
 let ws,wst;
 function rt(){if(!CLOUD.url||(ws&&ws.readyState<2))return;try{ws=new WebSocket(CLOUD.url.replace(/^http/,'ws')+'/realtime/v1/websocket?apikey='+encodeURIComponent(CLOUD.key)+'&vsn=1.0.0');
@@ -509,13 +547,13 @@ function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';cl
 const DR=[['home','home','Главная'],['svc','scissors','Услуги'],['mp','user','О мастере'],['shop','bag','Магазин'],['gal','image','Галерея работ'],['rev','star','Отзывы'],['me','gift','Бонусы и профиль'],['about','info','О приложении'],['contact','phone','Связаться с мастером']];
 const TB={c:[['home','home','Главная'],['bot','cal','Запись'],['shop','bag','Магазин'],['me','user','Профиль']],m:[['ord','list','Заказы'],['sch','cal2','График'],['cli','users','Клиенты'],['inb','mail','Входящие'],['set','sl','Настройки']]};
 function dr(o){$('#dr').classList.toggle('on',!!o);$('#ov').style.display=o?'block':'none';
- if(o)$('#dr').innerHTML='<h3>Меню</h3>'+lgChips()+DR.map(([k,i,l])=>`<button onclick="dr(0);setRole('c');go('${k}')">${ico(i,20)}<span>${l}</span></button>`).join('')+(curU()?`<button onclick="out()">${ico('logout',20)}<span>Выйти</span></button>`:'')}
-function nav(){document.body.className=role=='m'?'mst':'';$('#seg').innerHTML=`<button class="${role=='c'?'on':''}" onclick="setRole('c')">Клиент</button><button class="${role=='m'?'on':''}" onclick="setRole('m')">Мастер${nc()+ni()?' 🔔':''}</button>`;
+ if(o)$('#dr').innerHTML='<h3>Меню</h3>'+lgChips()+DR.map(([k,i,l])=>`<button onclick="dr(0);setRole('c');go('${k}')">${ico(i,20)}<span>${l}</span>${k=='contact'&&cu()?`<b class="ub">${cu()}</b>`:''}</button>`).join('')+(curU()?`<button onclick="out()">${ico('logout',20)}<span>Выйти</span></button>`:'')}
+function nav(){document.body.className=(role=='m'?'mst':'')+(role=='c'&&cu()?' unr':'');$('#seg').innerHTML=`<button class="${role=='c'?'on':''}" onclick="setRole('c')">Клиент</button><button class="${role=='m'?'on':''}" onclick="setRole('m')">Мастер${nc()+ni()?' 🔔':''}</button>`;
  $('#nav').innerHTML=(role=='m'&&!mAuth?[]:TB[role]).map(([k,i,l])=>{const n=k=='ord'?nc():k=='inb'?ni():0;return `<button class="${tab==k?'on':''}" onclick="go('${k}')"><span>${ico(i,22)}</span>${l}${n?`<b class="bd">${n}</b>`:''}</button>`}).join('');
  $('#inp').style.display=tab=='bot'?'flex':'none'}
 const fsReq=()=>{const e=document.documentElement;try{if(e.requestFullscreen&&!document.fullscreenElement)e.requestFullscreen().catch(()=>{})}catch(x){}};
 const fsT=()=>{try{document.fullscreenElement?document.exitFullscreen():fsReq()}catch(x){}};
-function go(k){if(k=='set')fsReq();else if(document.fullscreenElement){try{document.exitFullscreen()}catch(x){}}if(k=='set'&&tab=='set')sub='';if(role=='c'&&(k=='bot')&&!curU()){after=k;k='login';LG={}}
+function go(k){CT='';if(k=='set')fsReq();else if(document.fullscreenElement){try{document.exitFullscreen()}catch(x){}}if(k=='set'&&tab=='set')sub='';if(role=='c'&&(k=='bot')&&!curU()){after=k;k='login';LG={}}
  if(k=='bot'&&(!L.length||pre)){botStart(pre);pre=null}tab=k;if(k!='login'&&k!='mlogin'&&k!='bot')sv('rz_tab',k);nav();R();$('#main').scrollTop=0}
 function setRole(r){role=r;if(r=='m'){tab=mAuth?'ord':'mlogin'}else if(tab.match(/^(ord|sch|cli|inb|set|mlogin)$/))tab='home';sv('rz_role',role);if(tab!='mlogin')sv('rz_tab',tab);nav();R()}
 function R(){bS();if(tab!='set'){sub='';$('#fs').style.display='none'}({home:rHome,svc:rSvc,mp:rMP,gal:rGal,shop:rShop,rev:rRev,me:rMe,about:rAbout,contact:rCon,bot:rBot,login:rLogin,mlogin:rML,ord:rOrd,sch:rSch,cli:rCli,inb:rInb,set:rSet})[tab]();if(tab=='set')genR()}
@@ -579,7 +617,7 @@ const lbn=c=>{$('#lbt').textContent=(Math.round(c.scrollLeft/c.clientWidth)+1)+'
 const lb=(id,i)=>lbo(getI('P',id).im,i);
 const lbc=()=>{$('#lb').style.display='none'};
 function order(){const u=curU();if(!u){after='shop';LG={};tab='login';nav();return rLogin()}
- const it=col('P').filter(p=>CART[p.id]).map(p=>({n:p.n,q:CART[p.id],p:price(p)[0]}));put('O',{id:'o'+Date.now(),uid:u.id,name:u.name,ph:u.phone,it,tot:it.reduce((a,x)=>a+x.q*x.p,0),nw:1});CART={};cSave();toast('Заказ отправлен мастеру');rShop()}
+ const it=col('P').filter(p=>CART[p.id]).map(p=>({n:p.n,q:CART[p.id],p:price(p)[0]}));put('O',{id:'o'+Date.now(),uid:u.id,name:u.name,ph:u.phone,it,tot:it.reduce((a,x)=>a+x.q*x.p,0),st:'new',nw:1});CART={};cSave();nav();toast('Заказ в чате с мастером');go('contact')}
 /* --- Отзывы --- */
 const myRev=()=>{const u=curU();if(!u)return'';const m=col('R').filter(r=>r.uid==u.id).slice().reverse();return m.length?'<h3>Мои отзывы</h3>'+m.map(r=>`<div class="card"><div class="row"><b style="color:var(--g)">${stars(r.stars)}</b><span class="tag">${r.pub?'опубликован':'на проверке'}</span></div>${esc(r.text)}${r.img?`<img src="${r.img}" style="width:100%;border-radius:12px;margin-top:6px">`:''}<div style="margin-top:6px">${r.img?`<button class="btn s" onclick="rvimg('${r.id}')">Удалить фото</button> `:''}<button class="btn s" onclick="rvdel('${r.id}')">Удалить</button></div></div>`).join(''):''};
 function rRev(){$('#main').innerHTML=`<h3 style="margin-top:0">Отзывы</h3>${pubs().slice().reverse().map(rvCard).join('')||'<p class="mu">Опубликованных отзывов пока нет.</p>'}${myRev()}<div class="card"><b>Оставить отзыв</b><div class="st">${[1,2,3,4,5].map(i=>`<button class="${i<=RV.s?'on':''}" onclick="RV.s=${i};rRev()">★</button>`).join('')}</div><textarea class="f" id="rt" rows="3" placeholder="Как всё прошло?"></textarea><label class="btn s" style="display:inline-block">📷 Фото причёски<input type="file" accept="image/*" hidden onchange="rph(this)"></label>${RV.img?`<img src="${RV.img}" style="width:80px;border-radius:10px;vertical-align:middle"> <button class="btn s" onclick="rvclr()">Убрать фото</button>`:''}<label style="display:block;margin:8px 0"><input type="checkbox" id="rc"> Разрешаю опубликовать отзыв и фото в приложении</label><button class="btn" onclick="rvSend()">Отправить</button></div>`}
@@ -590,7 +628,44 @@ function rvSend(){const u=curU();if(!u){after='rev';LG={};tab='login';nav();retu
 /* --- О приложении, связь --- */
 const QR='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAi8AAAIvAQMAAACGGqkHAAAABlBMVEUXEg3///9TQLHBAAADS0lEQVR42u2dO5LbMAxA4bhIqSPkKDqafTQfxUdwuYVHiCwSH8qbKgu5eei4Wr9CM29AkCAl+hOxCBgwYMCAAQMGDBgwn8MsEjGrPuSiehf5/Xq2Dp7rn/3fzusT/Uo/2J78kh8JMGDADGbJ1FX9eqm5xlP+9IF5usWk167m3H9wR00wYErVvG6DcE71LWvGYP23SKGoCQbMMWo+mnOrmrdTG9jsd4uWT1ETDJhj1Xw5Z4lyU3MbvDyV9gQ1wYD5VK15FVdTe3kZg1SSUmuCAVOrZsS85MWefw52AF4xGDAFau72U6a2QmuejvH89je8YjBgitS89vWdFue+X7ItA+VohedeWtQEA6ZWzbwO21Zoe61pnl76tkoqPFETDJjKWvOlWROwLwOJfLfJ2fuEbmK/QU0wYOqy5qPtijTnrNY0AcPTh++XkDXBgDm81uybnMlTicKzJ9d5IWuCAXOEmmod7YvbmLsM2oTWVmizwagJBkz9hNbCpq2bmiHt8GRKS0e8YjBgitSUYVG2T2g1d+2ppidRkqImGDDltWb70+QdeLeTSxsnObewxnca9cCAKc+a0Tbb9kvEd1Isn3ZPhwMqqAkGTGnWjObYydvxbl542gKRJ9fTcP8BrxgMmAI1l7c5rHnqhacNNB8Ku9CoBwZMtZqpHS+2SGY/kzKcPPE9Fg6FgQFzgJppfSfb6ALmoBsIDJgj1OyTUy8i1Y9oil8HJG6j0A0EBsxRatrgJvtpq9m4hV/b5XuhqAkGTJWasWG5X/lxG70KVc+aExNaMGDq1bQMeBs2T95WaAdpI+3yisGAqcqaQ996X66d81ZmuhtI8/V6qAkGTFmtmU6ReK+759PB07Ofq1Z6aMGAqc6a6qcyrZfg7ldE+5mUuJRWvApFTTBgitUcbtSLz5xEz4/NYfffJkJNMGDKJrQR867/INrbdXcprdBDCwZMfa35/qWw4XIuiTWhoU2BrAkGTK2azbn8YYVUeA69efdca5I1wYA5SM0lX18w9Pxo/uYJLQdgwBytpuQe2mjUS6en9wajJhgwh9aaIW2aw6YrD8iaYMDUqhkxD3e0n8b7LeOAypwvLUFNMGBK1PzvWMCAAQMGDBgwYMCA+QzmL0+53MLw4SpKAAAAAElFTkSuQmCC';
 const rAbout=()=>{$('#main').innerHTML=`<div class="hero" style="text-align:center"><img src="${document.querySelector('.lgo').src}" alt="" style="width:96px;height:96px;border-radius:50%;box-shadow:0 0 0 2px rgba(227,190,124,.75);margin-bottom:10px"><h2>О приложении</h2><p>«Beauty salon Razzi» — приложение салона мастера Разии. Стрижки, сложные окрашивания, профессиональный макияж и коррекция бровей.</p></div><div class="card">✅ Онлайн-запись через бота, даже без интернета<br>✅ Вход по коду из WhatsApp<br>✅ Бонусы за 5 визитов<br>✅ Магазин товаров салона со скидками<br>✅ Отзывы с фото<br>✅ Облачная синхронизация клиента и мастера</div><div class="card" style="text-align:center"><b>QR-код приложения</b><p class="mu" style="margin:6px 0 12px">Наведите камеру телефона на QR-код. Приложение откроется сразу.</p><img src="${QR}" alt="QR" style="width:210px;height:210px;border-radius:14px;image-rendering:pixelated" onclick="lbo([QR],0)"><div style="margin-top:12px"><a class="btn s" download="razzi-qr.png" href="${QR}" style="text-decoration:none;display:inline-block">Скачать QR</a></div></div><p class="mu">Версия 2.0 · TikTok @razzi.hair</p>`};
-function rCon(){const c=CF(),u=curU();$('#main').innerHTML=`<h3 style="margin-top:0">Связаться с мастером</h3>${c.wa?`<a class="btn" style="display:inline-block;text-decoration:none" target="_blank" rel="noopener" href="https://wa.me/${c.wa}?text=${encodeURIComponent(tr('Здравствуйте! Хочу записаться в Beauty salon Razzi.'))}">💬 WhatsApp</a> <a class="btn s" style="display:inline-block;text-decoration:none" href="tel:+${c.wa}">📞 Позвонить</a>`:'<p class="mu">Мастер ещё не указал номер.</p>'}${c.addr?`<p>📍 ${esc(c.addr)}</p>`:''}<p><a href="https://www.tiktok.com/@razzi.hair" target="_blank" rel="noopener">TikTok @razzi.hair</a></p><div class="card"><b>Написать сообщение</b><textarea class="f" id="mt" rows="3" placeholder="Ваш вопрос мастеру"></textarea>${u?'':'<input class="f" id="mn" placeholder="Имя и телефон">'}<button class="btn" onclick="msg()">Отправить</button></div>`}
+function rCon(){const c=CF(),u=curU();
+ if(u){let ch=0;col('M').forEach(m=>{if(m.uid==u.id&&m.from=='m'&&m.cn){m.cn=0;put('M',m);ch=1}});if(ch)nav()}
+ $('#main').innerHTML=`<h3 style="margin-top:0">Связаться с мастером</h3>${c.wa?`<a class="btn" style="display:inline-block;text-decoration:none" target="_blank" rel="noopener" href="https://wa.me/${c.wa}?text=${encodeURIComponent(tr('Здравствуйте! Хочу записаться в Beauty salon Razzi.'))}">💬 WhatsApp</a> <a class="btn s" style="display:inline-block;text-decoration:none" href="tel:+${c.wa}">📞 Позвонить</a>`:'<p class="mu">Мастер ещё не указал номер.</p>'}${c.addr?`<p>📍 ${esc(c.addr)}</p>`:''}<p><a href="https://www.tiktok.com/@razzi.hair" target="_blank" rel="noopener">TikTok @razzi.hair</a></p>`+
+ (u?`<div class="card"><b>💬 Онлайн-чат с мастером</b><p class="mu" style="margin:4px 0 0">Спрашивайте об услугах, товарах и заказах. Ответ придёт сюда.</p>${chatBox(u.id,'c')}<div style="margin-top:10px"><button class="btn s" onclick="cattach()">🛒 Прикрепить заказ</button> <button class="btn s" onclick="go('shop')">Магазин</button></div></div>`
+ :`<div class="card"><b>💬 Онлайн-чат с мастером</b><p class="mu">Войдите, чтобы писать мастеру и видеть свои заказы в одном чате.</p><button class="btn" onclick="after='contact';LG={};tab='login';nav();rLogin()">Войти</button></div><div class="card"><b>Написать сообщение</b><textarea class="f" id="mt" rows="3" placeholder="Ваш вопрос мастеру"></textarea><input class="f" id="mn" placeholder="Имя и телефон"><button class="btn" onclick="msg()">Отправить</button></div>`);
+ if(u){if($('#ct'))$('#ct').value=CHD;chatRefresh(1)}}
+
+/* ===== ОНЛАЙН-ЧАТ ===== */
+let CHD='',CT='';
+const OST={new:'Новый',acc:'Принят',rdy:'Готов к выдаче',done:'Выдан',x:'Отменён'};
+const cu=()=>{const u=curU();return u?col('M').filter(m=>m.uid==u.id&&m.from=='m'&&m.cn).length:0};
+const hhmm=t=>{const d=new Date(t),n=new Date(),p=x=>String(x).padStart(2,'0');return(d.toDateString()==n.toDateString()?'':p(d.getDate())+'.'+p(d.getMonth()+1)+' ')+p(d.getHours())+':'+p(d.getMinutes())};
+const thr=uid=>{const id=x=>+String(x.id).replace(/\D/g,'')||0;return col('M').filter(m=>m.uid==uid).map(m=>({k:'m',t:id(m),x:m})).concat(col('O').filter(o=>o.uid==uid).map(o=>({k:'o',t:id(o),x:o}))).sort((a,b)=>a.t-b.t)};
+const stBtns=o=>['acc','rdy','done'].filter(x=>x!=(o.st||'new')&&(o.st||'new')!='x').map(x=>`<button class="btn s" onclick="ost('${o.id}','${x}')">${x=='acc'?'Принять':x=='rdy'?'Готов к выдаче':'Выдан'}</button>`).join(' ');
+function bub(e,v){
+ if(e.k=='o'){const o=e.x,st=o.st||'new';return `<div class="ob"><b>🛍 <span>Заказ</span> · ${money(o.tot)}</b><div class="ut">${o.it.map(i=>esc(i.n)+' × '+i.q+' — '+money(i.p*i.q)).join('<br>')}</div><div class="os">${OST[st]}</div><small style="display:block;opacity:.7">${hhmm(e.t)}</small>${v=='m'?stBtns(o):(st=='new'?`<button class="btn s" onclick="ocx('${o.id}')">Отменить заказ</button>`:'')}</div>`}
+ const m=e.x,mine=v=='m'?m.from=='m':m.from!='m';
+ return `<div class="bb ${mine?'mine':'oth'}">${m.img?`<img src="${m.img}" alt="" onclick="lbo([getI('M','${m.id}').img],0)">`:''}${m.text?`<span class="ut">${esc(m.text)}</span>`:''}${m.req&&v=='m'?`<div><button class="btn" onclick="kod('${m.uid}')">🔑 Код</button></div>`:''}<small>${hhmm(e.t)}</small></div>`}
+const chatHtml=(uid,v)=>{const t=thr(uid);return t.length?t.map(e=>bub(e,v)).join(''):'<p class="mu" style="text-align:center;margin:auto">Напишите мастеру. Ответ придёт сюда.</p>'};
+const chatBox=(uid,v)=>`<div class="chat" id="chl"></div><div class="cin"><label class="cph">📷<input type="file" accept="image/*" hidden onchange="cimg(this)"></label><textarea id="ct" class="f" rows="1" placeholder="${v=='m'?'Ответ клиенту':'Сообщение мастеру'}" oninput="CHD=this.value" onkeydown="if(event.key=='Enter'&&!event.shiftKey){event.preventDefault();csend()}"></textarea><button class="btn" onclick="csend()">➤</button></div>`;
+function chatRefresh(sc){const e=$('#chl');if(!e)return;const uid=role=='m'?CT:(curU()||{}).id;if(!uid)return;const near=e.scrollHeight-e.scrollTop-e.clientHeight<90;e.innerHTML=chatHtml(uid,role=='m'?'m':'c');if(sc||near)e.scrollTop=e.scrollHeight}
+function csend(im){const t=($('#ct')?$('#ct').value:'').trim();if(!t&&!im)return;
+ if(role=='m'){if(!mAuth||!CT)return;const u=getI('U',CT)||{};put('M',{id:'m'+Date.now(),uid:CT,name:u.name||'',ph:u.phone||'',text:t,img:im||'',from:'m',cn:1})}
+ else{const u=curU();if(!u)return;put('M',{id:'m'+Date.now(),uid:u.id,name:u.name,ph:u.phone,text:t,img:im||'',from:'c',nw:1})}
+ CHD='';if($('#ct'))$('#ct').value='';nav();chatRefresh(1)}
+async function cimg(inp){const f=inp.files[0];if(!f)return;const d=await img(f,800,.7);inp.value='';csend(d)}
+function cattach(){if(!col('P').some(p=>CART[p.id]))return toast('Корзина пуста. Добавьте товары в магазине.');order()}
+function ost(id,st){if(role!='m'||!mAuth)return;const o=getI('O',id);if(!o)return;o.st=st;o.nw=0;put('O',o);nav();R()}
+function ocx(id){const u=curU(),o=getI('O',id);if(!u||!o||o.uid!=u.id||(o.st||'new')!='new')return;if(!confirm('Отменить заказ?'))return;o.st='x';put('O',o);R()}
+function copen(uid){go('inb');CT=uid;R()}
+function cdelAll(){if(role!='m'||!mAuth||!CT)return;if(!confirm('Удалить переписку?'))return;col('M').filter(m=>m.uid==CT).forEach(m=>rm('M',m.id));CT='';nav();R()}
+function rThread(){const u=getI('U',CT)||{name:'Клиент',phone:''};
+ col('M').forEach(m=>{if(m.uid==CT&&m.nw){m.nw=0;put('M',m)}});col('O').forEach(o=>{if(o.uid==CT&&o.nw){o.nw=0;put('O',o)}});nav();
+ $('#main').innerHTML=`<div class="card row"><button class="btn s" onclick="CT='';R()">‹ Назад</button><b class="ut">${esc(u.name||'')}</b>${u.phone?`<a class="btn s" style="text-decoration:none" href="https://wa.me/${esc(u.phone)}?text=${encodeURIComponent(tr('Здравствуйте! Это мастер Beauty salon Razzi.'))}" target="_blank" rel="noopener">WhatsApp</a>`:''}</div>`+chatBox(CT,'m')+`<button class="btn s" onclick="cdelAll()">Удалить переписку</button>`;
+ if($('#ct'))$('#ct').value=CHD;chatRefresh(1)}
+function chatList(){const by={};col('M').filter(m=>m.uid).forEach(m=>{by[m.uid]=1});col('O').filter(o=>o.uid).forEach(o=>{by[o.uid]=1});
+ const rows=Object.keys(by).map(uid=>{const t=thr(uid),l=t[t.length-1],un=col('M').filter(m=>m.uid==uid&&m.from!='m'&&m.nw).length+col('O').filter(o=>o.uid==uid&&o.nw).length,u=getI('U',uid)||{name:(col('M').find(m=>m.uid==uid)||{}).name||'Клиент'};return{uid,u,l,un,t:l?l.t:0}}).sort((a,b)=>b.t-a.t);
+ return rows.length?rows.map(r=>`<div class="card chr ${r.un?'new':''}" onclick="copen('${r.uid}')"><i class="av">${esc((r.u.name||'?').charAt(0).toUpperCase())}</i><div class="chm"><b class="ut">${esc(r.u.name||'')}</b><small>${!r.l?'':r.l.k=='o'?'🛍 <span>Заказ</span> '+money(r.l.x.tot):(r.l.x.img&&!r.l.x.text?'📷':`<span class="ut">${esc((r.l.x.text||'').slice(0,60))}</span>`)}</small></div><div class="chr2">${r.l?hhmm(r.l.t):''}${r.un?`<span class="ub">${r.un}</span>`:''}</div></div>`).join(''):'<p class="mu">Чатов пока нет.</p>'}
 function msg(){const t=$('#mt').value.trim();if(!t)return;const u=curU(),w=$('#mn');put('M',{id:'m'+Date.now(),uid:u?u.id:'',name:u?u.name:(w?w.value:''),ph:u?u.phone:'',text:t,nw:1});toast('Сообщение отправлено');$('#mt').value=''}
 /* --- Бот (работает без интернета) --- */
 const say=(t,w='b')=>L.push({w,t});
@@ -619,9 +694,9 @@ async function chk(l,pw){const c=CF(),nm=x=>dg(x).replace(/^8(?=\d{10}$)/,'7');
  if(c.ah)return String(l).trim().toLowerCase()===String(c.an).toLowerCase()&&await sha(pw)===c.ah;
  const w=nm(c.wa);return w.length>=10&&nm(l)===w&&dg(pw)===w.slice(-7)}
 async function mlog(){if(!(await chk($('#ml').value,$('#mp').value)))return toast('Неверный логин или пароль');mAuth=1;msave();setRole('m')}
-function rOrd(){const td=dk(new Date()),a=col('B').filter(b=>b.st!='x').sort((x,y)=>(x.date+x.time).localeCompare(y.date+y.time)),o=col('O').sort((x,y)=>y.id.localeCompare(x.id));
+function rOrd(){const td=dk(new Date()),a=col('B').filter(b=>b.st!='x').sort((x,y)=>(x.date+x.time).localeCompare(y.date+y.time)),o=col('O').filter(x=>x.st!='done'&&x.st!='x').sort((x,y)=>y.id.localeCompare(x.id));
  $('#main').innerHTML=`<div class="card row"><span>🔔 Новых: <b>${nc()}</b> · Сегодня: <b>${a.filter(b=>b.date==td).length}</b></span><button class="btn s" onclick="col('B').concat(col('O')).forEach(x=>{if(x.nw){x.nw=0;put(x.tot!=null?'O':'B',x)}});nav();R()">Прочитано</button></div>`+
- (o.length?'<h3>Заказы товаров</h3>'+o.map(x=>`<div class="card ${x.nw?'new':''}"><b>${esc(x.name)}</b> · <a href="tel:+${esc(x.ph)}">+${esc(x.ph)}</a><br>${x.it.map(i=>esc(i.n)+' ×'+i.q).join(', ')}<br><b>${money(x.tot)}</b> <button class="btn s" onclick="rm('O','${x.id}');R()">Выдан</button></div>`).join(''):'')+
+ (o.length?'<h3>Заказы товаров</h3>'+o.map(x=>`<div class="card ${x.nw?'new':''}"><b>${esc(x.name)}</b> · <a href="tel:+${esc(x.ph)}">+${esc(x.ph)}</a><br>${x.it.map(i=>esc(i.n)+' ×'+i.q).join(', ')}<br><b>${money(x.tot)}</b> <span class="os">${OST[x.st||'new']}</span><div style="margin-top:6px">${stBtns(x)} <button class="btn s" onclick="copen('${x.uid}')">💬 Чат</button></div></div>`).join(''):'')+
  '<h3>Записи</h3>'+(a.map(b=>`<div class="card ${b.nw?'new':''}"><div class="row"><b>${fD(b.date)} · ${b.time}–${fm(tm(b.time)+b.dur)}</b>${b.st=='done'?'<span class="tag">был</span>':b.nw?'<span class="tag">новая</span>':''}</div>${esc(b.svc)}<br>👤 ${esc(b.name)} · <a href="tel:+${esc(b.ph)}">+${esc(b.ph)}</a><div style="margin-top:6px"><button class="btn s" onclick="bst('${b.id}','done')">✔ Пришёл</button> <button class="btn s" onclick="bst('${b.id}','x')">Отменить</button></div></div>`).join('')||'<p class="mu">Записей пока нет.</p>')}
 function bst(id,s){const b=getI('B',id);b.st=s;b.nw=0;put('B',b);nav();R()}
 const hrs=(v,a,b)=>{let o='';for(let h=a;h<=b;h++){const s=p2(h)+':00';o+=`<option ${s==v?'selected':''}>${s}</option>`}return o};
@@ -632,7 +707,7 @@ const sw=i=>{const s=SC();s.W[i].on^=1;put('S',s);rSch()},swt=(i,k,v)=>{const s=
 function tg(k){const s=SC(),b=s.W[wd(dt(k))].on;if(s.X[k]==='off')delete s.X[k];else s.X[k]=b?'off':'on';put('S',s);rSch()}
 function rCli(){$('#main').innerHTML=`<h3 style="margin-top:0">Клиенты (${col('U').length})</h3><p class="mu">Код входа: нажмите «Код» и отправьте клиенту в WhatsApp. Код действует 3 минуты.</p>`+col('U').map(u=>`<div class="card"><div class="row"><b>${esc(u.name)}</b><span class="tag">визитов: ${vis(u.id)}</span></div><a href="tel:+${esc(u.phone)}">+${esc(u.phone)}</a> · <a target="_blank" rel="noopener" href="https://wa.me/${esc(u.phone)}?text=${encodeURIComponent(tr('Здравствуйте! Это мастер Beauty salon Razzi.'))}">WhatsApp</a><div style="margin-top:6px"><button class="btn" onclick="kod('${u.id}')">🔑 Код</button> <button class="btn s" onclick="if(confirm('Удалить клиента?')){rm('U','${u.id}');rCli()}">Удалить</button></div></div>`).join('')}
 async function kod(id){const u=getI('U',id),c=await totp(u.sec),m=tr('Ваш код входа в Beauty salon Razzi:')+' '+c+'\n'+tr('Код действует 3 минуты.');toast(`🔑 Код для ${u.name}: ${c}`);try{window.open('https://wa.me/'+dg(u.phone)+'?text='+encodeURIComponent(m),'_blank')}catch(e){}}
-function rInb(){$('#main').innerHTML=`<div class="card row"><span>Новых: <b>${ni()}</b></span><button class="btn s" onclick="col('M').concat(col('R')).forEach(x=>{if(x.nw){x.nw=0;put(x.stars?'R':'M',x)}});nav();R()">Прочитано</button></div><h3>Сообщения</h3>`+(col('M').slice().reverse().map(m=>`<div class="card ${m.nw?'new':''}"><b>${esc(m.name)}</b> ${m.ph?`· <a href="https://wa.me/${esc(m.ph)}?text=${encodeURIComponent(tr('Здравствуйте! Это мастер Beauty salon Razzi.'))}" target="_blank" rel="noopener">WhatsApp</a>`:''}<br>${esc(m.text)}<div style="margin-top:6px">${m.req?`<button class="btn" onclick="kod('${m.uid}')">🔑 Код</button> `:''}<button class="btn s" onclick="rm('M','${m.id}');rInb()">Удалить</button></div></div>`).join('')||'<p class="mu">Сообщений нет.</p>')+
+function rInb(){if(CT)return rThread();$('#main').innerHTML=`<div class="card row"><span>Новых: <b>${ni()}</b></span><button class="btn s" onclick="col('M').concat(col('R')).forEach(x=>{if(x.nw){x.nw=0;put(x.stars?'R':'M',x)}});nav();R()">Прочитано</button></div><h3>Чаты</h3>`+chatList()+`<h3>Сообщения без входа</h3>`+(col('M').filter(m=>!m.uid).slice().reverse().map(m=>`<div class="card ${m.nw?'new':''}"><b class="ut">${esc(m.name)}</b><br><span class="ut">${esc(m.text)}</span><div style="margin-top:6px"><button class="btn s" onclick="rm('M','${m.id}');rInb()">Удалить</button></div></div>`).join('')||'<p class="mu">Сообщений нет.</p>')+
  '<h3>Отзывы</h3>'+(col('R').slice().reverse().map(r=>`<div class="card ${r.nw?'new':''}">${rvCard(r).replace('class="card"','')}<div>${r.ok?'✅ Клиент разрешил публикацию':'⛔ Публикация не разрешена'}</div><div style="margin-top:6px">${r.pub?`<button class="btn s" onclick="rp('${r.id}',0)">Скрыть</button>`:r.ok?`<button class="btn" onclick="rp('${r.id}',1)">Опубликовать</button>`:''} ${r.img?`<button class="btn s" onclick="rpd('${r.id}')">Удалить фото</button> `:''}<button class="btn s" onclick="rvdel2('${r.id}')">Удалить отзыв</button></div></div>`).join('')||'<p class="mu">Отзывов нет.</p>')}
 function rpd(id){if(role!='m'||!mAuth)return;if(!confirm('Удалить фото?'))return;const r=getI('R',id);r.img='';put('R',r);R()}
 function rvdel2(id){if(confirm('Удалить отзыв?')){rm('R',id);rInb()}}
