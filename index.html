@@ -104,6 +104,25 @@ body.mst header h1{font-size:15px;overflow:hidden;text-overflow:ellipsis}
 .car{touch-action:pan-x pan-y;-webkit-overflow-scrolling:touch}
 .gal div{position:relative}.cnt{position:absolute;right:6px;bottom:6px;background:rgba(0,0,0,.6);color:#fff;border-radius:10px;padding:2px 7px;font-size:11px;display:flex;gap:4px;align-items:center}
 .pth{flex-wrap:wrap}
+.pr2{display:flex;gap:14px;padding:14px;align-items:stretch}
+.th2{flex:none;width:88px;height:88px;border-radius:14px;background:var(--bg) center/cover no-repeat;position:relative;display:grid;place-items:center;color:var(--p);cursor:zoom-in;border:1px solid var(--bd)}
+.th2 span{position:absolute;right:4px;bottom:4px;background:rgba(0,0,0,.65);color:#fff;border-radius:8px;font-size:12px;padding:1px 7px}
+.pr2 .bx{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.pr2 .nm{font-size:18px;font-weight:700;line-height:1.25}
+.pr2 .ds{font-size:15px;color:var(--mu);line-height:1.4}
+.pr2 .pp{font-size:22px;font-weight:800;color:var(--p)}.pr2 .pp s{font-size:15px;font-weight:400;color:var(--mu);margin-right:8px}
+.pr2 .btn{padding:11px 20px;font-size:16px}
+.stp{display:inline-flex;align-items:center;border:1px solid var(--bd);border-radius:12px;overflow:hidden;background:var(--cd)}
+.stp button{width:42px;height:40px;border:0;background:var(--cd);color:var(--p);font-size:22px;font-weight:700}
+.stp b{min-width:34px;text-align:center;font-size:17px}
+.cartc{border-color:var(--g);box-shadow:0 4px 16px rgba(201,161,90,.22)}
+.crow{display:flex;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--bd);margin-top:8px}
+.cn{flex:1;min-width:0;font-size:16px;font-weight:600}.cn small{display:block;font-weight:400;color:var(--mu);font-size:14px;margin-top:3px}
+.cx{border:0;background:none;color:var(--mu);font-size:24px;width:34px;height:34px}
+.btn.wa{width:100%;margin-top:12px;padding:14px;font-size:17px}
+.mph{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mpi{aspect-ratio:1;border-radius:14px;background:var(--bg) center/cover no-repeat;position:relative;border:1px solid var(--bd)}
+.mpi button{position:absolute;top:4px;right:4px;width:28px;height:28px;border-radius:50%;border:0;background:rgba(0,0,0,.7);color:#fff;font-size:17px;line-height:1}
 .lgo{width:34px;height:34px;border-radius:50%;vertical-align:middle;margin-right:8px;box-shadow:0 0 0 1px rgba(227,190,124,.7)}
 .gh{font:700 13px/1 -apple-system,'Segoe UI',Roboto,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:var(--p);margin:20px 2px 10px}
 .mst #seg,.mst #st{display:none}
@@ -357,6 +376,22 @@ const E={'QR-код приложения':['Қосымшаның QR-коды','A
 'Скачать QR':['QR жүктеу','Download QR']};
 for(const k in E)if(!(k in EX))EX[k]=E[k];
 })();
+
+(function(){const E={
+'Корзина':['Себет','Cart'],'🛒 Корзина':['🛒 Себет','🛒 Cart'],'Корзина пуста':['Себет бос','The cart is empty'],
+'Корзина пуста. Добавьте товары из каталога.':['Себет бос. Каталогтан тауар қосыңыз.','The cart is empty. Add products from the catalogue.'],
+'Каталог':['Каталог','Catalogue'],'💬 Заказать в WhatsApp':['💬 WhatsApp арқылы тапсырыс беру','💬 Order via WhatsApp'],
+'Заказать в приложении':['Қосымшада тапсырыс беру','Order in the app'],'Очистить':['Тазалау','Clear'],
+'Итого:':['Барлығы:','Total:'],'Имя:':['Аты:','Name:'],'Телефон:':['Телефон:','Phone:'],
+'Здравствуйте! Хочу заказать в Beauty salon Razzi:':['Сәлеметсіз бе! Beauty salon Razzi-ден тапсырыс бергім келеді:','Hello! I would like to order from Beauty salon Razzi:'],
+'Мои фото причёсок':['Менің шаш үлгісі фотоларым','My hairstyle photos'],
+'Фото пока нет. Добавьте фото в отзыве.':['Фото әлі жоқ. Пікірге фото қосыңыз.','No photos yet. Add a photo in a review.'],
+'Убрать фото':['Фотоны алып тастау','Remove photo'],'Фото удалено':['Фото жойылды','Photo deleted'],
+'Удалить фото':['Фотоны жою','Delete photo'],'Фото из отзывов':['Пікірлердегі фотолар','Photos from reviews'],
+'Номер WhatsApp мастера не задан':['Шебердің WhatsApp нөмірі көрсетілмеген','Master’s WhatsApp number is not set'],
+'Описание товара':['Тауар сипаттамасы','Product description']};
+for(const k in E)if(!(k in EX))EX[k]=E[k];
+})();
 const SRE=new RegExp(Object.keys(SUB).sort((a,b)=>b.length-a.length).map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|'),'g');
 function tr(s){if(LANG==='ru'||typeof s!=='string'||!/[А-Яа-яЁё]/.test(s))return s;const i=LANG==='kk'?0:1,t=s.trim();
  if(EX[t])return s.replace(t,EX[t][i]);
@@ -464,7 +499,7 @@ function slots(k,dur){const s=SC(),d=dt(k),w=s.W[wd(d)];if(s.X[k]==='off'||!w||(
  for(let t=tm(w.f);t+dur<=tm(w.t);t+=30){if(isT&&t<nm)continue;if(!bs.some(([a,e])=>t<e&&t+dur>a))r.push(fm(t))}return r}
 const dur=m=>{const u={ru:['ч','мин'],kk:['сағ','мин'],en:['h','min']}[LANG];return m>=60?m/60+' '+u[0]:m+' '+u[1]};
 /* ===== ИНТЕРФЕЙС ===== */
-let role=ld('rz_role','c'),tab=ld('rz_tab','home'),after=null,pre=null,CART={},RV={s:5,img:''},L=[],CH=[],stp='svc',D={},LG={};
+let role=ld('rz_role','c'),tab=ld('rz_tab','home'),after=null,pre=null,CART=ld('rz_cart',{}),RV={s:5,img:''},L=[],CH=[],stp='svc',D={},LG={};
 mAuth=ld('rz_ma',null)?1:0;
 if(role=='m'&&!mAuth)role='c';
 if(role=='m'?!/^(ord|sch|cli|inb|set)$/.test(tab):!/^(home|svc|mp|gal|shop|rev|about|contact|me)$/.test(tab)||(tab=='me'&&!curU()))tab=role=='m'?'ord':'home';
@@ -488,9 +523,9 @@ const stars=n=>'★'.repeat(n)+'☆'.repeat(5-n),pubs=()=>col('R').filter(r=>r.p
 const svcCard=s=>`<div class="sc"><button class="card svc" onclick="pre='${s.id}';go('bot')"><i class="si">${ico(SI[s.id]||s.ic||'scissors',26)}</i><span><b>${esc(s.n)}</b><small>${esc(s.d||'')}${s.d?' · ':''}${dur(s.m)}</small></span><span class="pr">${s.p}</span></button>${s.im&&s.im.length?`<div class="sph">${s.im.map((u,i)=>`<img src="${u}" alt="" onclick="lbo(S.find(x=>x.id=='${s.id}').im,${i})">`).join('')}</div>`:''}</div>`;
 const gim=x=>Array.isArray(x.im)?x.im:(x.im?[x.im]:[]);
 const gall=()=>col('GL').slice().sort((a,b)=>b.u-a.u).map(x=>({ph:gim(x),gid:x.id})).filter(w=>w.ph.length).concat(G.map((u,i)=>({ph:[u],id:'b'+i})).filter(w=>!col('GH').some(x=>x.id==w.id)));
-const gtile=(w,i)=>`<div style="background:url(${w.ph[0]}) center/cover" onclick="lbw(${i})">${mAuth&&tab=='gal'?`<button class="gx" onclick="event.stopPropagation();gdelw(${i})">×</button>`:''}${w.ph.length>1?`<span class="cnt">${ico('image',12)} ${w.ph.length}</span>`:''}</div>`;
+const gtile=(w,i)=>`<div style="background:url(${w.ph[0]}) center/cover" onclick="lbw(${i})">${w.ph.length>1?`<span class="cnt">${ico('image',12)} ${w.ph.length}</span>`:''}</div>`;
 const lbw=i=>lbo(gall()[i].ph,0);
-function gdelw(i){const w=gall()[i];if(!w||!confirm(w.gid?'Удалить работу?':'Удалить фото?'))return;if(w.gid)rm('GL',w.gid);else put('GH',{id:w.id});R()}
+function gdelw(i){if(role!='m'||!mAuth)return;const w=gall()[i];if(!w||!confirm(w.gid?'Удалить работу?':'Удалить фото?'))return;if(w.gid)rm('GL',w.gid);else put('GH',{id:w.id});R()}
 function rHome(){const pb=pubs().slice().reverse(),av=pb.length?(pb.reduce((a,r)=>a+r.stars,0)/pb.length).toFixed(1):'',g=gall();
  $('#main').innerHTML=`<div class="hero"><h2>Красота с характером</h2><p>Парикмахер-универсал: стрижки, сложные окрашивания, макияж и брови. Запись 24/7 через бота.</p><button class="btn" onclick="go('bot')">Записаться онлайн</button></div>
  <h3>Мои работы</h3><div class="gal">${g.slice(0,9).map(gtile).join('')}</div><p><a href="#" onclick="go('gal');return false">Вся галерея →</a> · <a href="https://www.tiktok.com/@razzi.hair" target="_blank" rel="noopener">TikTok @razzi.hair</a></p>
@@ -499,7 +534,7 @@ function rHome(){const pb=pubs().slice().reverse(),av=pb.length?(pb.reduce((a,r)
  <button class="btn s" style="margin-top:8px" onclick="go('rev')">Все отзывы и написать отзыв</button>
  <h3>Бонус</h3><div class="card">🎁 От ${CF().after} визитов — скидка ${CF().pct}% на услуги и товары.</div>`}
 const rSvc=()=>{$('#main').innerHTML='<h3 style="margin-top:0">Услуги</h3>'+grp(S).map(([g,l])=>`<h3 class="gh">${g}</h3>`+l.map(svcCard).join('')).join('')};
-const rGal=()=>{const g=gall();$('#main').innerHTML=`<h3 style="margin-top:0">Галерея работ</h3><p class="mu" style="margin-top:0">Нажмите на фото, чтобы открыть его на весь экран.</p><div class="gal">${g.map(gtile).join('')}</div>${pubs().filter(r=>r.img).map(r=>`<div class="card"><img src="${r.img}" style="width:100%;border-radius:12px" onclick="lbo(['${r.img}'],0)"><div>${esc(r.name)} ${stars(r.stars)}</div>${mAuth?`<button class="btn s" style="margin-top:6px" onclick="rpd('${r.id}')">Удалить фото</button>`:''}</div>`).join('')}`};
+const rGal=()=>{const g=gall();$('#main').innerHTML=`<h3 style="margin-top:0">Галерея работ</h3><p class="mu" style="margin-top:0">Нажмите на фото, чтобы открыть его на весь экран.</p><div class="gal">${g.map(gtile).join('')}</div>${pubs().filter(r=>r.img).map(r=>`<div class="card"><img src="${r.img}" style="width:100%;border-radius:12px" onclick="lbo(['${r.img}'],0)"><div>${esc(r.name)} ${stars(r.stars)}</div></div>`).join('')}`};
 const rvCard=r=>`<div class="card"><b>${esc(r.name)}</b> <span style="color:var(--g)">${stars(r.stars)}</span><br>${esc(r.text)}${r.img?`<img src="${r.img}" style="width:100%;border-radius:12px;margin-top:6px">`:''}</div>`;
 /* --- Вход клиента: регистрация + код 4 цифры (как в Google Authenticator) --- */
 function rLogin(){const c=CF(),u=LG.u;if(LG.m){$('#main').innerHTML=`<div class="card"><h3 style="margin-top:0">Вход мастера</h3><p>Введите пароль.</p><input class="f" id="mpw" type="password" placeholder="Пароль" autocomplete="current-password" onkeydown="if(event.key=='Enter')mpass()"><button class="btn" onclick="mpass()">Войти</button> <button class="btn s" onclick="LG={};rLogin()">Назад</button></div>`;setTimeout(()=>{const e=$('#mpw');e&&e.focus()},50);return}
@@ -518,12 +553,23 @@ function out(){me=null;sv('rz_me',null);sv('rz_tab','home');dr(0);L=[];go('home'
 function rMe(){const u=curU();if(!u){after='me';LG={};tab='login';return nav(),rLogin()}const v=vis(u.id),c=CF(),pc=Math.min(100,v/c.after*100);
  $('#main').innerHTML=`<div class="hero"><h2>${esc(u.name)}</h2><p>📱 ${esc(u.phone)}</p></div><div class="card"><b>🎁 Бонусная программа</b><div class="bar"><i style="width:${pc}%"></i></div>Визитов: ${v} из ${c.after}. ${v>=c.after?`<b>Ваша скидка ${c.pct}% активна!</b>`:`Ещё ${c.after-v} до скидки ${c.pct}%.`}</div>
  <h3>Мои записи</h3>${col('B').filter(b=>b.uid==u.id).sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time)).map(b=>`<div class="card">${fD(b.date)} · ${b.time}<br>${esc(b.svc)} <span class="tag">${b.st=='done'?'был':b.st=='x'?'отмена':'ждёт'}</span></div>`).join('')||'<p class="mu">Записей пока нет.</p>'}
- <button class="btn s" onclick="out()">Выйти</button>`}
+ ${myPh()}<button class="btn s" style="margin-top:12px" onclick="out()">Выйти</button>`}
 /* --- Магазин --- */
 const price=p=>{const u=curU(),d=Math.min(60,(+p.d||0)+(u?loy(u.id):0));return[p.p*(1-d/100),d]};
-function rShop(){const n=Object.values(CART).reduce((a,b)=>a+b,0),tot=col('P').reduce((a,p)=>a+(CART[p.id]||0)*price(p)[0],0);
- $('#main').innerHTML=`<h3 style="margin-top:0">Магазин салона</h3>${n?`<div class="card row new"><span>🛒 ${n} шт · <b>${money(tot)}</b></span><button class="btn" onclick="order()">Заказать</button></div>`:''}<p class="mu">Самовывоз в салоне. Оплата при получении.</p>`+
- col('P').map(p=>{const[f,d]=price(p);return `<div class="card pc">${pcar(p)}<div class="pi"><b>${esc(p.n)}</b><div>${d?`<s class="mu">${money(p.p)}</s> `:''}<b style="color:var(--p)">${money(f)}</b>${d?` <span class="tag">−${d}%</span>`:''}</div><button class="btn s" onclick="CART['${p.id}']=(CART['${p.id}']||0)+1;rShop()">В корзину${CART[p.id]?' · '+CART[p.id]:''}</button></div></div>`}).join('')}
+const cSave=()=>sv('rz_cart',CART);
+function cadd(id,d){CART[id]=Math.max(0,(CART[id]||0)+d);if(!CART[id])delete CART[id];cSave();rShop()}
+function cdel(id){delete CART[id];cSave();rShop()}
+function cclr(){CART={};cSave();rShop()}
+const cartHtml=()=>{const it=col('P').filter(p=>CART[p.id]),n=it.reduce((x,p)=>x+CART[p.id],0),tot=it.reduce((x,p)=>x+CART[p.id]*price(p)[0],0);
+ return `<div class="card cartc" id="cart"><div class="row"><b style="font-size:19px">🛒 Корзина</b>${n?`<span class="tag">${n} шт</span>`:''}</div>`+(it.length?it.map(p=>{const f=price(p)[0];return `<div class="crow"><div class="cn">${esc(p.n)}<small>${money(f)} × ${CART[p.id]} = <b>${money(f*CART[p.id])}</b></small></div><div class="stp"><button onclick="cadd('${p.id}',-1)">−</button><b>${CART[p.id]}</b><button onclick="cadd('${p.id}',1)">+</button></div><button class="cx" onclick="cdel('${p.id}')">×</button></div>`}).join('')+`<div class="row" style="margin-top:12px"><span style="font-size:16px">Итого:</span><b style="font-size:24px;color:var(--p)">${money(tot)}</b></div><button class="btn wa" onclick="wOrder()">💬 Заказать в WhatsApp</button><div class="row" style="margin-top:10px"><button class="btn s" onclick="order()">Заказать в приложении</button><button class="btn s" onclick="cclr()">Очистить</button></div>`:`<p class="mu" style="margin:8px 0 0;font-size:15px">Корзина пуста. Добавьте товары из каталога.</p>`)+`</div>`};
+function wOrder(){const it=col('P').filter(p=>CART[p.id]);if(!it.length)return toast('Корзина пуста');const c=CF(),u=curU(),w=dg(c.wa||'').replace(/^8(?=\d{10}$)/,'7');if(!w)return toast('Номер WhatsApp мастера не задан');
+ const tot=it.reduce((x,p)=>x+CART[p.id]*price(p)[0],0);
+ let m=tr('Здравствуйте! Хочу заказать в Beauty salon Razzi:')+'\n'+it.map((p,i)=>`${i+1}. ${tr(p.n)} × ${CART[p.id]} — ${money(price(p)[0]*CART[p.id])}`).join('\n')+'\n'+tr('Итого:')+' '+money(tot)+'\n'+tr('Самовывоз в салоне. Оплата при получении.');
+ if(u)m+='\n'+tr('Имя:')+' '+u.name+'\n'+tr('Телефон:')+' +'+dg(u.phone);
+ window.open('https://wa.me/'+w+'?text='+encodeURIComponent(m),'_blank')}
+function rShop(){$('#main').innerHTML=`<h3 style="margin-top:0">Магазин салона</h3><p class="mu" style="margin-top:0">Самовывоз в салоне. Оплата при получении.</p>`+cartHtml()+`<h3 class="gh">Каталог</h3>`+
+ col('P').map(p=>{const[f,d]=price(p),im=p.im||[],q=CART[p.id]||0;
+  return `<div class="card pr2"><div class="th2" ${im.length?`style="background-image:url(${im[0]})" onclick="lb('${p.id}',0)"`:''}>${im.length?'':ico('bag',30)}${im.length>1?`<span>${im.length}</span>`:''}</div><div class="bx"><div class="nm">${esc(p.n)}</div>${p.ds?`<div class="ds">${esc(p.ds)}</div>`:''}<div class="pp">${d?`<s>${money(p.p)}</s>`:''}${money(f)}${d?` <span class="tag">−${d}%</span>`:''}</div>${q?`<div class="stp"><button onclick="cadd('${p.id}',-1)">−</button><b>${q}</b><button onclick="cadd('${p.id}',1)">+</button></div>`:`<button class="btn" onclick="cadd('${p.id}',1)">В корзину</button>`}</div></div>`}).join('')}
 const pcar=p=>{const im=p.im||[];return im.length?`<div class="cw"><div class="car" onscroll="dsc(this)">${im.map((u,i)=>`<div class="pm" onclick="lb('${p.id}',${i})"><img src="${u}" alt=""></div>`).join('')}</div>${im.length>1?`<div class="dots">${im.map((_,i)=>`<i class="${i?'':'on'}"></i>`).join('')}</div><button class="ar l" onclick="cs(this,-1)">‹</button><button class="ar r" onclick="cs(this,1)">›</button>`:''}</div>`:`<div class="ph">${ico('bag',40)}</div>`};
 const cs=(b,d)=>{const c=b.parentElement.querySelector('.car');c.scrollBy({left:d*c.clientWidth,behavior:'smooth'})};
 const lbs=d=>{const c=$('#lbc');c.scrollBy({left:d*c.clientWidth,behavior:'smooth'})};
@@ -533,10 +579,10 @@ const lbn=c=>{$('#lbt').textContent=(Math.round(c.scrollLeft/c.clientWidth)+1)+'
 const lb=(id,i)=>lbo(getI('P',id).im,i);
 const lbc=()=>{$('#lb').style.display='none'};
 function order(){const u=curU();if(!u){after='shop';LG={};tab='login';nav();return rLogin()}
- const it=col('P').filter(p=>CART[p.id]).map(p=>({n:p.n,q:CART[p.id],p:price(p)[0]}));put('O',{id:'o'+Date.now(),uid:u.id,name:u.name,ph:u.phone,it,tot:it.reduce((a,x)=>a+x.q*x.p,0),nw:1});CART={};toast('Заказ отправлен мастеру');rShop()}
+ const it=col('P').filter(p=>CART[p.id]).map(p=>({n:p.n,q:CART[p.id],p:price(p)[0]}));put('O',{id:'o'+Date.now(),uid:u.id,name:u.name,ph:u.phone,it,tot:it.reduce((a,x)=>a+x.q*x.p,0),nw:1});CART={};cSave();toast('Заказ отправлен мастеру');rShop()}
 /* --- Отзывы --- */
-const myRev=()=>{const u=curU();if(!u)return'';const m=col('R').filter(r=>r.uid==u.id).slice().reverse();return m.length?'<h3>Мои отзывы</h3>'+m.map(r=>`<div class="card"><div class="row"><b style="color:var(--g)">${stars(r.stars)}</b><span class="tag">${r.pub?'опубликован':'на проверке'}</span></div>${esc(r.text)}${r.img?`<img src="${r.img}" style="width:100%;border-radius:12px;margin-top:6px">`:''}<div style="margin-top:6px"><button class="btn s" onclick="rvdel('${r.id}')">Удалить</button></div></div>`).join(''):''};
-function rRev(){$('#main').innerHTML=`<h3 style="margin-top:0">Отзывы</h3>${pubs().slice().reverse().map(rvCard).join('')||'<p class="mu">Опубликованных отзывов пока нет.</p>'}${myRev()}<div class="card"><b>Оставить отзыв</b><div class="st">${[1,2,3,4,5].map(i=>`<button class="${i<=RV.s?'on':''}" onclick="RV.s=${i};rRev()">★</button>`).join('')}</div><textarea class="f" id="rt" rows="3" placeholder="Как всё прошло?"></textarea><label class="btn s" style="display:inline-block">📷 Фото причёски<input type="file" accept="image/*" hidden onchange="rph(this)"></label>${RV.img?`<img src="${RV.img}" style="width:80px;border-radius:10px;vertical-align:middle">`:''}<label style="display:block;margin:8px 0"><input type="checkbox" id="rc"> Разрешаю опубликовать отзыв и фото в приложении</label><button class="btn" onclick="rvSend()">Отправить</button></div>`}
+const myRev=()=>{const u=curU();if(!u)return'';const m=col('R').filter(r=>r.uid==u.id).slice().reverse();return m.length?'<h3>Мои отзывы</h3>'+m.map(r=>`<div class="card"><div class="row"><b style="color:var(--g)">${stars(r.stars)}</b><span class="tag">${r.pub?'опубликован':'на проверке'}</span></div>${esc(r.text)}${r.img?`<img src="${r.img}" style="width:100%;border-radius:12px;margin-top:6px">`:''}<div style="margin-top:6px">${r.img?`<button class="btn s" onclick="rvimg('${r.id}')">Удалить фото</button> `:''}<button class="btn s" onclick="rvdel('${r.id}')">Удалить</button></div></div>`).join(''):''};
+function rRev(){$('#main').innerHTML=`<h3 style="margin-top:0">Отзывы</h3>${pubs().slice().reverse().map(rvCard).join('')||'<p class="mu">Опубликованных отзывов пока нет.</p>'}${myRev()}<div class="card"><b>Оставить отзыв</b><div class="st">${[1,2,3,4,5].map(i=>`<button class="${i<=RV.s?'on':''}" onclick="RV.s=${i};rRev()">★</button>`).join('')}</div><textarea class="f" id="rt" rows="3" placeholder="Как всё прошло?"></textarea><label class="btn s" style="display:inline-block">📷 Фото причёски<input type="file" accept="image/*" hidden onchange="rph(this)"></label>${RV.img?`<img src="${RV.img}" style="width:80px;border-radius:10px;vertical-align:middle"> <button class="btn s" onclick="rvclr()">Убрать фото</button>`:''}<label style="display:block;margin:8px 0"><input type="checkbox" id="rc"> Разрешаю опубликовать отзыв и фото в приложении</label><button class="btn" onclick="rvSend()">Отправить</button></div>`}
 const img=(f,mx=720,q=.7)=>new Promise(r=>{const i=new Image,u=URL.createObjectURL(f);i.onload=()=>{const m=Math.min(1,mx/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=i.width*m;c.height=i.height*m;c.getContext('2d').drawImage(i,0,0,c.width,c.height);URL.revokeObjectURL(u);r(c.toDataURL('image/jpeg',q))};i.src=u});
 async function rph(i){if(i.files[0]){const t=$('#rt').value;RV.img=await img(i.files[0]);rRev();$('#rt').value=t}}
 function rvSend(){const u=curU();if(!u){after='rev';LG={};tab='login';nav();return rLogin()}const t=$('#rt').value.trim();if(!t)return toast('Напишите отзыв');
@@ -588,9 +634,12 @@ function rCli(){$('#main').innerHTML=`<h3 style="margin-top:0">Клиенты ($
 async function kod(id){const u=getI('U',id),c=await totp(u.sec),m=tr('Ваш код входа в Beauty salon Razzi:')+' '+c+'\n'+tr('Код действует 3 минуты.');toast(`🔑 Код для ${u.name}: ${c}`);try{window.open('https://wa.me/'+dg(u.phone)+'?text='+encodeURIComponent(m),'_blank')}catch(e){}}
 function rInb(){$('#main').innerHTML=`<div class="card row"><span>Новых: <b>${ni()}</b></span><button class="btn s" onclick="col('M').concat(col('R')).forEach(x=>{if(x.nw){x.nw=0;put(x.stars?'R':'M',x)}});nav();R()">Прочитано</button></div><h3>Сообщения</h3>`+(col('M').slice().reverse().map(m=>`<div class="card ${m.nw?'new':''}"><b>${esc(m.name)}</b> ${m.ph?`· <a href="https://wa.me/${esc(m.ph)}?text=${encodeURIComponent(tr('Здравствуйте! Это мастер Beauty salon Razzi.'))}" target="_blank" rel="noopener">WhatsApp</a>`:''}<br>${esc(m.text)}<div style="margin-top:6px">${m.req?`<button class="btn" onclick="kod('${m.uid}')">🔑 Код</button> `:''}<button class="btn s" onclick="rm('M','${m.id}');rInb()">Удалить</button></div></div>`).join('')||'<p class="mu">Сообщений нет.</p>')+
  '<h3>Отзывы</h3>'+(col('R').slice().reverse().map(r=>`<div class="card ${r.nw?'new':''}">${rvCard(r).replace('class="card"','')}<div>${r.ok?'✅ Клиент разрешил публикацию':'⛔ Публикация не разрешена'}</div><div style="margin-top:6px">${r.pub?`<button class="btn s" onclick="rp('${r.id}',0)">Скрыть</button>`:r.ok?`<button class="btn" onclick="rp('${r.id}',1)">Опубликовать</button>`:''} ${r.img?`<button class="btn s" onclick="rpd('${r.id}')">Удалить фото</button> `:''}<button class="btn s" onclick="rvdel2('${r.id}')">Удалить отзыв</button></div></div>`).join('')||'<p class="mu">Отзывов нет.</p>')}
-function rpd(id){if(!confirm('Удалить фото?'))return;const r=getI('R',id);r.img='';put('R',r);R()}
+function rpd(id){if(role!='m'||!mAuth)return;if(!confirm('Удалить фото?'))return;const r=getI('R',id);r.img='';put('R',r);R()}
 function rvdel2(id){if(confirm('Удалить отзыв?')){rm('R',id);rInb()}}
-function rvdel(id){if(confirm('Удалить отзыв?')){rm('R',id);rRev()}}
+function rvdel(id){const u=curU(),r=getI('R',id);if(!u||!r||r.uid!=u.id)return;if(confirm('Удалить отзыв?')){rm('R',id);R()}}
+function rvimg(id){const u=curU(),r=getI('R',id);if(!u||!r||r.uid!=u.id)return;if(!confirm('Удалить фото?'))return;r.img='';put('R',r);toast('Фото удалено');R()}
+function rvclr(){const t=$('#rt')?$('#rt').value:'';RV.img='';rRev();if($('#rt'))$('#rt').value=t}
+const myPh=()=>{const u=curU();if(!u)return'';const m=col('R').filter(r=>r.uid==u.id&&r.img).slice().reverse();return `<h3>Мои фото причёсок</h3>`+(m.length?`<div class="mph">${m.map(r=>`<div class="mpi" style="background-image:url(${r.img})" onclick="lbo([getI('R','${r.id}').img],0)"><button onclick="event.stopPropagation();rvimg('${r.id}')">×</button></div>`).join('')}</div>`:'<p class="mu">Фото пока нет. Добавьте фото в отзыве.</p>')};
 function rp(id,v){const r=getI('R',id);r.pub=v;r.nw=0;put('R',r);nav();rInb()}
 let sub='';
 const ssub=k=>{sub=k;rSet()};
@@ -599,22 +648,22 @@ function rSet(){const c=CF(),f=$('#fs'),keep=f._s===sub&&$('#fsc')?$('#fsc').scr
  else if(sub=='mp'){ttl='Моя страница';o=mpAdmin()}
  else if(sub=='svc'){ttl='Услуги и цены';o=svcAdmin()}
  else if(sub=='prod'){ttl='Товары';o=`${prodAdmin()}<div class="card"><b>Добавить товар</b><input class="f" id="an" placeholder="Название"><input class="f" id="ap" type="number" placeholder="Цена, ₸"><button class="btn" onclick="ap()">Добавить</button></div>`}
- else if(sub=='gal'){ttl='Галерея работ';const ws=col('GL').slice().sort((a,b)=>b.u-a.u);o=`<p class="mu" style="margin-top:0">Одна работа — до 6 фото с разных ракурсов. Ваши работы идут первыми на главном экране.</p><label class="btn" style="display:inline-flex;align-items:center;gap:8px;margin-bottom:10px">${ico('camera',20)} Добавить работу<input type="file" accept="image/*" multiple hidden onchange="gnew(this)"></label>${ws.map((x,k)=>{const im=gim(x);return `<div class="card"><div class="row"><b>Работа ${ws.length-k}</b><button class="btn s" onclick="if(confirm('Удалить работу?'))gdel('${x.id}')">Удалить</button></div><div class="pth">${im.map((u,i)=>`<div style="background:var(--bg) url(${u}) center/contain no-repeat" onclick="lbo(gim(getI('GL','${x.id}')),${i})"><button onclick="event.stopPropagation();gpdel('${x.id}',${i})">×</button></div>`).join('')}${im.length<6?`<label class="add">${ico('camera',22)}<small>${im.length}/6</small><input type="file" accept="image/*" multiple hidden onchange="gmore('${x.id}',this)"></label>`:''}</div></div>`}).join('')}${ws.length?'':'<p class="mu">Своих работ пока нет. Сейчас показаны фото из ваших видео.</p>'}<h3>Фото из ваших видео</h3><div class="gal">${G.map((u,i)=>col('GH').some(x=>x.id=='b'+i)?'':`<div style="background:url(${u}) center/cover;position:relative"><button class="gx" onclick="if(confirm('Скрыть фото из галереи?'))ghide('b${i}')">×</button></div>`).join('')}</div>${col('GH').length?`<button class="btn s" style="margin-top:10px" onclick="gshow()">Восстановить скрытые (${col('GH').length})</button>`:''}`}
+ else if(sub=='gal'){ttl='Галерея работ';const ws=col('GL').slice().sort((a,b)=>b.u-a.u);o=`<p class="mu" style="margin-top:0">Одна работа — до 6 фото с разных ракурсов. Ваши работы идут первыми на главном экране.</p><label class="btn" style="display:inline-flex;align-items:center;gap:8px;margin-bottom:10px">${ico('camera',20)} Добавить работу<input type="file" accept="image/*" multiple hidden onchange="gnew(this)"></label>${ws.map((x,k)=>{const im=gim(x);return `<div class="card"><div class="row"><b>Работа ${ws.length-k}</b><button class="btn s" onclick="if(confirm('Удалить работу?'))gdel('${x.id}')">Удалить</button></div><div class="pth">${im.map((u,i)=>`<div style="background:var(--bg) url(${u}) center/contain no-repeat" onclick="lbo(gim(getI('GL','${x.id}')),${i})"><button onclick="event.stopPropagation();gpdel('${x.id}',${i})">×</button></div>`).join('')}${im.length<6?`<label class="add">${ico('camera',22)}<small>${im.length}/6</small><input type="file" accept="image/*" multiple hidden onchange="gmore('${x.id}',this)"></label>`:''}</div></div>`}).join('')}${ws.length?'':'<p class="mu">Своих работ пока нет. Сейчас показаны фото из ваших видео.</p>'}${(()=>{const rs=col('R').filter(r=>r.img);return rs.length?`<h3>Фото из отзывов</h3><div class="mph">${rs.map(r=>`<div class="mpi" style="background-image:url(${r.img})" onclick="lbo([getI('R','${r.id}').img],0)"><button onclick="event.stopPropagation();rpd('${r.id}')">×</button></div>`).join('')}</div>`:''})()}<h3>Фото из ваших видео</h3><div class="gal">${G.map((u,i)=>col('GH').some(x=>x.id=='b'+i)?'':`<div style="background:url(${u}) center/cover;position:relative"><button class="gx" onclick="if(confirm('Скрыть фото из галереи?'))ghide('b${i}')">×</button></div>`).join('')}</div>${col('GH').length?`<button class="btn s" style="margin-top:10px" onclick="gshow()">Восстановить скрытые (${col('GH').length})</button>`:''}`}
  else if(sub=='adm'){ttl='Настройки мастера';o=`<div class="card"><label>WhatsApp (цифры с кодом страны, без +)</label><input class="f" id="sw" value="${esc(c.wa)}" placeholder="77001234567"><label>Адрес салона</label><input class="f" id="sa" value="${esc(c.addr)}"><label>Бонус: визитов до скидки</label><input class="f" id="sn" type="number" value="${c.after}"><label>Размер скидки, %</label><input class="f" id="sp" type="number" value="${c.pct}"><button class="btn" onclick="setCF({wa:dg($('#sw').value),addr:$('#sa').value,after:+$('#sn').value||5,pct:+$('#sp').value||0});toast('Сохранено')">Сохранить</button></div>
  <h3>Админ мастера</h3><div class="card"><label>Имя админа</label><input class="f" id="adn" value="${esc(c.an||'')}" placeholder="Новое имя" autocapitalize="off"><label>Текущий пароль</label><input class="f" id="ado" type="password"><label>Новый пароль (минимум 6 символов)</label><input class="f" id="adp" type="password"><button class="btn" onclick="sadm()">Сохранить имя и пароль</button></div>
  <h3>Облако</h3><div class="card">${CLOUD.url?'Подключено ☁️':'Не подключено 💾 (данные только на этом устройстве)'}<br><button class="btn s" onclick="sync();toast('Синхронизация…')">Синхронизировать</button> <button class="btn s" onclick="chkCloud()">Проверить облако</button></div>`}
  else o=[['gen','key','Генератор 2FA','Коды входа для клиентов'],['mp','user','Моя страница','Текст о себе и фото с подписями'],['svc','scissors','Услуги и цены','Редактор, цены и фото работ'],['prod','bag','Товары','Фото, цены и скидки'],['gal','image','Галерея работ','Фото для главного экрана'],['adm','user','Настройки мастера','Контакты, бонусы, имя и пароль админа, облако']].map(([k,i,t,d])=>`<button class="card svc" onclick="ssub('${k}')"><i class="si">${ico(i,24)}</i><span><b>${t}</b><small>${d}</small></span><span class="pr" style="color:var(--mu)">${ico('chev',20)}</span></button>`).join('')+`<button class="btn s" onclick="mlo()">Выйти из кабинета</button>`;
  f._s=sub;f.style.display='flex';f.innerHTML=`<div class="fsb"><button onclick="${sub?"ssub('')":"go('ord')"}">${ico(sub?'back':'x',22)}</button><b>${ttl}</b><button style="margin-left:auto" onclick="fsT()">${ico('full',20)}</button></div><div class="fsc" id="fsc">${o}</div>`;$('#fsc').scrollTop=keep;if(sub=='gen')genR()}
-const gdel=id=>{rm('GL',id);rSet()};
-const ghide=id=>{put('GH',{id});rSet()};
-const gshow=()=>{col('GH').forEach(x=>rm('GH',x.id));rSet()};
+const gdel=id=>{if(role!='m'||!mAuth)return;rm('GL',id);rSet()};
+const ghide=id=>{if(role!='m'||!mAuth)return;put('GH',{id});rSet()};
+const gshow=()=>{if(role!='m'||!mAuth)return;col('GH').forEach(x=>rm('GH',x.id));rSet()};
 async function gnew(inp){const fs=[...inp.files].slice(0,6);if(!fs.length)return;toast('Загрузка…');const im=[];for(const f of fs)im.push(await img(f,900,.7));put('GL',{id:'g'+Date.now()+Math.random().toString(36).slice(2,6),im});toast('Работа добавлена: '+im.length+' фото');rSet()}
 async function gmore(id,inp){const x=getI('GL',id),im=gim(x).slice();for(const f of[...inp.files].slice(0,6-im.length))im.push(await img(f,900,.7));x.im=im;put('GL',x);rSet()}
-function gpdel(id,i){const x=getI('GL',id),im=gim(x).slice();im.splice(i,1);if(!im.length)return gdel(id);x.im=im;put('GL',x);rSet()}
-function prodAdmin(){return col('P').map(p=>{const im=p.im||[];return `<div class="card"><div class="row"><b>${esc(p.n)}</b><button class="btn s" onclick="pe('${p.id}')">Изменить</button></div><div class="mu">${money(p.p)} · скидка ${p.d||0}%</div><div class="pth">${im.map((u,i)=>`<div style="background:var(--bg) url(${u}) center/contain no-repeat" onclick="lb('${p.id}',${i})"><button onclick="event.stopPropagation();pdel('${p.id}',${i})">×</button></div>`).join('')}${im.length<3?`<label class="add">${ico('camera',22)}<small>${im.length}/3</small><input type="file" accept="image/*" multiple hidden onchange="padd('${p.id}',this)"></label>`:''}</div><div style="margin-top:8px"><button class="btn s" onclick="pd('${p.id}')">Скидка %</button> <button class="btn s" onclick="if(confirm('Удалить товар?')){rm('P','${p.id}');rSet()}">Удалить</button></div></div>`}).join('')}
-async function padd(id,inp){const p=getI('P',id);p.im=p.im||[];for(const f of[...inp.files].slice(0,3-p.im.length))p.im.push(await img(f,640,.68));put('P',p);rSet()}
+function gpdel(id,i){if(role!='m'||!mAuth)return;const x=getI('GL',id),im=gim(x).slice();im.splice(i,1);if(!im.length)return gdel(id);x.im=im;put('GL',x);rSet()}
+function prodAdmin(){return col('P').map(p=>{const im=p.im||[];return `<div class="card"><div class="row"><b>${esc(p.n)}</b><button class="btn s" onclick="pe('${p.id}')">Изменить</button></div><div class="mu">${money(p.p)} · скидка ${p.d||0}%</div>${p.ds?`<div class="mu">${esc(p.ds)}</div>`:''}<div class="pth">${im.map((u,i)=>`<div style="background:var(--bg) url(${u}) center/contain no-repeat" onclick="lb('${p.id}',${i})"><button onclick="event.stopPropagation();pdel('${p.id}',${i})">×</button></div>`).join('')}${im.length<3?`<label class="add">${ico('camera',22)}<small>${im.length}/3</small><input type="file" accept="image/*" multiple hidden onchange="padd('${p.id}',this)"></label>`:''}</div><div style="margin-top:8px"><button class="btn s" onclick="pd('${p.id}')">Скидка %</button> <button class="btn s" onclick="if(confirm('Удалить товар?')){rm('P','${p.id}');rSet()}">Удалить</button></div></div>`}).join('')}
+async function padd(id,inp){const p=getI('P',id);p.im=p.im||[];for(const f of[...inp.files].slice(0,3-p.im.length))p.im.push(await img(f,560,.66));put('P',p);rSet()}
 function pdel(id,i){const p=getI('P',id);p.im.splice(i,1);put('P',p);rSet()}
-function pe(id){const p=getI('P',id),n=prompt('Название',p.n);if(n===null)return;const c=prompt('Цена, ₸',p.p);if(c===null)return;p.n=n.trim()||p.n;p.p=+c||p.p;put('P',p);rSet()}
+function pe(id){const p=getI('P',id),n=prompt('Название',p.n);if(n===null)return;const c=prompt('Цена, ₸',p.p);if(c===null)return;const ds=prompt('Описание товара',p.ds||'');if(ds===null)return;p.n=n.trim()||p.n;p.p=+c||p.p;p.ds=ds.trim();put('P',p);rSet()}
 function pd(id){const p=getI('P',id),v=prompt('Скидка на товар, %',p.d||0);if(v!==null){p.d=Math.max(0,Math.min(60,+v||0));put('P',p);rSet()}}
 function ap(){const n=$('#an').value.trim(),p=+$('#ap').value;if(!n||!p)return toast('Название и цена');put('P',{id:'p'+Date.now(),n,e:'🧴',p,d:0});rSet()}
 
