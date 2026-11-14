@@ -445,6 +445,17 @@ for(const k in E)if(!(k in EX))EX[k]=E[k];
 'Новых':['Жаңа','New'],'Прочитано':['Оқылды','Read']};
 for(const k in E)if(!(k in EX))EX[k]=E[k];
 })();
+
+(function(){const E={
+'Архив покупок':['Сатып алулар мұрағаты','Purchase archive'],'📦 Архив покупок':['📦 Сатып алулар мұрағаты','📦 Purchase archive'],
+'Архив пуст.':['Мұрағат бос.','The archive is empty.'],'Выдано':['Берілді','Handed over'],'Заказ от':['Тапсырыс күні','Ordered'],'Закрыт':['Жабылды','Closed'],
+'Заказ выдан и перенесён в архив покупок.':['Тапсырыс берілді және сатып алулар мұрағатына жіберілді.','The order was handed over and moved to the purchase archive.'],
+'Заказ отменён и перенесён в архив покупок.':['Тапсырыс болдырылмады және сатып алулар мұрағатына жіберілді.','The order was cancelled and moved to the purchase archive.'],
+'Заказ перенесён в архив':['Тапсырыс мұрағатқа жіберілді','Order moved to the archive'],
+'Кабинет мастера':['Шебер кабинеті','Master’s cabinet'],'Выйти из кабинета':['Кабинеттен шығу','Leave the cabinet'],
+'Выйти из кабинета мастера?':['Шебер кабинетінен шығу керек пе?','Leave the master’s cabinet?']};
+for(const k in E)if(!(k in EX))EX[k]=E[k];
+})();
 const SRE=new RegExp(Object.keys(SUB).sort((a,b)=>b.length-a.length).map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|'),'g');
 function tr(s){if(LANG==='ru'||typeof s!=='string'||!/[А-Яа-яЁё]/.test(s))return s;const i=LANG==='kk'?0:1,t=s.trim();
  if(EX[t])return s.replace(t,EX[t][i]);
@@ -555,14 +566,15 @@ const dur=m=>{const u={ru:['ч','мин'],kk:['сағ','мин'],en:['h','min']}
 let role=ld('rz_role','c'),tab=ld('rz_tab','home'),after=null,pre=null,CART=ld('rz_cart',{}),RV={s:5,img:''},L=[],CH=[],stp='svc',D={},LG={};
 mAuth=ld('rz_ma',null)?1:0;
 if(role=='m'&&!mAuth)role='c';
-if(role=='m'?!/^(ord|sch|chat|cli|inb|set)$/.test(tab):!/^(home|svc|mp|gal|shop|rev|about|contact|me)$/.test(tab)||(tab=='me'&&!curU()))tab=role=='m'?'ord':'home';
+if(role=='m'?!/^(ord|sch|chat|cli|inb|arch|about|set)$/.test(tab):!/^(home|svc|mp|gal|shop|rev|about|contact|me)$/.test(tab)||(tab=='me'&&!curU()))tab=role=='m'?'ord':'home';
 const msave=()=>sv('rz_ma',{t:Date.now()});
 const nc=()=>col('B').filter(b=>b.nw).length+col('O').filter(o=>o.nw).length,ni=()=>col('M').filter(m=>m.nw).length+col('R').filter(r=>r.nw).length;
 function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',5000)}
 const DR=[['home','home','Главная'],['svc','scissors','Услуги'],['mp','user','О мастере'],['shop','bag','Магазин'],['gal','image','Галерея работ'],['rev','star','Отзывы'],['me','gift','Бонусы и профиль'],['about','info','О приложении'],['contact','phone','Связаться с мастером']];
 const TB={c:[['home','home','Главная'],['bot','cal','Запись'],['shop','bag','Магазин'],['me','user','Профиль']],m:[['ord','list','Заказы'],['sch','cal2','График'],['chat','mail','Чат'],['cli','users','Клиенты'],['inb','star','Активность'],['set','sl','Настройки']]};
+const MDR=[['ord','list','Заказы'],['sch','cal2','График'],['chat','mail','Чат'],['cli','users','Клиенты'],['inb','star','Активность'],['arch','gift','Архив покупок'],['set','sl','Настройки'],['about','info','О приложении']];
 function dr(o){$('#dr').classList.toggle('on',!!o);$('#ov').style.display=o?'block':'none';
- if(o)$('#dr').innerHTML='<h3>Меню</h3>'+lgChips()+DR.filter(d=>!(role=='m'&&d[0]=='contact')).map(([k,i,l])=>`<button onclick="dr(0);setRole('c');go('${k}')">${ico(i,20)}<span>${l}</span>${k=='contact'&&cu()?`<b class="ub">${cu()}</b>`:''}</button>`).join('')+(curU()?`<button onclick="out()">${ico('logout',20)}<span>Выйти</span></button>`:'')}
+ if(o)$('#dr').innerHTML=role=='m'&&mAuth?'<h3>Кабинет мастера</h3>'+lgChips()+MDR.map(([k,i,l])=>`<button onclick="dr(0);go('${k}')">${ico(i,20)}<span>${l}</span>${k=='chat'&&nm()?`<b class="ub">${nm()}</b>`:k=='ord'&&nc()?`<b class="ub">${nc()}</b>`:''}</button>`).join('')+`<button onclick="dr(0);if(confirm('Выйти из кабинета мастера?'))mlo()">${ico('logout',20)}<span>Выйти из кабинета</span></button>`:'<h3>Меню</h3>'+lgChips()+DR.map(([k,i,l])=>`<button onclick="dr(0);setRole('c');go('${k}')">${ico(i,20)}<span>${l}</span>${k=='contact'&&cu()?`<b class="ub">${cu()}</b>`:''}</button>`).join('')+(curU()?`<button onclick="out()">${ico('logout',20)}<span>Выйти</span></button>`:'')}
 function nav(){document.body.className=(role=='m'?'mst':'')+(role=='c'&&cu()?' unr':'');$('#seg').innerHTML=`<button class="${role=='c'?'on':''}" onclick="setRole('c')">Клиент</button><button class="${role=='m'?'on':''}" onclick="setRole('m')">Мастер${nc()+ni()?' 🔔':''}</button>`;
  $('#nav').innerHTML=(role=='m'&&!mAuth?[]:TB[role]).map(([k,i,l])=>{const n=k=='ord'?nc():k=='inb'?nr():k=='chat'?nm():0;return `<button class="${tab==k?'on':''}" onclick="go('${k}')"><span>${ico(i,22)}</span>${l}${n?`<b class="bd">${n}</b>`:''}</button>`}).join('');
  $('#inp').style.display=tab=='bot'?'flex':'none'}
@@ -571,7 +583,7 @@ const fsT=()=>{try{document.fullscreenElement?document.exitFullscreen():fsReq()}
 function go(k){CT='';if(k=='set')fsReq();else if(document.fullscreenElement){try{document.exitFullscreen()}catch(x){}}if(k=='set'&&tab=='set')sub='';if(role=='c'&&(k=='bot')&&!curU()){after=k;k='login';LG={}}
  if(k=='bot'&&(!L.length||pre)){botStart(pre);pre=null}tab=k;if(k!='login'&&k!='mlogin'&&k!='bot')sv('rz_tab',k);nav();R();$('#main').scrollTop=0}
 function setRole(r){role=r;if(r=='m'){tab=mAuth?'ord':'mlogin'}else if(tab.match(/^(ord|sch|cli|inb|set|mlogin)$/))tab='home';sv('rz_role',role);if(tab!='mlogin')sv('rz_tab',tab);nav();R()}
-function R(){bS();if(tab!='set'){sub='';$('#fs').style.display='none'}({home:rHome,svc:rSvc,mp:rMP,gal:rGal,shop:rShop,rev:rRev,me:rMe,about:rAbout,contact:rCon,bot:rBot,login:rLogin,mlogin:rML,ord:rOrd,sch:rSch,cli:rCli,inb:rInb,chat:rChat,set:rSet})[tab]();if(tab=='set')genR()}
+function R(){bS();if(tab!='set'){sub='';$('#fs').style.display='none'}({home:rHome,svc:rSvc,mp:rMP,gal:rGal,shop:rShop,rev:rRev,me:rMe,about:rAbout,contact:rCon,bot:rBot,login:rLogin,mlogin:rML,ord:rOrd,sch:rSch,cli:rCli,inb:rInb,chat:rChat,arch:rArch,set:rSet})[tab]();if(tab=='set')genR()}
 const stars=n=>'★'.repeat(n)+'☆'.repeat(5-n),pubs=()=>col('R').filter(r=>r.pub);
 const svcCard=s=>`<div class="sc"><button class="card svc" onclick="pre='${s.id}';go('bot')"><i class="si">${ico(SI[s.id]||s.ic||'scissors',26)}</i><span><b>${esc(s.n)}</b><small>${esc(s.d||'')}${s.d?' · ':''}${dur(s.m)}</small></span><span class="pr">${s.p}</span></button>${s.im&&s.im.length?`<div class="sph">${s.im.map((u,i)=>`<img src="${u}" alt="" onclick="lbo(S.find(x=>x.id=='${s.id}').im,${i})">`).join('')}</div>`:''}</div>`;
 const gim=x=>Array.isArray(x.im)?x.im:(x.im?[x.im]:[]);
@@ -606,7 +618,7 @@ function out(){me=null;sv('rz_me',null);sv('rz_tab','home');dr(0);L=[];go('home'
 function rMe(){const u=curU();if(!u){after='me';LG={};tab='login';return nav(),rLogin()}const v=vis(u.id),c=CF(),pc=Math.min(100,v/c.after*100);
  $('#main').innerHTML=`<div class="hero"><h2>${esc(u.name)}</h2><p>📱 ${esc(u.phone)}</p></div><div class="card"><b>🎁 Бонусная программа</b><div class="bar"><i style="width:${pc}%"></i></div>Визитов: ${v} из ${c.after}. ${v>=c.after?`<b>Ваша скидка ${c.pct}% активна!</b>`:`Ещё ${c.after-v} до скидки ${c.pct}%.`}</div>
  <h3>Мои записи</h3>${col('B').filter(b=>b.uid==u.id).sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time)).map(b=>`<div class="card">${fD(b.date)} · ${b.time}<br>${esc(b.svc)} <span class="tag">${b.st=='done'?'был':b.st=='x'?'отмена':'ждёт'}</span></div>`).join('')||'<p class="mu">Записей пока нет.</p>'}
- ${myPh()}<button class="btn s" style="margin-top:12px" onclick="out()">Выйти</button>`}
+ ${myPh()}${myArch()}<button class="btn s" style="margin-top:12px" onclick="out()">Выйти</button>`}
 /* --- Магазин --- */
 const price=p=>{const u=curU(),d=Math.min(60,(+p.d||0)+(u?loy(u.id):0));return[p.p*(1-d/100),d]};
 const cSave=()=>sv('rz_cart',CART);
@@ -656,12 +668,13 @@ const OST={new:'Новый',acc:'Принят',rdy:'Готов к выдаче',
 const nm=()=>col('M').filter(m=>m.nw&&m.from!='m').length,nr=()=>col('R').filter(r=>r.nw).length;
 const cu=()=>{const u=curU();return u?col('M').filter(m=>m.uid==u.id&&m.from=='m'&&m.cn).length:0};
 const hhmm=t=>{const d=new Date(t),n=new Date(),p=x=>String(x).padStart(2,'0');return(d.toDateString()==n.toDateString()?'':p(d.getDate())+'.'+p(d.getMonth()+1)+' ')+p(d.getHours())+':'+p(d.getMinutes())};
-const thr=uid=>{const id=x=>+String(x.id).replace(/\D/g,'')||0;return col('M').filter(m=>m.uid==uid).map(m=>({k:'m',t:id(m),x:m})).concat(col('O').filter(o=>o.uid==uid).map(o=>({k:'o',t:id(o),x:o}))).sort((a,b)=>a.t-b.t)};
-const stBtns=o=>['acc','rdy','done'].filter(x=>x!=(o.st||'new')&&(o.st||'new')!='x').map(x=>`<button class="btn s" onclick="ost('${o.id}','${x}')">${x=='acc'?'Принять':x=='rdy'?'Готов к выдаче':'Выдан'}</button>`).join(' ');
+const thr=uid=>{const id=x=>+String(x.id).replace(/\D/g,'')||0;return col('M').filter(m=>m.uid==uid).map(m=>({k:'m',t:id(m),x:m})).concat(col('O').filter(o=>o.uid==uid&&!isArc(o)).map(o=>({k:'o',t:id(o),x:o}))).sort((a,b)=>a.t-b.t)};
+const isArc=o=>o.st=='done'||o.st=='x';
+const stBtns=o=>isArc(o)?'':['acc','rdy','done'].filter(x=>x!=(o.st||'new')&&(o.st||'new')!='x').map(x=>`<button class="btn s" onclick="ost('${o.id}','${x}')">${x=='acc'?'Принять':x=='rdy'?'Готов к выдаче':'Выдан'}</button>`).join(' ');
 function bub(e,v){
  if(e.k=='o'){const o=e.x,st=o.st||'new';return `<div class="ob"><b>🛍 <span>Заказ</span> · ${money(o.tot)}</b><div class="ut">${o.it.map(i=>esc(i.n)+' × '+i.q+' — '+money(i.p*i.q)).join('<br>')}</div><div class="os">${OST[st]}</div><small style="display:block;opacity:.7">${hhmm(e.t)}</small>${v=='m'?stBtns(o):(st=='new'?`<button class="btn s" onclick="ocx('${o.id}')">Отменить заказ</button>`:'')}</div>`}
  const m=e.x,mine=v=='m'?m.from=='m':m.from!='m';
- return `<div class="bb ${mine?'mine':'oth'}">${m.img?`<img src="${m.img}" alt="" onclick="lbo([getI('M','${m.id}').img],0)">`:''}${m.text?`<span class="ut">${esc(m.text)}</span>`:''}${m.req&&v=='m'?`<div><button class="btn" onclick="kod('${m.uid}')">🔑 Код</button></div>`:''}<small>${hhmm(e.t)}</small></div>`}
+ return `<div class="bb ${mine?'mine':'oth'}">${m.img?`<img src="${m.img}" alt="" onclick="lbo([getI('M','${m.id}').img],0)">`:''}${m.text?`<span${m.sys?'':' class="ut"'}>${esc(m.text)}</span>`:''}${m.req&&v=='m'?`<div><button class="btn" onclick="kod('${m.uid}')">🔑 Код</button></div>`:''}<small>${hhmm(e.t)}</small></div>`}
 const chatHtml=(uid,v)=>{const t=thr(uid);return t.length?t.map(e=>bub(e,v)).join(''):'<p class="mu" style="text-align:center;margin:auto">Напишите мастеру. Ответ придёт сюда.</p>'};
 const chatBox=(uid,v)=>`<div class="chat" id="chl"></div><div class="cin">${v=='m'?'<label class="cph">📷<input type="file" accept="image/*" hidden onchange="cimg(this)"></label>':''}<textarea id="ct" class="f" rows="1" placeholder="${v=='m'?'Ответ клиенту':'Сообщение мастеру'}" oninput="CHD=this.value" onkeydown="if(event.key=='Enter'&&!event.shiftKey){event.preventDefault();csend()}"></textarea><button class="btn" onclick="csend()">➤</button></div>`;
 function chatRefresh(sc){const e=$('#chl');if(!e)return;const uid=role=='m'?CT:(curU()||{}).id;if(!uid)return;const near=e.scrollHeight-e.scrollTop-e.clientHeight<90;e.innerHTML=chatHtml(uid,role=='m'?'m':'c');if(sc||near)e.scrollTop=e.scrollHeight}
@@ -671,15 +684,15 @@ function csend(im){if(role!='m')im='';const t=($('#ct')?$('#ct').value:'').trim(
  CHD='';if($('#ct'))$('#ct').value='';nav();chatRefresh(1)}
 async function cimg(inp){if(role!='m')return;const f=inp.files[0];if(!f)return;const d=await img(f,800,.7);inp.value='';csend(d)}
 function cattach(){if(!col('P').some(p=>CART[p.id]))return toast('Корзина пуста. Добавьте товары в магазине.');order()}
-function ost(id,st){if(role!='m'||!mAuth)return;const o=getI('O',id);if(!o)return;o.st=st;o.nw=0;put('O',o);nav();R()}
-function ocx(id){const u=curU(),o=getI('O',id);if(!u||!o||o.uid!=u.id||(o.st||'new')!='new')return;if(!confirm('Отменить заказ?'))return;o.st='x';put('O',o);R()}
+function ost(id,st){if(role!='m'||!mAuth)return;const o=getI('O',id);if(!o||isArc(o))return;o.st=st;o.nw=0;if(isArc(o)){o.cl=Date.now();put('M',{id:'m'+Date.now(),uid:o.uid,name:o.name,ph:o.ph,text:'Заказ выдан и перенесён в архив покупок.',from:'m',sys:1,cn:1});toast('Заказ перенесён в архив')}put('O',o);nav();R()}
+function ocx(id){const u=curU(),o=getI('O',id);if(!u||!o||o.uid!=u.id||(o.st||'new')!='new')return;if(!confirm('Отменить заказ?'))return;o.st='x';o.cl=Date.now();put('M',{id:'m'+Date.now(),uid:u.id,name:u.name,ph:u.phone,text:'Заказ отменён и перенесён в архив покупок.',from:'c',sys:1,nw:1});put('O',o);R()}
 function copen(uid){go('chat');CT=uid;R()}
 function cdelAll(){if(role!='m'||!mAuth||!CT)return;if(!confirm('Удалить переписку?'))return;col('M').filter(m=>m.uid==CT).forEach(m=>rm('M',m.id));CT='';nav();R()}
 let CQ='';
 const ini=n=>esc(((n||'?').trim().charAt(0)||'?').toUpperCase());
-function chatUids(){const by={};col('M').filter(m=>m.uid).forEach(m=>{by[m.uid]=1});col('O').filter(o=>o.uid).forEach(o=>{by[o.uid]=1});
+function chatUids(){const by={};col('M').filter(m=>m.uid).forEach(m=>{by[m.uid]=1});col('O').filter(o=>o.uid&&!isArc(o)).forEach(o=>{by[o.uid]=1});
  return Object.keys(by).map(uid=>{const t=thr(uid),l=t[t.length-1],un=col('M').filter(m=>m.uid==uid&&m.from!='m'&&m.nw).length+col('O').filter(o=>o.uid==uid&&o.nw).length,u=getI('U',uid)||{name:(col('M').find(m=>m.uid==uid)||{}).name||'Клиент',phone:''};return{uid,u,l,un,t:l?l.t:0}}).sort((a,b)=>b.t-a.t)}
-const prev=l=>!l?'':l.k=='o'?'🛍 <span>Заказ</span> '+money(l.x.tot):(l.x.img&&!l.x.text?'📷':(l.x.from=='m'?'✓ ':'')+`<span class="ut">${esc((l.x.text||'').slice(0,60))}</span>`);
+const prev=l=>!l?'':l.k=='o'?'🛍 <span>Заказ</span> '+money(l.x.tot):(l.x.img&&!l.x.text?'📷':(l.x.from=='m'?'✓ ':'')+l.x.sys?`<span>${esc(l.x.text)}</span>`:`<span class="ut">${esc((l.x.text||'').slice(0,60))}</span>`);
 function rThread(){const u=getI('U',CT)||{name:'Клиент',phone:''};
  col('M').forEach(m=>{if(m.uid==CT&&m.nw){m.nw=0;put('M',m)}});col('O').forEach(o=>{if(o.uid==CT&&o.nw){o.nw=0;put('O',o)}});nav();
  const oth=chatUids().filter(r=>r.uid!=CT).slice(0,15);
@@ -693,6 +706,13 @@ function chatListHtml(){const q=CQ.trim().toLowerCase(),ok=u=>!q||((u.name||'')+
  +(oth.length?`<h3 class="gh">Клиенты без переписки</h3>`+oth.map(u=>`<div class="card chr" onclick="copen('${u.id}')"><i class="av">${ini(u.name)}</i><div class="chm"><b class="ut">${esc(u.name||'')}</b><small>Нажмите, чтобы написать</small></div></div>`).join(''):'')
  +(anon.length?`<h3 class="gh">Сообщения без входа</h3>`+anon.slice().reverse().map(m=>`<div class="card ${m.nw?'new':''}"><b class="ut">${esc(m.name)}</b><br><span class="ut">${esc(m.text)}</span><div style="margin-top:6px"><button class="btn s" onclick="rm('M','${m.id}');rChat()">Удалить</button></div></div>`).join(''):'')}
 function rChat(){if(CT)return rThread();$('#main').innerHTML=`<div class="card" style="padding:8px"><input class="f" id="cq" style="margin:0" placeholder="Поиск клиента" value="${esc(CQ)}" oninput="CQ=this.value;$('#cl').innerHTML=chatListHtml()"></div><h3 class="gh">Чаты</h3><div id="cl">${chatListHtml()}</div>`}
+
+/* ===== АРХИВ ПОКУПОК ===== */
+const arcCard=(o,v)=>`<div class="card"><div class="row"><b>🛍 ${money(o.tot)}</b><span class="os">${OST[o.st]}</span></div>${v=='m'?`<div><b class="ut">${esc(o.name)}</b> · <a href="tel:+${esc(o.ph)}">+${esc(o.ph)}</a></div>`:''}<div class="ut">${o.it.map(i=>esc(i.n)+' × '+i.q+' — '+money(i.p*i.q)).join('<br>')}</div><div class="mu" style="font-size:12px"><span>Заказ от</span> ${hhmm(+String(o.id).replace(/\D/g,'')||o.u)} · <span>Закрыт</span> ${hhmm(o.cl||o.u)}</div></div>`;
+const arcList=f=>col('O').filter(o=>isArc(o)&&f(o)).sort((a,b)=>(b.cl||b.u||0)-(a.cl||a.u||0));
+function rArch(){const l=arcList(()=>true),dn=l.filter(o=>o.st=='done');
+ $('#main').innerHTML=`<h3 style="margin-top:0">📦 Архив покупок</h3><div class="card row"><span><span>Выдано</span>: <b>${dn.length}</b></span><b style="font-size:20px;color:var(--p)">${money(dn.reduce((a,o)=>a+o.tot,0))}</b></div>`+(l.length?l.map(o=>arcCard(o,'m')).join(''):'<p class="mu">Архив пуст.</p>')}
+const myArch=()=>{const u=curU();if(!u)return'';const l=arcList(o=>o.uid==u.id);return `<h3>Архив покупок</h3>`+(l.length?l.map(o=>arcCard(o,'c')).join(''):'<p class="mu">Архив пуст.</p>')};
 function msg(){const t=$('#mt').value.trim();if(!t)return;const u=curU(),w=$('#mn');put('M',{id:'m'+Date.now(),uid:u?u.id:'',name:u?u.name:(w?w.value:''),ph:u?u.phone:'',text:t,nw:1});toast('Сообщение отправлено');$('#mt').value=''}
 /* --- Бот (работает без интернета) --- */
 const say=(t,w='b')=>L.push({w,t});
@@ -722,7 +742,7 @@ async function chk(l,pw){const c=CF(),nm=x=>dg(x).replace(/^8(?=\d{10}$)/,'7');
  const w=nm(c.wa);return w.length>=10&&nm(l)===w&&dg(pw)===w.slice(-7)}
 async function mlog(){if(!(await chk($('#ml').value,$('#mp').value)))return toast('Неверный логин или пароль');mAuth=1;msave();setRole('m')}
 function rOrd(){const td=dk(new Date()),a=col('B').filter(b=>b.st!='x').sort((x,y)=>(x.date+x.time).localeCompare(y.date+y.time)),o=col('O').filter(x=>x.st!='done'&&x.st!='x').sort((x,y)=>y.id.localeCompare(x.id));
- $('#main').innerHTML=`<div class="card row"><span>🔔 Новых: <b>${nc()}</b> · Сегодня: <b>${a.filter(b=>b.date==td).length}</b></span><button class="btn s" onclick="col('B').concat(col('O')).forEach(x=>{if(x.nw){x.nw=0;put(x.tot!=null?'O':'B',x)}});nav();R()">Прочитано</button></div>`+
+ $('#main').innerHTML=`<div class="card row"><span>🔔 Новых: <b>${nc()}</b> · Сегодня: <b>${a.filter(b=>b.date==td).length}</b></span><button class="btn s" onclick="col('B').concat(col('O')).forEach(x=>{if(x.nw){x.nw=0;put(x.tot!=null?'O':'B',x)}});nav();R()">Прочитано</button></div><button class="btn s" style="margin:6px 0" onclick="go('arch')">📦 <span>Архив покупок</span> <small>${col('O').filter(isArc).length}</small></button>`+
  (o.length?'<h3>Заказы товаров</h3>'+o.map(x=>`<div class="card ${x.nw?'new':''}"><b>${esc(x.name)}</b> · <a href="tel:+${esc(x.ph)}">+${esc(x.ph)}</a><br>${x.it.map(i=>esc(i.n)+' ×'+i.q).join(', ')}<br><b>${money(x.tot)}</b> <span class="os">${OST[x.st||'new']}</span><div style="margin-top:6px">${stBtns(x)} <button class="btn s" onclick="copen('${x.uid}')">💬 Чат</button></div></div>`).join(''):'')+
  '<h3>Записи</h3>'+(a.map(b=>`<div class="card ${b.nw?'new':''}"><div class="row"><b>${fD(b.date)} · ${b.time}–${fm(tm(b.time)+b.dur)}</b>${b.st=='done'?'<span class="tag">был</span>':b.nw?'<span class="tag">новая</span>':''}</div>${esc(b.svc)}<br>👤 ${esc(b.name)} · <a href="tel:+${esc(b.ph)}">+${esc(b.ph)}</a><div style="margin-top:6px"><button class="btn s" onclick="bst('${b.id}','done')">✔ Пришёл</button> <button class="btn s" onclick="bst('${b.id}','x')">Отменить</button></div></div>`).join('')||'<p class="mu">Записей пока нет.</p>')}
 function bst(id,s){const b=getI('B',id);b.st=s;b.nw=0;put('B',b);nav();R()}
@@ -739,7 +759,7 @@ const evT=x=>x.u||+String(x.id).replace(/\D/g,'')||0;
 const revCard=r=>`<div class="card ${r.nw?'new':''}"><div class="mu" style="font-size:12px"><span>⭐ Отзыв</span> · ${hhmm(evT(r))}</div>${rvCard(r).replace('class="card"','')}<div>${r.ok?'✅ Клиент разрешил публикацию':'⛔ Публикация не разрешена'}</div><div style="margin-top:6px">${r.pub?`<button class="btn s" onclick="rp('${r.id}',0)">Скрыть</button>`:r.ok?`<button class="btn" onclick="rp('${r.id}',1)">Опубликовать</button>`:''} ${r.img?`<button class="btn s" onclick="rpd('${r.id}')">Удалить фото</button> `:''}<button class="btn s" onclick="rvdel2('${r.id}')">Удалить отзыв</button></div></div>`;
 const bkCard=b=>`<div class="card ${b.nw?'new':''}"><div class="mu" style="font-size:12px"><span>📅 Запись</span> · ${hhmm(evT(b))}</div><div class="row"><b>${fD(b.date)} · ${b.time}–${fm(tm(b.time)+b.dur)}</b>${b.st=='done'?'<span class="tag">был</span>':b.st=='x'?'<span class="tag off">Отменена</span>':b.nw?'<span class="tag">новая</span>':''}</div>${esc(b.svc)}<br>👤 <span class="ut">${esc(b.name)}</span> · <a href="tel:+${esc(b.ph)}">+${esc(b.ph)}</a>${b.st=='x'||b.st=='done'?'':`<div style="margin-top:6px"><button class="btn s" onclick="bst('${b.id}','done')">✔ Пришёл</button> <button class="btn s" onclick="bst('${b.id}','x')">Отменить</button></div>`}</div>`;
 const ordCard=x=>`<div class="card ${x.nw?'new':''}"><div class="mu" style="font-size:12px"><span>🛍 Заказ товаров</span> · ${hhmm(evT(x))}</div><b class="ut">${esc(x.name)}</b> · <a href="tel:+${esc(x.ph)}">+${esc(x.ph)}</a><br><span class="ut">${x.it.map(i=>esc(i.n)+' ×'+i.q).join(', ')}</span><br><b>${money(x.tot)}</b> <span class="os">${OST[x.st||'new']}</span><div style="margin-top:6px">${stBtns(x)} <button class="btn s" onclick="copen('${x.uid}')">💬 Чат</button></div></div>`;
-function rInb(){const B=col('B'),O=col('O'),Rv=col('R'),F=FF,
+function rInb(){const B=col('B'),O=col('O').filter(x=>!isArc(x)),Rv=col('R'),F=FF,
  ev=[].concat(F=='all'||F=='b'?B.map(x=>({t:evT(x),h:bkCard(x)})):[],F=='all'||F=='o'?O.map(x=>({t:evT(x),h:ordCard(x)})):[],F=='all'||F=='r'?Rv.map(x=>({t:evT(x),h:revCard(x)})):[]).sort((a,b)=>b.t-a.t),
  chip=(k,l,n)=>`<button class="${F==k?'on':''}" onclick="FF='${k}';rInb()"><span>${l}</span> <small>${n}</small></button>`;
  $('#main').innerHTML=`<div class="card row"><span>🔔 <span>Новых</span>: <b>${nc()+nr()}</b></span><button class="btn s" onclick="col('B').concat(col('O'),col('R')).forEach(x=>{if(x.nw){x.nw=0;put(x.stars?'R':x.tot!=null?'O':'B',x)}});nav();R()">Прочитано</button></div><div class="cats">${chip('all','Все',B.length+O.length+Rv.length)}${chip('b','Записи',B.length)}${chip('o','Заказы товаров',O.length)}${chip('r','Отзывы',Rv.length)}</div>`+(ev.length?ev.map(e=>e.h).join(''):'<p class="mu">Событий пока нет.</p>')}
