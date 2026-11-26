@@ -1,0 +1,71 @@
+{
+ "id": "./",
+ "name": "Beauty salon Razzi",
+ "short_name": "Razzi",
+ "description": "Запись к мастеру Разии: стрижки, окрашивание, макияж, брови",
+ "lang": "ru",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "display_override": [
+  "standalone",
+  "minimal-ui",
+  "browser"
+ ],
+ "orientation": "any",
+ "background_color": "#0b0908",
+ "theme_color": "#0b0908",
+ "categories": [
+  "lifestyle",
+  "beauty",
+  "shopping"
+ ],
+ "icons": [
+  {
+   "src": "icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "icon-maskable-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "icon-maskable-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ],
+ "shortcuts": [
+  {
+   "name": "Записаться",
+   "url": "./?go=bot",
+   "icons": [
+    {
+     "src": "icon-192.png",
+     "sizes": "192x192"
+    }
+   ]
+  },
+  {
+   "name": "Магазин",
+   "url": "./?go=shop",
+   "icons": [
+    {
+     "src": "icon-192.png",
+     "sizes": "192x192"
+    }
+   ]
+  }
+ ]
+}
