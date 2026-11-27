@@ -596,6 +596,16 @@ for(const k in E)if(!(k in EX))EX[k]=E[k];
 for(const k in E)if(!(k in EX))EX[k]=E[k];
 Object.assign(SUB,{'Восстановлено:':['Қалпына келтірілді:','Restored:']});
 })();
+
+(function(){const E={
+'Облако':['Бұлт','Cloud'],'Состояние синхронизации и проверка':['Синхрондау күйі және тексеру','Sync status and check'],
+'Не подключено':['Қосылмаған','Not connected'],'Ошибка':['Қате','Error'],'Ожидает отправки':['Жіберуді күтуде','Waiting to be sent'],'Подключено':['Қосылған','Connected'],
+'Проект:':['Жоба:','Project:'],'Ожидает отправки:':['Жіберуді күтуде:','Waiting to be sent:'],
+'🔄 Синхронизировать сейчас':['🔄 Қазір синхрондау','🔄 Sync now'],'Проверить доступ к облаку':['Бұлтқа қолжетімділікті тексеру','Check cloud access'],
+'Синхронизация…':['Синхрондау…','Syncing…'],'Данные синхронизированы':['Деректер синхрондалды','Data synchronised']};
+for(const k in E)if(!(k in EX))EX[k]=E[k];
+Object.assign(SUB,{'Ошибка:':['Қате:','Error:']});
+})();
 const SRE=new RegExp(Object.keys(SUB).sort((a,b)=>b.length-a.length).map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|'),'g');
 function tr(s){if(LANG==='ru'||typeof s!=='string'||!/[А-Яа-яЁё]/.test(s))return s;const i=LANG==='kk'?0:1,t=s.trim();
  if(EX[t])return s.replace(t,EX[t][i]);
@@ -637,7 +647,8 @@ async function dbInit(){
   try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
  }catch(e){IDBOK=0}
  try{bS();if(started){nav();R()}}catch(e){}}
-function put(n,it){it.u=Date.now();DB[n]=DB[n]||[];const i=DB[n].findIndex(x=>x.id==it.id);if(i<0)DB[n].push(it);else DB[n][i]=it;saveDB();const k=n+'/'+it.id;if(!Q.includes(k)){Q.push(k);sv('rz_q',Q)}sync();if(n=='V')bS()}
+let LU=0;
+function put(n,it){it.u=Math.max(Date.now(),LU+1);LU=it.u;DB[n]=DB[n]||[];const i=DB[n].findIndex(x=>x.id==it.id);if(i<0)DB[n].push(it);else DB[n][i]=it;saveDB();const k=n+'/'+it.id;if(!Q.includes(k)){Q.push(k);sv('rz_q',Q)}sync();if(n=='V')bS()}
 const rm=(n,id)=>{const a=DB[n]||[],i=a.findIndex(x=>x.id==id);if(i<0)return;const t={id,del:1};a[i]=t;put(n,t)};
 const stat=t=>{$('#st').textContent=t};
 let lastErr='';
@@ -645,8 +656,19 @@ const hdr=()=>{const H={apikey:CLOUD.key,'Content-Type':'application/json'};if(/
 const fail=async(r,w)=>{lastErr=w+' '+r.status+' '+(await r.text()).slice(0,120);throw new Error(lastErr)};
 async function sync(){if(!CLOUD.url){stat('💾');return}if(busy){sync.p=1;return}if(!navigator.onLine){stat('📴');return}busy=1;
  try{const H=hdr(),B0=CLOUD.url+'/rest/v1/rz';
-  if(Q.length){const sent=Q.slice(),rows=sent.map(k=>{const[n,id]=k.split('/');const it=(DB[n]||[]).find(x=>x.id==id);return it&&it.u&&{id:k,coll:n,data:it,u:it.u}}).filter(Boolean);
-   const r=await fetch(B0+'?on_conflict=id',{method:'POST',headers:{...H,Prefer:'resolution=merge-duplicates'},body:JSON.stringify(rows)});if(!r.ok)await fail(r,'write');Q=Q.filter(k=>!sent.includes(k));sv('rz_q',Q)}
+  if(Q.length){const sent=Q.slice(),rows=[],vers={};
+   sent.forEach(k=>{const[n,id]=k.split('/');const it=(DB[n]||[]).find(x=>x.id==id);if(it&&it.u){rows.push({id:k,coll:n,data:it,u:it.u});vers[k]=it.u}});
+   let bad=0;
+   const done=l=>l.forEach(x=>{const[n,id]=x.id.split('/'),it=(DB[n]||[]).find(y=>y.id==id);if(!it||it.u==vers[x.id])Q=Q.filter(k=>k!=x.id)});
+   const push=async l=>{const r=await fetch(B0+'?on_conflict=id',{method:'POST',headers:{...H,Prefer:'resolution=merge-duplicates'},body:JSON.stringify(l)});
+    if(r.ok){done(l);return}
+    const t=(await r.text()).slice(0,120);
+    if(l.length>1&&r.status>=400&&r.status<500&&r.status!=401&&r.status!=403){for(const x of l)await push([x]);return}
+    bad=1;lastErr='write '+r.status+' '+t};
+   let cur=[],sz=0;const chunks=[];rows.forEach(r=>{const n=JSON.stringify(r).length;if(cur.length&&sz+n>900000){chunks.push(cur);cur=[];sz=0}cur.push(r);sz+=n});if(cur.length)chunks.push(cur);
+   for(const ch of chunks)await push(ch);
+   Q=Q.filter(k=>rows.some(r=>r.id==k)||!sent.includes(k));sv('rz_q',Q);
+   if(bad)throw new Error(lastErr)}
   let r=await fetch(B0+'?select=id,u&limit=10000',{headers:H});if(!r.ok)await fail(r,'read');
   const need=(await r.json()).filter(w=>{const[n,id]=w.id.split('/');const it=(DB[n]||[]).find(x=>x.id==id);return !it||it.u<w.u});let ch=0;
   for(let i=0;i<need.length;i+=20){r=await fetch(B0+'?select=*&id=in.('+encodeURIComponent(need.slice(i,i+20).map(w=>'"'+w.id+'"').join(','))+')',{headers:H});if(!r.ok)await fail(r,'read');
@@ -1018,6 +1040,11 @@ async function bakRead(inp){const f=inp.files[0];if(!f)return;inp.value='';
 function bakApply(){if(role!='m'||!mAuth||!BKR)return;if(!confirm('Восстановить данные из копии?'))return;let k=0;
  for(const n in BKR.data){const arr=BKR.data[n];if(!Array.isArray(arr))continue;arr.forEach(it=>{if(!it||!it.id||it.del)return;const cur=(DB[n]||[]).find(x=>x.id==it.id);if(!cur||cur.del||(it.u||0)>(cur.u||0)){put(n,it);k++}})}
  BKR=null;toast('Восстановлено: '+k);rSet()}
+
+/* ===== СОСТОЯНИЕ ОБЛАКА ===== */
+function cldAdmin(){const ref=(String(CLOUD.url).match(/\/\/([^.]+)/)||[])[1]||'—',st=!CLOUD.url?'Не подключено':lastErr?'Ошибка':Q.length?'Ожидает отправки':'Подключено';
+ return `<div class="card"><div class="row"><b>☁️ Облако</b><span class="tag ${lastErr||!CLOUD.url?'off':''}">${st}</span></div><p class="mu" style="margin:8px 0 0"><span>Проект:</span> <b>${esc(ref)}</b></p><p class="mu" style="margin:4px 0 0"><span>Ожидает отправки:</span> <b>${Q.length}</b></p>${lastErr?`<p style="color:#c0392b;margin:8px 0 0">${esc(lastErr)}</p>`:''}<button class="btn wa" onclick="cldNow()">🔄 Синхронизировать сейчас</button><button class="btn s" style="width:100%;margin-top:8px" onclick="chkCloud()">Проверить доступ к облаку</button></div>`}
+async function cldNow(){toast('Синхронизация…');await sync();setTimeout(()=>{toast(lastErr?'Ошибка: '+lastErr:'Данные синхронизированы');if(tab=='set'&&sub=='cld')rSet()},700)}
 function msg(){const t=$('#mt').value.trim();if(!t)return;const u=curU(),w=$('#mn');put('M',{id:'m'+Date.now(),uid:u?u.id:'',name:u?u.name:(w?w.value:''),ph:u?u.phone:'',text:t,nw:1});toast('Сообщение отправлено');$('#mt').value=''}
 /* --- Бот (работает без интернета) --- */
 const say=(t,w='b')=>L.push({w,t});
@@ -1088,6 +1115,7 @@ function rSet(){const c=CF(),keep=SS===sub?$('#main').scrollTop:0;let o,ttl='Н�
  else if(sub=='msg'){ttl='Очистка данных';o=clrAdmin()}
  else if(sub=='exp'){ttl='База клиентов (PDF)';o=expAdmin()}
  else if(sub=='bak'){ttl='Резервная копия';o=bakAdmin()}
+ else if(sub=='cld'){ttl='Облако';o=cldAdmin()}
  else if(sub=='mp'){ttl='Моя страница';o=mpAdmin()}
  else if(sub=='svc'){ttl='Услуги и цены';o=svcAdmin()}
  else if(sub=='prod'){ttl='Товары';o=`${prodAdmin()}<div class="card"><b>Добавить товар</b><input class="f" id="an" placeholder="Название"><input class="f" id="ap" type="number" placeholder="Цена, ₸"><button class="btn" onclick="ap()">Добавить</button></div>`}
@@ -1095,7 +1123,7 @@ function rSet(){const c=CF(),keep=SS===sub?$('#main').scrollTop:0;let o,ttl='Н�
  else if(sub=='adm'){ttl='Настройки мастера';o=`<div class="card"><label>WhatsApp (цифры с кодом страны, без +)</label><input class="f" id="sw" value="${esc(c.wa)}" placeholder="77001234567"><label>Адрес салона</label><input class="f" id="sa" value="${esc(c.addr)}"><label>Kaspi Gold: ссылка на оплату или номер телефона</label><input class="f" id="sk" value="${esc(c.kp||'')}" placeholder="https://pay.kaspi.kz/... или 77001234567"><label>Бонус: визитов до скидки</label><input class="f" id="sn" type="number" value="${c.after}"><label>Размер скидки, %</label><input class="f" id="sp" type="number" value="${c.pct}"><button class="btn" onclick="setCF({wa:dg($('#sw').value),addr:$('#sa').value,kp:$('#sk').value.trim(),after:+$('#sn').value||5,pct:+$('#sp').value||0});toast('Сохранено')">Сохранить</button></div>
  <h3>Админ мастера</h3><div class="card"><label>Имя админа</label><input class="f" id="adn" value="${esc(c.an||'')}" placeholder="Новое имя" autocapitalize="off"><label>Текущий пароль</label><input class="f" id="ado" type="password"><label>Новый пароль (минимум 6 символов)</label><input class="f" id="adp" type="password"><button class="btn" onclick="sadm()">Сохранить имя и пароль</button></div>
  <h3>Облако</h3><div class="card">${CLOUD.url?'Подключено ☁️':'Не подключено 💾 (данные только на этом устройстве)'}<br><button class="btn s" onclick="sync();toast('Синхронизация…')">Синхронизировать</button> <button class="btn s" onclick="chkCloud()">Проверить облако</button></div>`}
- else o=[['gen','key','Генератор 2FA','Коды входа для клиентов'],['mp','user','Моя страница','Текст о себе и фото с подписями'],['svc','scissors','Услуги и цены','Редактор, цены и фото работ'],['prod','bag','Товары','Фото, цены и скидки'],['gal','image','Галерея работ','Фото для главного экрана'],['msg','mail','Очистка данных','Сообщения, заказы, записи, клиенты'],['exp','list','База клиентов (PDF)','Сохранить на устройство для разбора с клиентом'],['bak','lock','Резервная копия','Клиенты, галерея, магазин — с фото'],['adm','user','Настройки мастера','Контакты, бонусы, имя и пароль админа, облако']].map(([k,i,t,d])=>`<button class="card svc" onclick="ssub('${k}')"><i class="si">${ico(i,24)}</i><span><b>${t}</b><small>${d}</small></span><span class="pr" style="color:var(--mu)">${ico('chev',20)}</span></button>`).join('')+`<button class="btn s" onclick="mlo()">Выйти из кабинета</button>`;
+ else o=[['gen','key','Генератор 2FA','Коды входа для клиентов'],['mp','user','Моя страница','Текст о себе и фото с подписями'],['svc','scissors','Услуги и цены','Редактор, цены и фото работ'],['prod','bag','Товары','Фото, цены и скидки'],['gal','image','Галерея работ','Фото для главного экрана'],['msg','mail','Очистка данных','Сообщения, заказы, записи, клиенты'],['exp','list','База клиентов (PDF)','Сохранить на устройство для разбора с клиентом'],['bak','lock','Резервная копия','Клиенты, галерея, магазин — с фото'],['cld','globe','Облако','Состояние синхронизации и проверка'],['adm','user','Настройки мастера','Контакты, бонусы, имя и пароль админа, облако']].map(([k,i,t,d])=>`<button class="card svc" onclick="ssub('${k}')"><i class="si">${ico(i,24)}</i><span><b>${t}</b><small>${d}</small></span><span class="pr" style="color:var(--mu)">${ico('chev',20)}</span></button>`).join('')+`<button class="btn s" onclick="mlo()">Выйти из кабинета</button>`;
  SS=sub;$('#fs').style.display='none';$('#main').innerHTML=`<div class="row" style="justify-content:flex-start;gap:10px;margin-bottom:10px">${sub?`<button class="btn s" onclick="ssub('')">‹</button>`:''}<h3 style="margin:0">${ttl}</h3></div><div id="fsc">${o}</div>`;$('#main').scrollTop=keep;if(sub=='gen')genR();if(sub=='bak')bakInit()}
 const gdel=id=>{if(role!='m'||!mAuth)return;rm('GL',id);rSet()};
 const ghide=id=>{if(role!='m'||!mAuth)return;put('GH',{id});rSet()};

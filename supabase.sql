@@ -13,3 +13,7 @@ create policy "rz_open" on rz for all to anon using (true) with check (true);
 -- Мгновенные обновления (Realtime)
 alter publication supabase_realtime add table public.rz;
 alter table public.rz replica identity full;
+
+-- Права для публичного ключа (anon). Без них облако отвечает 401 / 42501.
+grant usage on schema public to anon;
+grant select, insert, update, delete on table public.rz to anon;
